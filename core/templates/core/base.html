@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        {% block meta %}{% endblock %}
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title %}Egadai{% endblock %}</title>
+        <link rel="stylesheet" href="{% static 'css/core.css' %}">
+        {% block extra_css %}{% endblock %}
+    </head>
+    <body>
+        <header>
+            <h1>
+                {% block heading %}{% endblock %}
+            </h1>
+        </header>
+        <main>
+            {% if messages %}
+                <ul>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% block content %}{% endblock %}
+        </main>
+        {% block modal %}{% endblock %}
+        <script src="{% static 'js/core.js' %}"></script>
+        {% block extra_js %}{% endblock %}
+    </body>
+</html>
