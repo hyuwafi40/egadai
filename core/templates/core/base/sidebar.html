@@ -16,9 +16,15 @@
         {% endfor %}
         <div class="mt-auto pt-3">
             <div class="sidebar-version-card glass-card p-3 text-center border-0">
-                <i class="fa-solid fa-code-branch text-primary fs-4 mb-2"></i>
-                <div class="fw-bold fs-7 mb-1">{% if brand %}{{ brand.name }}{% else %}{{ fallback_app_name }}{% endif %}</div>
-                <div class="text-muted fs-8">v{% if brand %}{{ brand.version }}{% else %}1.0.0{% endif %}</div>
+                <i class="fa-solid fa-building text-primary fs-4 mb-2"></i>
+                <div class="fw-bold fs-7 mb-1 text-truncate">
+                    {% firstof orgs.name orgs.legal_name orgs.brand_name fallback_app_name %}
+                </div>
+                <div class="text-muted fs-8 text-truncate">
+                    v{% if brand %}{{ brand.version }}{% else %}1.0.0{% endif %}
+                    ·
+                    {% if brand %}{{ brand.name }}{% else %}{{ fallback_app_name }}{% endif %}
+                </div>
             </div>
         </div>
     </div>

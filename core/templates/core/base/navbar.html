@@ -9,17 +9,17 @@
             </button>
             <a href="{% url 'core:index' %}"
                class="d-flex align-items-center gap-2 text-decoration-none">
-                {% if brand and brand.logo %}
-                    <img src="{{ brand.logo.url }}"
-                         alt="{{ brand.name }}"
+                {% if orgs and orgs.logo %}
+                    <img src="{{ orgs.logo.url }}"
+                         alt="{% firstof orgs.name orgs.legal_name orgs.brand_name fallback_app_name %}"
                          class="brand-mark rounded-3 border border-2 border-white shadow-sm object-fit-cover">
                 {% else %}
                     <div class="brand-mark rounded-3 d-flex align-items-center justify-content-center text-white">
-                        <i class="fa-solid fa-layer-group fs-6"></i>
+                        <i class="fa-solid fa-building fs-6"></i>
                     </div>
                 {% endif %}
-                <span class="fw-bold fs-5 text-dark tracking-tight">
-                    {% if brand %}{{ brand.name }}{% else %}{{ fallback_app_name }}{% endif %}
+                <span class="fw-bold fs-5 text-dark tracking-tight text-truncate">
+                    {% firstof orgs.name orgs.legal_name orgs.brand_name fallback_app_name %}
                 </span>
             </a>
         </div>
@@ -43,6 +43,15 @@
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end glass-card border-0 shadow-lg mt-2 p-2">
+                    <li>
+                        <a class="dropdown-item rounded-2 py-2"
+                           href="{% url 'account:profile-detail' %}">
+                            <i class="fa-regular fa-user me-2 text-muted"></i> Profil Saya
+                        </a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
                     <li>
                         <a class="dropdown-item rounded-2 py-2 text-danger"
                            href="{% url 'logout' %}">

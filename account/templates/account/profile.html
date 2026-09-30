@@ -1,0 +1,27 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Profil Saya{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/account.css' %}">
+{% endblock %}
+{% block heading %}
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-3 text-white brand-mark">
+                <i class="fa-solid fa-id-card fs-6"></i>
+            </div>
+            <div>
+                <h1 class="h4 fw-bold mb-0 tracking-tight">Profil Saya</h1>
+                <p class="text-muted mb-0 fs-7">Informasi data pribadi Anda</p>
+            </div>
+        </div>
+        <a href="{% url 'account:profile-update' %}"
+           class="glass-btn glass-btn-primary">
+            <i class="fa-solid fa-pen-to-square"></i>
+            <span>Edit Profil</span>
+        </a>
+    </div>
+{% endblock %}
+{% block content %}
+    {% include "account/profile/detail.html" %}
+{% endblock %}

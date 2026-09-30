@@ -1,0 +1,167 @@
+<div class="row g-4">
+    <div class="col-12 col-lg-4">
+        <div class="glass-card p-4 h-100 animate-fadeInUp stagger-2">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Foto</h2>
+            {% if profile_obj.photo %}
+                <img src="{{ profile_obj.photo.url }}"
+                     alt="{{ profile_obj.full_name|default:profile_obj.user.username }}"
+                     class="profile-photo-preview border border-2 border-white shadow-sm">
+            {% else %}
+                {% url 'account:profile-update' as update_url %}
+                {% include "core/base/fallback.html" with icon="fa-user" title="Foto Belum Ada" message="Belum ada foto profil yang diunggah." action_url=update_url action_label="Unggah Foto" action_icon="fa-upload" %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-12 col-lg-8">
+        <div class="glass-card p-4 h-100 animate-fadeInUp stagger-3">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Identitas</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Username</div>
+                    <div class="detail-value">{{ profile_obj.user.username }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Email</div>
+                    <div class="detail-value">{{ profile_obj.user.email }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Employee ID</div>
+                    <div class="detail-value">{{ profile_obj.employee_id|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nama Lengkap</div>
+                    <div class="detail-value">{{ profile_obj.full_name|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nama Panggilan</div>
+                    <div class="detail-value">{{ profile_obj.nickname|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Peran</div>
+                    <div class="detail-value">{{ profile_obj.user.get_job_display }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="glass-card p-4 h-100 animate-fadeInUp stagger-3">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Data Pribadi</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Jenis Kelamin</div>
+                    <div class="detail-value">{% if profile_obj.gender %}{{ profile_obj.get_gender_display }}{% else %}-{% endif %}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Status Perkawinan</div>
+                    <div class="detail-value">
+                        {% if profile_obj.marital_status %}{{ profile_obj.get_marital_status_display }}{% else %}-{% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Tempat Lahir</div>
+                    <div class="detail-value">{{ profile_obj.place_of_birth|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Tanggal Lahir</div>
+                    <div class="detail-value">{{ profile_obj.date_of_birth|date:"d M Y"|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Agama</div>
+                    <div class="detail-value">{{ profile_obj.religion|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Telepon</div>
+                    <div class="detail-value">{{ profile_obj.phone|default:"-" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="glass-card p-4 h-100 animate-fadeInUp stagger-4">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Alamat</h2>
+            <div class="row g-3">
+                <div class="col-12">
+                    <div class="detail-label mb-1">Alamat</div>
+                    <div class="detail-value">{{ profile_obj.address|default:"-"|linebreaksbr }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Kota</div>
+                    <div class="detail-value">{{ profile_obj.city|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Provinsi</div>
+                    <div class="detail-value">{{ profile_obj.province|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Kode Pos</div>
+                    <div class="detail-value">{{ profile_obj.postal_code|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Negara</div>
+                    <div class="detail-value">{{ profile_obj.country|default:"-" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="glass-card p-4 h-100 animate-fadeInUp stagger-4">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Kepegawaian</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Departemen</div>
+                    <div class="detail-value">{{ profile_obj.department|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Jabatan</div>
+                    <div class="detail-value">{{ profile_obj.position|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Jenis Kepegawaian</div>
+                    <div class="detail-value">
+                        {% if profile_obj.employment_type %}{{ profile_obj.get_employment_type_display }}{% else %}-{% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Tanggal Masuk</div>
+                    <div class="detail-value">{{ profile_obj.hire_date|date:"d M Y"|default:"-" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="glass-card p-4 h-100 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Kontak Darurat</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nama</div>
+                    <div class="detail-value">{{ profile_obj.emergency_contact_name|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Telepon</div>
+                    <div class="detail-value">{{ profile_obj.emergency_contact_phone|default:"-" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="glass-card p-4 h-100 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Lainnya</h2>
+            <div class="detail-value">{{ profile_obj.about|default:"-"|linebreaksbr }}</div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="glass-card p-4 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Timestamp</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Dibuat</div>
+                    <div class="detail-value">{{ profile_obj.created_at|date:"d M Y H:i" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Diperbarui</div>
+                    <div class="detail-value">{{ profile_obj.updated_at|date:"d M Y H:i" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -31,8 +31,8 @@ SIDEBAR_GROUPS = [
             {
                 "label": "Profile",
                 "icon": "fa-id-card",
-                "url": PLACEHOLDER_URL,
-                "roles": MANAGER_ROLES,
+                "url": "account:profile-detail",
+                "roles": ALL_ROLES,
             },
         ],
     },

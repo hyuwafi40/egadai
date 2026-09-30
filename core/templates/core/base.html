@@ -5,7 +5,11 @@
         <meta charset="UTF-8">
         {% block meta %}{% endblock %}
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}{% if brand %}{{ brand.name }}{% else %}{{ fallback_app_name }}{% endif %}{% endblock %}</title>
+        <title>
+            {% block title %}
+                {% firstof orgs.name orgs.legal_name orgs.brand_name fallback_app_name %}
+            {% endblock %}
+        </title>
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap"
@@ -36,13 +40,15 @@
                             {% block heading %}
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="d-flex align-items-center justify-content-center rounded-3 text-white brand-mark">
-                                        <i class="fa-solid fa-gauge-high fs-6"></i>
+                                        <i class="fa-solid fa-building fs-6"></i>
                                     </div>
                                     <div>
                                         <h1 class="h4 fw-bold mb-0 tracking-tight">
-                                            {% if brand %}{{ brand.name }}{% else %}{{ fallback_app_name }}{% endif %}
+                                            {% firstof orgs.name orgs.legal_name orgs.brand_name fallback_app_name %}
                                         </h1>
-                                        <p class="text-muted mb-0 fs-7">{% if brand %}{{ brand.description }}{% endif %}</p>
+                                        {% if orgs and orgs.tagline %}
+                                            <p class="text-muted mb-0 fs-7">{{ orgs.tagline }}</p>
+                                        {% endif %}
                                     </div>
                                 </div>
                             {% endblock %}

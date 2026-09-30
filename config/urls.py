@@ -10,6 +10,7 @@ urlpatterns = [
     path("", views.IndexViews.as_view(), name="login"),
     path("admin/", admin.site.urls),
     path("core/", include(("core.urls", "core"), namespace="core")),
+    path("account/", include(("account.urls", "account"), namespace="account")),
     path("logout/", views.logout_view, name="logout"),
 ]
 
@@ -18,9 +19,5 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 else:
     urlpatterns += [
-        re_path(
-            r"^media/(?P<path>.*)$",
-            serve,
-            {"document_root": settings.MEDIA_ROOT},
-        ),
+        re_path(r"^media/(?P<path>.*)$", serve, {"document_root": settings.MEDIA_ROOT}),
     ]
