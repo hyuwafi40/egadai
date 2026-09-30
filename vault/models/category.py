@@ -2,14 +2,10 @@ from django.db import models
 
 from vault.models.base import TimestampMixin
 from vault.utils.constants import (
-    DEFAULT_IS_ACTIVE,
-    DEFAULT_ORDER,
     MAX_LENGTH_CODE,
-    MAX_LENGTH_ICON,
     MAX_LENGTH_NAME,
 )
 from vault.utils.helpers import normalize_code, normalize_text
-from vault.utils.managers import ActiveManager
 
 
 class Category(TimestampMixin):
@@ -23,27 +19,14 @@ class Category(TimestampMixin):
         unique=True,
         db_index=True,
     )
-    icon = models.CharField(
-        max_length=MAX_LENGTH_ICON,
-        blank=True,
-    )
-    order = models.PositiveIntegerField(
-        default=DEFAULT_ORDER,
-        db_index=True,
-    )
     description = models.TextField(blank=True)
-    is_active = models.BooleanField(
-        default=DEFAULT_IS_ACTIVE,
-        db_index=True,
-    )
 
     objects = models.Manager()
-    active = ActiveManager()
 
     class Meta:
         verbose_name = "Category"
         verbose_name_plural = "Categories"
-        ordering = ["order", "name"]
+        ordering = ["name"]
 
     def save(self, *args, **kwargs):
         self.name = normalize_text(self.name)

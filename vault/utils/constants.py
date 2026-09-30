@@ -1,5 +1,7 @@
 from django.db import models
 
+from account.utils.constants import MANAGER_ROLES
+
 
 class PeriodeBungaChoices(models.IntegerChoices):
     HARI_7 = 7, "7 Hari"
@@ -15,7 +17,6 @@ class StorageStatusChoices(models.TextChoices):
 
 MAX_LENGTH_NAME = 100
 MAX_LENGTH_CODE = 20
-MAX_LENGTH_ICON = 50
 MAX_LENGTH_PHONE = 30
 MAX_LENGTH_POSTAL_CODE = 10
 
@@ -49,3 +50,5 @@ DEFAULT_IS_ACTIVE = True
 DEFAULT_IS_DEFAULT = False
 DEFAULT_ORDER = 0
 DEFAULT_OCCUPANCY = 0
+
+CATEGORIES_PER_PAGE = 10

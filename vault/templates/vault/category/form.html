@@ -1,0 +1,67 @@
+<div class="modal fade"
+     id="categoryFormModal"
+     tabindex="-1"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-card border-0">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="categoryFormModalTitle">Tambah Kategori</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm"
+                      method="post"
+                      data-create-url="{% url 'vault:category-create' %}"
+                      novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="categoryFormName"
+                               class="form-label fw-semibold fs-7">Nama <span class="text-danger">*</span></label>
+                        <input type="text"
+                               id="categoryFormName"
+                               name="name"
+                               class="form-control glass-input"
+                               required
+                               placeholder="Contoh: Emas">
+                        <div class="text-danger fs-8 mt-1" data-error-for="name"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoryFormCode"
+                               class="form-label fw-semibold fs-7">Kode <span class="text-danger">*</span></label>
+                        <input type="text"
+                               id="categoryFormCode"
+                               name="code"
+                               class="form-control glass-input text-uppercase"
+                               required
+                               placeholder="Contoh: EMAS">
+                        <div class="form-text fs-8 text-muted">Kode unik, otomatis diubah ke huruf besar.</div>
+                        <div class="text-danger fs-8 mt-1" data-error-for="code"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoryFormDescription"
+                               class="form-label fw-semibold fs-7">Deskripsi <small class="text-muted fw-normal">(opsional)</small></label>
+                        <textarea id="categoryFormDescription"
+                                  name="description"
+                                  class="form-control glass-input"
+                                  rows="3"
+                                  placeholder="Deskripsi singkat kategori..."></textarea>
+                        <div class="text-danger fs-8 mt-1" data-error-for="description"></div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="glass-btn" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>Batal</span>
+                </button>
+                <button type="submit" class="glass-btn glass-btn-primary" form="categoryForm">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Simpan</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

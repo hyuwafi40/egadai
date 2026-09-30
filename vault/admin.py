@@ -5,17 +5,9 @@ from vault.models import Category, Scheme, Storages
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = (
-        "name",
-        "code",
-        "icon",
-        "order",
-        "is_active",
-        "updated_at",
-    )
-    list_filter = ("is_active",)
+    list_display = ("name", "code", "updated_at")
     search_fields = ("name", "code", "description")
-    ordering = ("order", "name")
+    ordering = ("name",)
 
 
 @admin.register(Scheme)

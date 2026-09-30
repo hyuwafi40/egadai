@@ -59,7 +59,7 @@ SIDEBAR_GROUPS = [
             {
                 "label": "Category",
                 "icon": "fa-layer-group",
-                "url": PLACEHOLDER_URL,
+                "url": "vault:category-list",
                 "roles": MANAGER_ROLES,
             },
             {

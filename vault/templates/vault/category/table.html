@@ -1,0 +1,68 @@
+<div class="glass-card mb-4 overflow-hidden animate-fadeInUp stagger-3">
+    <div class="table-responsive">
+        <table class="table table-glass align-middle mb-0" id="categoryTable">
+            <thead>
+                <tr>
+                    <th scope="col">Nama</th>
+                    <th scope="col">Kode</th>
+                    <th scope="col" class="text-end">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in page_obj %}
+                    <tr>
+                        <td>
+                            <div class="fw-semibold">{{ c.name }}</div>
+                            {% if c.description %}
+                                <div class="text-muted fs-8 text-truncate"
+                                     style="max-width: 320px">{{ c.description }}</div>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="category-code-badge">{{ c.code }}</span>
+                        </td>
+                        <td class="text-end">
+                            <button type="button"
+                                    class="glass-btn px-2 py-1"
+                                    data-category-edit
+                                    data-url="{% url 'vault:category-update' c.pk %}"
+                                    data-name="{{ c.name }}"
+                                    data-code="{{ c.code }}"
+                                    data-description="{{ c.description }}"
+                                    title="Edit Kategori"
+                                    aria-label="Edit">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button type="button"
+                                    class="glass-btn px-2 py-1 text-danger"
+                                    data-delete-trigger
+                                    data-delete-modal="#deleteCategoryModal"
+                                    data-delete-url="{% url 'vault:category-delete' c.pk %}"
+                                    data-delete-name="{{ c.name }}"
+                                    title="Hapus Kategori"
+                                    aria-label="Hapus">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="3" class="text-center text-muted py-4">
+                            <i class="fa-solid fa-inbox fs-3 d-block mb-2"></i>
+                            Belum ada kategori.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if page_obj.paginator.num_pages > 1 %}
+        <div class="p-3 border-top d-flex flex-column flex-sm-row align-items-center justify-content-between gap-2">
+            <span class="text-muted fs-8">
+                <i class="fa-solid fa-list me-1"></i>
+                Menampilkan {{ page_obj.start_index }}–{{ page_obj.end_index }} dari {{ page_obj.paginator.count }} kategori
+            </span>
+            {% include "core/base/pagination.html" with page_obj=page_obj %}
+        </div>
+    {% endif %}
+</div>

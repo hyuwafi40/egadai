@@ -1,0 +1,10 @@
+.category-code-badge {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    background: rgba(0, 122, 255, 0.12);
+    color: var(--ios-blue-dark);
+}

@@ -11,6 +11,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("core/", include(("core.urls", "core"), namespace="core")),
     path("account/", include(("account.urls", "account"), namespace="account")),
+    path("vault/", include(("vault.urls", "vault"), namespace="vault")),
     path("logout/", views.logout_view, name="logout"),
 ]
 
