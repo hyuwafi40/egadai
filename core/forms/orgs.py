@@ -1,16 +1,10 @@
 from django import forms
 
-from core.forms.base import BaseModelForm
+from core.forms.base import BaseLogoModelForm
 from core.models import Orgs
 
 
-class OrgsForm(BaseModelForm):
-    clear_logo = forms.BooleanField(
-        required=False,
-        label="Hapus logo saat ini",
-        widget=forms.CheckboxInput(attrs={"class": "form-check-input"}),
-    )
-
+class OrgsForm(BaseLogoModelForm):
     class Meta:
         model = Orgs
         fields = [
@@ -147,12 +141,3 @@ class OrgsForm(BaseModelForm):
             ),
             "logo": forms.FileInput(attrs={"accept": "image/*"}),
         }
-
-    def save(self, commit=True):
-        instance = super().save(commit=False)
-        if self.cleaned_data.get("clear_logo") and not self.cleaned_data.get("logo"):
-            instance.logo = None
-        if commit:
-            instance.save()
-            self._save_m2m()
-        return instance

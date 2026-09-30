@@ -1,8 +1,11 @@
+from django.core.cache import cache
 from django.urls import NoReverseMatch, reverse
 
 from core.access import ALL_ROLES, DEVELOPER_ROLES, MANAGER_ROLES
 
 PLACEHOLDER_URL = "#"
+REVERSE_CACHE = {}
+SIDEBAR_CACHE_KEY = "core.sidebar.{job}"
 
 SIDEBAR_GROUPS = [
     {
@@ -73,10 +76,15 @@ SIDEBAR_GROUPS = [
 def _resolve_url(url):
     if not url or url == PLACEHOLDER_URL:
         return PLACEHOLDER_URL, None
+    if url in REVERSE_CACHE:
+        return REVERSE_CACHE[url]
     try:
-        return reverse(url), url
+        resolved = reverse(url)
+        pair = (resolved, url)
     except NoReverseMatch:
-        return PLACEHOLDER_URL, None
+        pair = (PLACEHOLDER_URL, None)
+    REVERSE_CACHE[url] = pair
+    return pair
 
 
 def _build_item(item, user_job):
@@ -91,12 +99,7 @@ def _build_item(item, user_job):
     }
 
 
-def build_sidebar(user):
-    if not user or not user.is_authenticated:
-        return []
-    user_job = getattr(user, "job", None)
-    if not user_job:
-        return []
+def _build_groups(user_job):
     groups = []
     for group in SIDEBAR_GROUPS:
         items = []
@@ -111,4 +114,19 @@ def build_sidebar(user):
                     "items": items,
                 }
             )
+    return groups
+
+
+def build_sidebar(user):
+    if not user or not user.is_authenticated:
+        return []
+    user_job = getattr(user, "job", None)
+    if not user_job:
+        return []
+    cache_key = SIDEBAR_CACHE_KEY.format(job=user_job)
+    cached = cache.get(cache_key)
+    if cached is not None:
+        return cached
+    groups = _build_groups(user_job)
+    cache.set(cache_key, groups, timeout=None)
     return groups

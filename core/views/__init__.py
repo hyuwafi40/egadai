@@ -8,6 +8,8 @@ from core.views.base import (
     BaseManagerView,
     BaseRegulerView,
     BaseView,
+    SingletonObjectMixin,
+    SingletonSuccessMixin,
 )
 from core.views.brand import BrandDetailView, BrandUpdateView
 from core.views.index import IndexViews
@@ -28,4 +30,6 @@ __all__ = [
     "IndexViews",
     "OrgsDetailView",
     "OrgsUpdateView",
+    "SingletonObjectMixin",
+    "SingletonSuccessMixin",
 ]

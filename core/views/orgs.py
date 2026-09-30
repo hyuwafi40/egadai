@@ -1,11 +1,10 @@
-from django.contrib import messages
-from django.urls import reverse
-
 from core.forms import OrgsForm
 from core.models import Orgs
 from core.views.base import (
     BaseManagerDetailView,
     BaseManagerUpdateView,
+    SingletonObjectMixin,
+    SingletonSuccessMixin,
 )
 
 FORM_TABS = [
@@ -20,37 +19,24 @@ FORM_TABS = [
 ]
 
 
-class OrgsDetailView(BaseManagerDetailView):
+class OrgsDetailView(SingletonObjectMixin, BaseManagerDetailView):
     model = Orgs
     template_name = "core/orgs.html"
     context_object_name = "orgs_obj"
 
-    def get_object(self, queryset=None):
-        orgs, _ = Orgs.objects.get_or_create(pk=1)
-        return orgs
 
-
-class OrgsUpdateView(BaseManagerUpdateView):
+class OrgsUpdateView(
+    SingletonObjectMixin,
+    SingletonSuccessMixin,
+    BaseManagerUpdateView,
+):
     model = Orgs
     form_class = OrgsForm
     template_name = "core/orgs/form.html"
-
-    def get_object(self, queryset=None):
-        orgs, _ = Orgs.objects.get_or_create(pk=1)
-        return orgs
+    success_url_name = "core:orgs-detail"
+    success_message = "Organisasi berhasil diperbarui."
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form_tabs"] = FORM_TABS
         return context
-
-    def get_success_url(self):
-        return reverse("core:orgs-detail")
-
-    def form_valid(self, form):
-        messages.success(self.request, "Organisasi berhasil diperbarui.")
-        return super().form_valid(form)
-
-    def form_invalid(self, form):
-        messages.error(self.request, "Periksa kembali data yang Anda masukkan.")
-        return super().form_invalid(form)

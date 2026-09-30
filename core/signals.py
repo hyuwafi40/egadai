@@ -14,8 +14,10 @@ def bootstrap_singletons(sender, **kwargs):
         return
     brand_model = apps.get_model("core", "Brand")
     orgs_model = apps.get_model("core", "Orgs")
-    brand_model.objects.get_or_create(pk=1)
-    orgs_model.objects.get_or_create(pk=1)
+    brand, _ = brand_model.objects.get_or_create(pk=1)
+    orgs, _ = orgs_model.objects.get_or_create(pk=1)
+    cache.set(singleton_cache_key("brand"), brand, timeout=None)
+    cache.set(singleton_cache_key("orgs"), orgs, timeout=None)
 
 
 @receiver(post_save, sender=Brand)

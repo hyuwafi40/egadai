@@ -1,5 +1,6 @@
-from account.utils.constants import JobChoices
 from django.core.exceptions import PermissionDenied
+
+from account.utils.constants import JobChoices
 
 ALL_ROLES = (
     JobChoices.DEVELOPER,
