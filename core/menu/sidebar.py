@@ -54,6 +54,29 @@ SIDEBAR_GROUPS = [
         ],
     },
     {
+        "label": "Vault",
+        "items": [
+            {
+                "label": "Category",
+                "icon": "fa-layer-group",
+                "url": PLACEHOLDER_URL,
+                "roles": MANAGER_ROLES,
+            },
+            {
+                "label": "Scheme",
+                "icon": "fa-file-contract",
+                "url": PLACEHOLDER_URL,
+                "roles": MANAGER_ROLES,
+            },
+            {
+                "label": "Storages",
+                "icon": "fa-warehouse",
+                "url": PLACEHOLDER_URL,
+                "roles": MANAGER_ROLES,
+            },
+        ],
+    },
+    {
         "label": "Preferensi",
         "items": [
             {

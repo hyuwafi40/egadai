@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     "guardian",
     "account",
     "core",
+    "vault",
     "django_cleanup",
 ]
 
