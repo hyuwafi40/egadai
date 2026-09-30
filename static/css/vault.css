@@ -8,3 +8,25 @@
     background: rgba(0, 122, 255, 0.12);
     color: var(--ios-blue-dark);
 }
+
+.scheme-row-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--ios-blue), var(--ios-indigo));
+}
+
+.scheme-rate-value {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ios-blue);
+    line-height: 1.2;
+}
+
+.scheme-admin-value {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #248a3d;
+    white-space: nowrap;
+}

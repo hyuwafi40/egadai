@@ -1,3 +1,4 @@
+{% load humanize %}
 <div class="row g-4">
     <div class="col-12 col-lg-4">
         <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-2">
@@ -15,11 +16,15 @@
             <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Permodalan</h2>
             <div class="mb-3">
                 <div class="detail-label mb-1">Modal Dasar</div>
-                <div class="detail-value">{{ orgs_obj.authorized_capital|default:"-" }}</div>
+                <div class="detail-value">
+                    {% if orgs_obj.authorized_capital %}Rp {{ orgs_obj.authorized_capital|floatformat:0|intcomma }}{% else %}-{% endif %}
+                </div>
             </div>
             <div class="mb-3">
                 <div class="detail-label mb-1">Modal Disetor</div>
-                <div class="detail-value">{{ orgs_obj.paid_up_capital|default:"-" }}</div>
+                <div class="detail-value">
+                    {% if orgs_obj.paid_up_capital %}Rp {{ orgs_obj.paid_up_capital|floatformat:0|intcomma }}{% else %}-{% endif %}
+                </div>
             </div>
             <div>
                 <div class="detail-label mb-1">Lingkup Wilayah</div>

@@ -14,19 +14,15 @@ class CategoryAdmin(admin.ModelAdmin):
 class SchemeAdmin(admin.ModelAdmin):
     list_display = (
         "name",
-        "code",
         "bunga",
         "periode_bunga",
         "durasi_maksimal_hari",
         "denda_persen_perhari",
         "biaya_admin",
-        "ltv_persen",
-        "is_default",
-        "is_active",
     )
-    list_filter = ("is_active", "periode_bunga", "is_default")
-    search_fields = ("name", "code", "description")
-    ordering = ("order", "name")
+    list_filter = ("periode_bunga",)
+    search_fields = ("name",)
+    ordering = ("name",)
 
 
 @admin.register(Storages)

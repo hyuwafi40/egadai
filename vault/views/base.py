@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.views.generic import TemplateView
+from django.views.generic import CreateView, TemplateView, UpdateView
 
 from vault.utils.constants import MANAGER_ROLES
 
@@ -20,4 +20,12 @@ class ManagerRequiredMixin:
 
 
 class BaseManagerView(LoginRequiredMixin, ManagerRequiredMixin, TemplateView):
+    pass
+
+
+class BaseManagerCreateView(LoginRequiredMixin, ManagerRequiredMixin, CreateView):
+    pass
+
+
+class BaseManagerUpdateView(LoginRequiredMixin, ManagerRequiredMixin, UpdateView):
     pass

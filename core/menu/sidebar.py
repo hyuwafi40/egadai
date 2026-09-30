@@ -65,7 +65,7 @@ SIDEBAR_GROUPS = [
             {
                 "label": "Scheme",
                 "icon": "fa-file-contract",
-                "url": PLACEHOLDER_URL,
+                "url": "vault:scheme-list",
                 "roles": MANAGER_ROLES,
             },
             {

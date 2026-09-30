@@ -97,6 +97,7 @@ LANGUAGE_CODE = config("DJANGO_LANGUAGE_CODE", default="id")
 TIME_ZONE = config("DJANGO_TIME_ZONE", default="Asia/Jakarta")
 USE_I18N = True
 USE_TZ = True
+USE_THOUSAND_SEPARATOR = True
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
