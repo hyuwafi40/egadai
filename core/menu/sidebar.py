@@ -39,14 +39,14 @@ SIDEBAR_GROUPS = [
             {
                 "label": "Brand",
                 "icon": "fa-tags",
-                "url": PLACEHOLDER_URL,
+                "url": "core:brand-detail",
                 "roles": DEVELOPER_ROLES,
             },
             {
                 "label": "Orgs",
                 "icon": "fa-building",
-                "url": PLACEHOLDER_URL,
-                "roles": DEVELOPER_ROLES,
+                "url": "core:orgs-detail",
+                "roles": MANAGER_ROLES,
             },
         ],
     },

@@ -1,0 +1,233 @@
+<div class="row g-4">
+    <div class="col-12 col-lg-4">
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-2">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Logo</h2>
+            {% if orgs_obj.logo %}
+                <img src="{{ orgs_obj.logo.url }}"
+                     alt="{{ orgs_obj.name }}"
+                     class="brand-logo-preview border border-2 border-white shadow-sm">
+            {% else %}
+                {% url 'core:orgs-update' as update_url %}
+                {% include "core/base/fallback.html" with icon="fa-image" title="Logo Belum Ada" message="Belum ada logo yang diunggah untuk organisasi ini." action_url=update_url action_label="Unggah Logo" action_icon="fa-upload" %}
+            {% endif %}
+        </div>
+        <div class="glass-card p-4 animate-fadeInUp stagger-3">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Permodalan</h2>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Modal Dasar</div>
+                <div class="detail-value">{{ orgs_obj.authorized_capital|default:"-" }}</div>
+            </div>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Modal Disetor</div>
+                <div class="detail-value">{{ orgs_obj.paid_up_capital|default:"-" }}</div>
+            </div>
+            <div>
+                <div class="detail-label mb-1">Lingkup Wilayah</div>
+                <div class="detail-value">
+                    {% if orgs_obj.business_scope %}{{ orgs_obj.get_business_scope_display }}{% else %}-{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-8">
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-2">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Identitas</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nama</div>
+                    <div class="detail-value">{{ orgs_obj.name|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Pemilik</div>
+                    <div class="detail-value">{{ orgs_obj.owner|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nama Legal</div>
+                    <div class="detail-value">{{ orgs_obj.legal_name|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nama Brand</div>
+                    <div class="detail-value">{{ orgs_obj.brand_name|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Status Badan Hukum</div>
+                    <div class="detail-value">
+                        {% if orgs_obj.company_status %}{{ orgs_obj.get_company_status_display }}{% else %}-{% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Jenis</div>
+                    <div class="detail-value">
+                        {% if orgs_obj.company_type %}{{ orgs_obj.get_company_type_display }}{% else %}-{% endif %}
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="detail-label mb-1">Tagline</div>
+                    <div class="detail-value">{{ orgs_obj.tagline|default:"-" }}</div>
+                </div>
+                <div class="col-12">
+                    <div class="detail-label mb-1">Deskripsi</div>
+                    <div class="detail-value">{{ orgs_obj.description|default:"-"|linebreaksbr }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-3">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Legalitas</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">NPWP</div>
+                    <div class="detail-value">{{ orgs_obj.npwp|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nomor Izin Usaha</div>
+                    <div class="detail-value">{{ orgs_obj.license_number|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Tanggal Izin</div>
+                    <div class="detail-value">{{ orgs_obj.license_date|date:"d M Y"|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nomor Akta Pendirian</div>
+                    <div class="detail-value">{{ orgs_obj.deed_number|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Tanggal Akta Pendirian</div>
+                    <div class="detail-value">{{ orgs_obj.deed_date|date:"d M Y"|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nomor Akta Perubahan</div>
+                    <div class="detail-value">{{ orgs_obj.last_amendment_number|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Tanggal Akta Perubahan</div>
+                    <div class="detail-value">{{ orgs_obj.last_amendment_date|date:"d M Y"|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Tanggal Pendirian</div>
+                    <div class="detail-value">{{ orgs_obj.founded_date|date:"d M Y"|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Tempat Pendirian</div>
+                    <div class="detail-value">{{ orgs_obj.founded_place|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Sektor Usaha</div>
+                    <div class="detail-value">{{ orgs_obj.business_sector|default:"-" }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-4">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Alamat & Kontak</h2>
+            <div class="row g-3">
+                <div class="col-12">
+                    <div class="detail-label mb-1">Alamat</div>
+                    <div class="detail-value">{{ orgs_obj.address|default:"-"|linebreaksbr }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Kota</div>
+                    <div class="detail-value">{{ orgs_obj.city|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Provinsi</div>
+                    <div class="detail-value">{{ orgs_obj.province|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Kode Pos</div>
+                    <div class="detail-value">{{ orgs_obj.postal_code|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Negara</div>
+                    <div class="detail-value">{{ orgs_obj.country|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Telepon</div>
+                    <div class="detail-value">{{ orgs_obj.phone|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Fax</div>
+                    <div class="detail-value">{{ orgs_obj.fax|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Email</div>
+                    <div class="detail-value">
+                        {% if orgs_obj.email %}
+                            <a href="mailto:{{ orgs_obj.email }}" class="text-decoration-none">{{ orgs_obj.email }}</a>
+                        {% else %}-{% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Website</div>
+                    <div class="detail-value">
+                        {% if orgs_obj.website %}
+                            <a href="{{ orgs_obj.website }}"
+                               target="_blank"
+                               rel="noopener"
+                               class="text-decoration-none text-truncate d-inline-block">{{ orgs_obj.website }}</a>
+                        {% else %}-{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Bisnis & Operasional</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Jenis Usaha</div>
+                    <div class="detail-value">{{ orgs_obj.business_type|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Jumlah Cabang</div>
+                    <div class="detail-value">{{ orgs_obj.total_branches|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Jumlah Karyawan</div>
+                    <div class="detail-value">{{ orgs_obj.total_employees|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nama PSP</div>
+                    <div class="detail-value">{{ orgs_obj.psp_name|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Jenis PSP</div>
+                    <div class="detail-value">{% if orgs_obj.psp_type %}{{ orgs_obj.get_psp_type_display }}{% else %}-{% endif %}</div>
+                </div>
+                <div class="col-12">
+                    <div class="detail-label mb-1">Produk & Jasa</div>
+                    <div class="detail-value">{{ orgs_obj.products_services|default:"-"|linebreaksbr }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Visi & Misi</h2>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Visi</div>
+                <div class="detail-value">{{ orgs_obj.vision|default:"-"|linebreaksbr }}</div>
+            </div>
+            <div>
+                <div class="detail-label mb-1">Misi</div>
+                <div class="detail-value">{{ orgs_obj.mission|default:"-"|linebreaksbr }}</div>
+            </div>
+        </div>
+        <div class="glass-card p-4 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Geografis & Timestamp</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Latitude</div>
+                    <div class="detail-value">{{ orgs_obj.latitude|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Longitude</div>
+                    <div class="detail-value">{{ orgs_obj.longitude|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Dibuat</div>
+                    <div class="detail-value">{{ orgs_obj.created_at|date:"d M Y H:i" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Diperbarui</div>
+                    <div class="detail-value">{{ orgs_obj.updated_at|date:"d M Y H:i" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

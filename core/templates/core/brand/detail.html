@@ -1,0 +1,110 @@
+<div class="row g-4">
+    <div class="col-12 col-lg-4">
+        <div class="glass-card p-4 h-100 animate-fadeInUp stagger-2">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Logo</h2>
+            {% if brand_obj.logo %}
+                <img src="{{ brand_obj.logo.url }}"
+                     alt="{{ brand_obj.name }}"
+                     class="brand-logo-preview border border-2 border-white shadow-sm">
+            {% else %}
+                {% url 'core:brand-update' as update_url %}
+                {% include "core/base/fallback.html" with icon="fa-image" title="Logo Belum Ada" message="Belum ada logo yang diunggah untuk aplikasi ini." action_url=update_url action_label="Unggah Logo" action_icon="fa-upload" %}
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-12 col-lg-8">
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-3">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Identitas</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nama</div>
+                    <div class="detail-value">{{ brand_obj.name }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Versi</div>
+                    <div class="detail-value">v{{ brand_obj.version }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Pembuat</div>
+                    <div class="detail-value">{{ brand_obj.creator }}</div>
+                </div>
+                <div class="col-12">
+                    <div class="detail-label mb-1">Deskripsi</div>
+                    <div class="detail-value">{{ brand_obj.description|linebreaksbr }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 animate-fadeInUp stagger-4">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Sosial</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Facebook</div>
+                    <div class="detail-value">
+                        {% if brand_obj.facebook %}
+                            <a href="{{ brand_obj.facebook }}"
+                               target="_blank"
+                               rel="noopener"
+                               class="text-decoration-none text-truncate d-inline-block">
+                                <i class="fa-brands fa-facebook me-1"></i>{{ brand_obj.facebook }}
+                            </a>
+                        {% else %}-{% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Instagram</div>
+                    <div class="detail-value">
+                        {% if brand_obj.instagram %}
+                            <a href="{{ brand_obj.instagram }}"
+                               target="_blank"
+                               rel="noopener"
+                               class="text-decoration-none text-truncate d-inline-block">
+                                <i class="fa-brands fa-instagram me-1"></i>{{ brand_obj.instagram }}
+                            </a>
+                        {% else %}-{% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">TikTok</div>
+                    <div class="detail-value">
+                        {% if brand_obj.tiktok %}
+                            <a href="{{ brand_obj.tiktok }}"
+                               target="_blank"
+                               rel="noopener"
+                               class="text-decoration-none text-truncate d-inline-block">
+                                <i class="fa-brands fa-tiktok me-1"></i>{{ brand_obj.tiktok }}
+                            </a>
+                        {% else %}-{% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">YouTube</div>
+                    <div class="detail-value">
+                        {% if brand_obj.youtube %}
+                            <a href="{{ brand_obj.youtube }}"
+                               target="_blank"
+                               rel="noopener"
+                               class="text-decoration-none text-truncate d-inline-block">
+                                <i class="fa-brands fa-youtube me-1"></i>{{ brand_obj.youtube }}
+                            </a>
+                        {% else %}-{% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="glass-card p-4 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Timestamp</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Dibuat</div>
+                    <div class="detail-value">{{ brand_obj.created_at|date:"d M Y H:i" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Diperbarui</div>
+                    <div class="detail-value">{{ brand_obj.updated_at|date:"d M Y H:i" }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

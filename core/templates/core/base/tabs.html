@@ -1,0 +1,14 @@
+<ul class="nav glass-tabs mb-0" role="tablist">
+    {% for tab in tabs %}
+        <li class="nav-item" role="presentation">
+            <button type="button"
+                    class="glass-tab-btn {% if forloop.first %}active{% endif %}"
+                    data-bs-toggle="tab"
+                    data-bs-target="#pane-{{ tab.id }}"
+                    role="tab">
+                <i class="fa-solid {{ tab.icon }}"></i>
+                <span>{{ tab.label }}</span>
+            </button>
+        </li>
+    {% endfor %}
+</ul>

@@ -129,6 +129,8 @@ body {
 }
 
 .glass-input {
+    display: block;
+    width: 100%;
     background: rgba(255, 255, 255, 0.55);
     border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: var(--radius-md);
@@ -143,6 +145,54 @@ body {
     border-color: var(--ios-blue);
     box-shadow: 0 0 0 0.25rem rgba(0, 122, 255, 0.15);
     outline: none;
+}
+
+textarea.glass-input {
+    min-height: 100px;
+    resize: vertical;
+}
+
+select.glass-input {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%236C6C70'%3e%3cpath d='M8 11L3 6h10z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 14px;
+    padding-right: 2.5rem;
+    cursor: pointer;
+}
+
+select.glass-input:focus {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+select.glass-input option {
+    background: #ffffff;
+    color: var(--text-dark);
+}
+
+input[type="file"].glass-input {
+    padding: 0.5rem 0.75rem;
+    cursor: pointer;
+}
+
+input[type="file"].glass-input::file-selector-button {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-sm);
+    padding: 0.35rem 0.75rem;
+    margin-right: 0.75rem;
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--text-dark);
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+input[type="file"].glass-input::file-selector-button:hover {
+    background: #ffffff;
 }
 
 .glass-btn {
@@ -160,6 +210,7 @@ body {
     justify-content: center;
     gap: 0.5rem;
     cursor: pointer;
+    text-decoration: none;
 }
 
 .glass-btn:hover {
@@ -179,6 +230,41 @@ body {
     background: linear-gradient(135deg, #0063d1, #004494);
     box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
     color: #ffffff;
+}
+
+.glass-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    border: none;
+    padding: 0;
+}
+
+.glass-tab-btn {
+    background: rgba(255, 255, 255, 0.4);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 0.5rem 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition-smooth);
+    cursor: pointer;
+}
+
+.glass-tab-btn:hover {
+    background: rgba(255, 255, 255, 0.75);
+    color: var(--text-dark);
+}
+
+.glass-tab-btn.active {
+    background: linear-gradient(135deg, var(--ios-blue), var(--ios-blue-dark));
+    border-color: transparent;
+    color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
 }
 
 .sidebar-overlay {
@@ -245,7 +331,6 @@ body {
     text-align: center;
 }
 
-
 @media (min-width: 992px) {
     .sidebar-overlay {
         display: none !important;
@@ -263,6 +348,19 @@ body {
 
     .main-content-wrapper {
         padding-left: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .glass-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 0.5rem;
+    }
+
+    .glass-tab-btn {
+        white-space: nowrap;
+        flex-shrink: 0;
     }
 }
 
@@ -432,6 +530,35 @@ body {
 
 .toast-layer {
     z-index: 1100;
+}
+
+.fallback-icon {
+    width: 72px;
+    height: 72px;
+    background: rgba(0, 122, 255, 0.12);
+    color: var(--ios-blue);
+    font-size: 1.75rem;
+}
+
+.brand-logo-preview {
+    width: 100%;
+    max-height: 240px;
+    object-fit: contain;
+    border-radius: var(--radius-md);
+}
+
+.detail-value {
+    color: var(--text-dark);
+    font-weight: 500;
+    word-break: break-word;
+}
+
+.detail-label {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 ::-webkit-scrollbar {
