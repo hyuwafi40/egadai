@@ -68,3 +68,5 @@ SINGLETON_CACHE_PREFIX = "core"
 SINGLETON_CACHE_SUFFIX = "singleton"
 
 SINGLETON_AUTO_FIELDS = ("id", "pk", "created_at", "updated_at")
+
+FALLBACK_APP_NAME = "Egadai"

@@ -1,0 +1,10 @@
+<div class="toast-container toast-layer position-fixed top-0 start-50 translate-middle-x p-3"
+     id="toastContainer"></div>
+{% if messages %}
+    {% for message in messages %}
+        <div class="d-none"
+             data-django-message
+             data-tags="{{ message.tags }}"
+             data-text="{{ message }}"></div>
+    {% endfor %}
+{% endif %}

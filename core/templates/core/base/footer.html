@@ -1,0 +1,51 @@
+<footer class="glass-nav py-3">
+    <div class="container-fluid px-4 d-flex flex-column flex-sm-row align-items-center justify-content-between gap-2 fs-8 text-muted">
+        <div>
+            <span>© {{ footer_data.year }}
+                <strong>{% if brand %}{{ brand.name }}{% else %}{{ fallback_app_name }}{% endif %}</strong>.
+                v{% if brand %}{{ brand.version }}{% else %}1.0.0{% endif %}
+            by {% if brand %}{{ brand.creator }}{% else %}-{% endif %}.</span>
+        </div>
+        <div class="d-flex align-items-center gap-3">
+            {% if orgs and orgs.name %}
+                <span><i class="fa-solid fa-building me-1"></i> {{ orgs.name }}</span>
+            {% endif %}
+            {% if brand and brand.facebook %}
+                <a href="{{ brand.facebook }}"
+                   target="_blank"
+                   rel="noopener"
+                   class="text-muted text-decoration-none"
+                   aria-label="Facebook">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+            {% endif %}
+            {% if brand and brand.instagram %}
+                <a href="{{ brand.instagram }}"
+                   target="_blank"
+                   rel="noopener"
+                   class="text-muted text-decoration-none"
+                   aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+            {% endif %}
+            {% if brand and brand.tiktok %}
+                <a href="{{ brand.tiktok }}"
+                   target="_blank"
+                   rel="noopener"
+                   class="text-muted text-decoration-none"
+                   aria-label="TikTok">
+                    <i class="fa-brands fa-tiktok"></i>
+                </a>
+            {% endif %}
+            {% if brand and brand.youtube %}
+                <a href="{{ brand.youtube }}"
+                   target="_blank"
+                   rel="noopener"
+                   class="text-muted text-decoration-none"
+                   aria-label="YouTube">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</footer>

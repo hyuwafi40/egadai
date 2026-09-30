@@ -1,0 +1,44 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>403 - Akses Ditolak</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet" href="{% static 'css/error.css' %}">
+    </head>
+    <body>
+        <div class="ambient-bg">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+        </div>
+        <div class="error-card">
+            <div class="error-icon error-icon-danger">
+                <i class="fa-solid fa-lock"></i>
+            </div>
+            <div class="error-code">403</div>
+            <h1 class="error-title">Akses Ditolak</h1>
+            <p class="error-message">
+                Anda tidak memiliki izin untuk mengakses halaman ini.
+                Silakan hubungi administrator sistem apabila Anda merasa ini merupakan sebuah kekeliruan.
+            </p>
+            <div class="error-actions">
+                <a href="{% url 'login' %}" class="error-btn error-btn-secondary">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>Login Ulang</span>
+                </a>
+                <a href="{% url 'core:index' %}" class="error-btn error-btn-primary">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+        </div>
+    </body>
+</html>

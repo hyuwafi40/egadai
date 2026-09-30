@@ -5,27 +5,57 @@
         <meta charset="UTF-8">
         {% block meta %}{% endblock %}
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title %}Egadai{% endblock %}</title>
+        <title>{% block title %}{% if brand %}{{ brand.name }}{% else %}{{ fallback_app_name }}{% endif %}{% endblock %}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700;800&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
         <link rel="stylesheet" href="{% static 'css/core.css' %}">
         {% block extra_css %}{% endblock %}
     </head>
     <body>
-        <header>
-            <h1>
-                {% block heading %}{% endblock %}
-            </h1>
-        </header>
-        <main>
-            {% if messages %}
-                <ul>
-                    {% for message in messages %}
-                        <li>{{ message }}</li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-            {% block content %}{% endblock %}
-        </main>
+        <div class="ambient-bg">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+        </div>
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
+        <div class="app-shell">
+            {% include "core/base/navbar.html" %}
+            <div class="container-fluid px-3 px-lg-4 pb-4">
+                <div class="row g-4">
+                    <aside class="col-lg-3 col-xl-2">
+                        {% include "core/base/sidebar.html" %}
+                    </aside>
+                    <main class="col-lg-9 col-xl-10 main-content-wrapper">
+                        <section class="glass-card p-4 mb-4 animate-fadeInUp stagger-1">
+                            {% block heading %}
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="d-flex align-items-center justify-content-center rounded-3 text-white brand-mark">
+                                        <i class="fa-solid fa-gauge-high fs-6"></i>
+                                    </div>
+                                    <div>
+                                        <h1 class="h4 fw-bold mb-0 tracking-tight">
+                                            {% if brand %}{{ brand.name }}{% else %}{{ fallback_app_name }}{% endif %}
+                                        </h1>
+                                        <p class="text-muted mb-0 fs-7">{% if brand %}{{ brand.description }}{% endif %}</p>
+                                    </div>
+                                </div>
+                            {% endblock %}
+                        </section>
+                        {% block content %}{% endblock %}
+                    </main>
+                </div>
+            </div>
+            {% include "core/base/footer.html" %}
+        </div>
         {% block modal %}{% endblock %}
+        {% include "core/base/toast.html" %}
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
         <script src="{% static 'js/core.js' %}"></script>
         {% block extra_js %}{% endblock %}
     </body>

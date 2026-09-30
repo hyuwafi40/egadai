@@ -1,0 +1,25 @@
+<div class="sidebar-container glass-card" id="sidebarNav">
+    <div class="d-flex flex-column h-100 p-3">
+        {% for group in sidebar_items %}
+            <div class="sidebar-group-label fw-bold text-muted text-uppercase tracking-wider {% if not forloop.first %}mt-4{% endif %} mb-2 px-2">
+                {{ group.label }}
+            </div>
+            <nav class="nav flex-column gap-1">
+                {% for item in group.items %}
+                    <a href="{{ item.url }}"
+                       class="nav-item-link {% if item.url_name and request.resolver_match.view_name == item.url_name %}active{% endif %}">
+                        <i class="fa-solid {{ item.icon }}"></i>
+                        <span>{{ item.label }}</span>
+                    </a>
+                {% endfor %}
+            </nav>
+        {% endfor %}
+        <div class="mt-auto pt-3">
+            <div class="sidebar-version-card glass-card p-3 text-center border-0">
+                <i class="fa-solid fa-code-branch text-primary fs-4 mb-2"></i>
+                <div class="fw-bold fs-7 mb-1">{% if brand %}{{ brand.name }}{% else %}{{ fallback_app_name }}{% endif %}</div>
+                <div class="text-muted fs-8">v{% if brand %}{{ brand.version }}{% else %}1.0.0{% endif %}</div>
+            </div>
+        </div>
+    </div>
+</div>
