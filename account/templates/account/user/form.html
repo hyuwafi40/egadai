@@ -1,0 +1,73 @@
+<div class="modal fade"
+     id="userFormModal"
+     tabindex="-1"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-card border-0">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="userFormModalTitle">Tambah User</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="userForm"
+                      method="post"
+                      data-create-url="{% url 'account:user-create' %}"
+                      novalidate>
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="userFormUsername" class="form-label fw-semibold fs-7">
+                            Username <span class="text-danger">*</span>
+                        </label>
+                        <input type="text"
+                               class="form-control glass-input"
+                               id="userFormUsername"
+                               name="username"
+                               required
+                               placeholder="Contoh: johndoe">
+                        <div class="text-danger fs-8 mt-1" data-error-for="username"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userFormEmail" class="form-label fw-semibold fs-7">
+                            Email <span class="text-danger">*</span>
+                        </label>
+                        <input type="email"
+                               class="form-control glass-input"
+                               id="userFormEmail"
+                               name="email"
+                               required
+                               placeholder="Contoh: john@example.com">
+                        <div class="text-danger fs-8 mt-1" data-error-for="email"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userFormJob" class="form-label fw-semibold fs-7">
+                            Job <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-select glass-input" id="userFormJob" name="job" required>
+                            <option value="">-- Pilih Job --</option>
+                            {% for value, label in job_choices %}
+                                <option value="{{ value }}">{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="text-danger fs-8 mt-1" data-error-for="job"></div>
+                    </div>
+                    <div class="form-text fs-8 text-muted" data-user-form-hint>
+                        Password default: <strong>{{ default_password }}</strong>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="glass-btn" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>Batal</span>
+                </button>
+                <button type="submit" class="glass-btn glass-btn-primary" form="userForm">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Simpan</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

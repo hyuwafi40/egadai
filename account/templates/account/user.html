@@ -1,0 +1,25 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Manajemen User{% endblock %}
+{% block heading %}
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-3 text-white brand-mark">
+                <i class="fa-solid fa-user-gear fs-6"></i>
+            </div>
+            <div>
+                <h1 class="h4 fw-bold mb-0 tracking-tight">Manajemen User</h1>
+                <p class="text-muted mb-0 fs-7">Kelola pengguna aplikasi</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    {% include "account/user/control.html" %}
+    {% include "account/user/table.html" %}
+    {% include "account/user/form.html" %}
+    {% include "core/base/delete.html" with modal_id="deleteUserModal" form_id="deleteUserForm" title="Hapus User" message="Apakah Anda yakin ingin menghapus user berikut?" %}
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/user.js' %}"></script>
+{% endblock %}

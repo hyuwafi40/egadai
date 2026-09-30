@@ -1,0 +1,37 @@
+<div class="modal fade"
+     id="{{ modal_id|default:'deleteModal' }}"
+     tabindex="-1"
+     aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-card border-0">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold">{{ title|default:"Konfirmasi Hapus" }}</h5>
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="mb-2">{{ message|default:"Apakah Anda yakin ingin menghapus item ini?" }}</p>
+                <p class="mb-0 fw-bold text-danger" data-delete-name></p>
+                <form id="{{ form_id|default:'deleteForm' }}"
+                      method="post"
+                      data-delete-form>
+                    {% csrf_token %}
+                </form>
+            </div>
+            <div class="modal-footer border-0 pt-0">
+                <button type="button" class="glass-btn" data-bs-dismiss="modal">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>Batal</span>
+                </button>
+                <button type="submit"
+                        class="glass-btn glass-btn-primary"
+                        form="{{ form_id|default:'deleteForm' }}">
+                    <i class="fa-solid fa-trash"></i>
+                    <span>Hapus</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

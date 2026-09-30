@@ -1,0 +1,114 @@
+<div class="glass-card mb-4 overflow-hidden animate-fadeInUp stagger-3">
+    <div class="table-responsive">
+        <table class="table table-glass align-middle mb-0" id="userTable">
+            <thead>
+                <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Job</th>
+                    <th scope="col" class="text-end">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in page_obj %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                {% if u.job == "developer" %}
+                                    <div class="user-row-avatar user-row-avatar-dev rounded-circle d-flex align-items-center justify-content-center text-white">
+                                        {{ u.username|slice:":1"|upper }}
+                                    </div>
+                                {% elif u.job == "administrator" %}
+                                    <div class="user-row-avatar user-row-avatar-admin rounded-circle d-flex align-items-center justify-content-center text-white">
+                                        {{ u.username|slice:":1"|upper }}
+                                    </div>
+                                {% else %}
+                                    <div class="user-row-avatar user-row-avatar-reg rounded-circle d-flex align-items-center justify-content-center text-white">
+                                        {{ u.username|slice:":1"|upper }}
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <div class="fw-semibold">
+                                        <i class="fa-solid fa-at text-muted me-1 fs-8"></i>{{ u.username }}
+                                    </div>
+                                    <div class="text-muted fs-8">
+                                        <i class="fa-regular fa-calendar me-1"></i>Bergabung {{ u.date_joined|date:"d M Y" }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="d-flex align-items-center gap-2 text-muted">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span>{{ u.email }}</span>
+                            </div>
+                        </td>
+                        <td>
+                            {% if u.job == "developer" %}
+                                <span class="badge-ios badge-ios-danger">
+                                    <i class="fa-solid fa-crown"></i> {{ u.get_job_display }}
+                                </span>
+                            {% elif u.job == "administrator" %}
+                                <span class="badge-ios badge-ios-pending">
+                                    <i class="fa-solid fa-user-shield"></i> {{ u.get_job_display }}
+                                </span>
+                            {% else %}
+                                <span class="badge-ios badge-ios-info">
+                                    <i class="fa-solid fa-user"></i> {{ u.get_job_display }}
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <button type="button"
+                                    class="glass-btn px-2 py-1"
+                                    data-user-reset-password
+                                    data-url="{% url 'account:user-password-reset' u.pk %}"
+                                    data-username="{{ u.username }}"
+                                    title="Reset Password"
+                                    aria-label="Reset Password">
+                                <i class="fa-solid fa-key"></i>
+                            </button>
+                            <button type="button"
+                                    class="glass-btn px-2 py-1"
+                                    data-user-edit
+                                    data-url="{% url 'account:user-update' u.pk %}"
+                                    data-username="{{ u.username }}"
+                                    data-email="{{ u.email }}"
+                                    data-job="{{ u.job }}"
+                                    title="Edit User"
+                                    aria-label="Edit">
+                                <i class="fa-solid fa-pen"></i>
+                            </button>
+                            <button type="button"
+                                    class="glass-btn px-2 py-1 text-danger"
+                                    data-delete-trigger
+                                    data-delete-modal="#deleteUserModal"
+                                    data-delete-url="{% url 'account:user-delete' u.pk %}"
+                                    data-delete-name="{{ u.username }}"
+                                    title="Hapus User"
+                                    aria-label="Hapus">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted py-4">
+                            <i class="fa-solid fa-inbox fs-3 d-block mb-2"></i>
+                            Belum ada user.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if page_obj.paginator.num_pages > 1 %}
+        <div class="p-3 border-top d-flex flex-column flex-sm-row align-items-center justify-content-between gap-2">
+            <span class="text-muted fs-8">
+                <i class="fa-solid fa-list me-1"></i>
+                Menampilkan {{ page_obj.start_index }}–{{ page_obj.end_index }} dari {{ page_obj.paginator.count }} user
+            </span>
+            {% include "core/base/pagination.html" with page_obj=page_obj %}
+        </div>
+    {% endif %}
+</div>

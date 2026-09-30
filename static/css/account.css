@@ -4,3 +4,34 @@
     object-fit: cover;
     border-radius: var(--radius-md);
 }
+
+.search-wrapper {
+    max-width: 400px;
+    width: 100%;
+}
+
+.modal-content.glass-card {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.user-row-avatar {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.user-row-avatar-dev {
+    background: linear-gradient(135deg, var(--ios-red), #B00020);
+}
+
+.user-row-avatar-admin {
+    background: linear-gradient(135deg, var(--ios-orange), #C77400);
+}
+
+.user-row-avatar-reg {
+    background: linear-gradient(135deg, var(--ios-blue), var(--ios-indigo));
+}

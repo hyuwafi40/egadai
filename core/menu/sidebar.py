@@ -25,7 +25,7 @@ SIDEBAR_GROUPS = [
             {
                 "label": "User",
                 "icon": "fa-user-gear",
-                "url": PLACEHOLDER_URL,
+                "url": "account:user-list",
                 "roles": MANAGER_ROLES,
             },
             {
