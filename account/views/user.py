@@ -10,17 +10,12 @@ from account.forms import UserCreateForm, UserUpdateForm
 from account.utils.constants import (
     DEFAULT_PASSWORD,
     USERS_PER_PAGE,
+    VISIBLE_JOB_CHOICES,
     JobChoices,
 )
 from account.views.base import BaseManagerView, ManagerRequiredMixin
 
 User = get_user_model()
-
-VISIBLE_JOB_CHOICES = [
-    (value, label)
-    for value, label in JobChoices.choices
-    if value != JobChoices.DEVELOPER
-]
 
 
 class UserListView(BaseManagerView):

@@ -1,10 +1,9 @@
 from django.contrib import messages
-from django.core.cache import cache
 from django.urls import reverse
 
 from account.forms import ProfileForm
 from account.models import Profile
-from account.utils.helpers import profile_cache_key
+from account.utils.services import get_profile
 from account.views.base import (
     BaseAuthDetailView,
     BaseAuthUpdateView,
@@ -20,22 +19,13 @@ FORM_TABS = [
 ]
 
 
-def _get_profile(user):
-    key = profile_cache_key(user.pk)
-    profile = cache.get(key)
-    if profile is None:
-        profile, _ = Profile.objects.get_or_create(user=user)
-        cache.set(key, profile, timeout=None)
-    return profile
-
-
 class ProfileDetailView(BaseAuthDetailView):
     model = Profile
     template_name = "account/profile.html"
     context_object_name = "profile_obj"
 
     def get_object(self, queryset=None):
-        return _get_profile(self.request.user)
+        return get_profile(self.request.user)
 
 
 class ProfileUpdateView(BaseAuthUpdateView):
@@ -45,7 +35,7 @@ class ProfileUpdateView(BaseAuthUpdateView):
     context_object_name = "profile_obj"
 
     def get_object(self, queryset=None):
-        return _get_profile(self.request.user)
+        return get_profile(self.request.user)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

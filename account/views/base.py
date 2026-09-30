@@ -2,9 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.views.generic import DetailView, TemplateView, UpdateView
 
-from account.utils.constants import JobChoices
-
-MANAGER_ROLES = (JobChoices.DEVELOPER, JobChoices.ADMINISTRATOR)
+from account.utils.constants import MANAGER_ROLES
 
 
 class ManagerRequiredMixin:

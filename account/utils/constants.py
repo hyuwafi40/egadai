@@ -26,6 +26,17 @@ class EmploymentTypeChoices(models.TextChoices):
     INTERN = "intern", "Magang"
 
 
+MANAGER_ROLES = (
+    JobChoices.DEVELOPER,
+    JobChoices.ADMINISTRATOR,
+)
+
+VISIBLE_JOB_CHOICES = [
+    (value, label)
+    for value, label in JobChoices.choices
+    if value != JobChoices.DEVELOPER
+]
+
 MAX_LENGTH_USERNAME = 150
 MAX_LENGTH_EMAIL = 254
 MAX_LENGTH_JOB = 20

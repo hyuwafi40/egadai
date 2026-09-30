@@ -1,34 +1,13 @@
-from django.db import transaction
+from django.core.cache import cache
 
-from account.models import User
-from account.utils.constants import JobChoices
-
-
-def create_user_with_profile(
-    username,
-    email,
-    password,
-    profile_data=None,
-    **kwargs,
-):
-    with transaction.atomic():
-        user = User.objects.create_user(
-            username=username,
-            email=email,
-            password=password,
-            **kwargs,
-        )
-        if profile_data:
-            profile = user.profile
-            for field, value in profile_data.items():
-                setattr(profile, field, value)
-            profile.save()
-    return user
+from account.models import Profile
+from account.utils.helpers import profile_cache_key
 
 
-def change_job(user, job):
-    if job not in JobChoices.values:
-        raise ValueError(f"Job tidak valid: {job}")
-    user.job = job
-    user.save()
-    return user
+def get_profile(user):
+    key = profile_cache_key(user.pk)
+    profile = cache.get(key)
+    if profile is None:
+        profile, _ = Profile.objects.get_or_create(user=user)
+        cache.set(key, profile, timeout=None)
+    return profile
