@@ -293,6 +293,11 @@ input[type="file"].glass-input::file-selector-button:hover {
     transition: var(--transition-smooth);
     padding: 1.25rem 1rem;
     overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.sidebar-container::-webkit-scrollbar {
+    display: none;
 }
 
 .sidebar-container.active {
