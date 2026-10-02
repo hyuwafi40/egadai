@@ -1,0 +1,33 @@
+.transaction-row-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #34C759, #1B9E3E);
+}
+
+.transaction-code-badge {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    background: rgba(52, 199, 89, 0.12);
+    color: #248a3d;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.transaction-amount {
+    font-weight: 700;
+    color: var(--ios-blue);
+    white-space: nowrap;
+}
+
+.transaction-period {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    color: var(--text-muted);
+    white-space: nowrap;
+}

@@ -99,6 +99,17 @@ SIDEBAR_GROUPS = [
         ],
     },
     {
+        "label": "Transaction",
+        "items": [
+            {
+                "label": "Transaksi Gadai",
+                "icon": "fa-hand-holding-dollar",
+                "url": "transaction:list",
+                "roles": ALL_ROLES,
+            },
+        ],
+    },
+    {
         "label": "Preferensi",
         "items": [
             {

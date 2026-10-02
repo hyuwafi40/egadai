@@ -17,6 +17,10 @@ urlpatterns = [
         "collateral/",
         include(("collateral.urls", "collateral"), namespace="collateral"),
     ),
+    path(
+        "transaction/",
+        include(("transaction.urls", "transaction"), namespace="transaction"),
+    ),
     path("logout/", views.logout_view, name="logout"),
 ]
 
