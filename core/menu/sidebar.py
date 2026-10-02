@@ -82,7 +82,7 @@ SIDEBAR_GROUPS = [
             {
                 "label": "Nasabah",
                 "icon": "fa-users",
-                "url": PLACEHOLDER_URL,
+                "url": "customer:list",
                 "roles": ALL_ROLES,
             },
         ],

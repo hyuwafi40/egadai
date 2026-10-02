@@ -1,0 +1,130 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}{{ form_title }}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/customer.css' %}">
+{% endblock %}
+{% block heading %}
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-3 text-white brand-mark">
+                <i class="fa-solid fa-users fs-6"></i>
+            </div>
+            <div>
+                <h1 class="h4 fw-bold mb-0 tracking-tight">{{ form_title }}</h1>
+                <p class="text-muted mb-0 fs-7">{{ form_subtitle }}</p>
+            </div>
+        </div>
+        <a href="{% url 'customer:list' %}" class="glass-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Kembali</span>
+        </a>
+    </div>
+{% endblock %}
+{% block content %}
+    <form id="customerForm"
+          method="post"
+          enctype="multipart/form-data"
+          novalidate>
+        {% csrf_token %}
+        <div class="glass-card p-3 mb-4 fs-8 text-muted">
+            Field bertanda <span class="text-danger fw-bold">*</span> wajib diisi. Field bertanda <em>(opsional)</em> boleh dikosongkan.
+        </div>
+        {% if form.non_field_errors %}
+            <div class="glass-card p-3 mb-4">
+                <div class="text-danger fs-7">{{ form.non_field_errors|striptags }}</div>
+            </div>
+        {% endif %}
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-2">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Identitas</h2>
+            <div class="row g-3">
+                {% include "core/base/field.html" with field=form.name wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.nik wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.customer_code wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.gender wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.date_of_birth wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.occupation wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.marital_status wrapper_class="col-12 col-md-6 col-lg-4" %}
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-3">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Kontak</h2>
+            <div class="row g-3">
+                {% include "core/base/field.html" with field=form.phone wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.email wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.city wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.province wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.address wrapper_class="col-12" %}
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-4">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Kontak Darurat</h2>
+            <div class="row g-3">
+                {% include "core/base/field.html" with field=form.emergency_contact_name wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.emergency_contact_phone wrapper_class="col-12 col-md-6 col-lg-4" %}
+                {% include "core/base/field.html" with field=form.emergency_contact_relationship wrapper_class="col-12 col-md-6 col-lg-4" %}
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Foto</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-6">
+                    <div class="form-label fw-semibold fs-7 mb-1">Foto KTP <small class="text-muted fw-normal">(opsional)</small></div>
+                    {% if form.instance.photo %}
+                        <img id="photoPreview"
+                             src="{{ form.instance.photo.url }}"
+                             alt="Foto KTP"
+                             class="customer-photo-preview border border-2 border-white shadow-sm mb-3">
+                    {% else %}
+                        <img id="photoPreview"
+                             alt="Preview KTP"
+                             class="customer-photo-preview border border-2 border-white shadow-sm mb-3 d-none">
+                    {% endif %}
+                    {% include "core/base/field.html" with field=form.photo %}
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="form-label fw-semibold fs-7 mb-1">Foto Selfie <small class="text-muted fw-normal">(opsional)</small></div>
+                    {% if form.instance.selfie %}
+                        <img id="selfiePreview"
+                             src="{{ form.instance.selfie.url }}"
+                             alt="Foto Selfie"
+                             class="customer-photo-preview border border-2 border-white shadow-sm mb-3">
+                    {% else %}
+                        <img id="selfiePreview"
+                             alt="Preview Selfie"
+                             class="customer-photo-preview border border-2 border-white shadow-sm mb-3 d-none">
+                    {% endif %}
+                    {% include "core/base/field.html" with field=form.selfie %}
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Catatan & Status</h2>
+            <div class="row g-3">
+                {% include "core/base/field.html" with field=form.notes wrapper_class="col-12" %}
+                <div class="col-12">
+                    <div class="form-check">
+                        {{ form.is_active }}
+                        <label class="form-check-label fs-7"
+                               for="{{ form.is_active.id_for_label }}">{{ form.is_active.label }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 animate-fadeInUp stagger-5">
+            <div class="d-flex flex-column flex-sm-row gap-2 justify-content-end">
+                <a href="{% url 'customer:list' %}" class="glass-btn">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>Batal</span>
+                </a>
+                <button type="submit" class="glass-btn glass-btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Simpan</span>
+                </button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/customer.js' %}"></script>
+{% endblock %}

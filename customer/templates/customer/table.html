@@ -1,0 +1,118 @@
+<div class="glass-card mb-4 overflow-hidden animate-fadeInUp stagger-3">
+    <div class="table-responsive">
+        <table class="table table-glass align-middle mb-0" id="customerTable">
+            <thead>
+                <tr>
+                    <th scope="col">Nasabah</th>
+                    <th scope="col">Kode</th>
+                    <th scope="col">Kontak</th>
+                    <th scope="col">Kota</th>
+                    <th scope="col">Status</th>
+                    <th scope="col" class="text-end">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for c in page_obj %}
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-2">
+                                {% if c.photo %}
+                                    <img src="{{ c.photo.url }}"
+                                         alt="{{ c.name }}"
+                                         class="customer-row-avatar rounded-circle">
+                                {% else %}
+                                    <div class="customer-row-avatar customer-row-avatar-initial rounded-circle d-flex align-items-center justify-content-center text-white">
+                                        {{ c.name|slice:":1"|upper }}
+                                    </div>
+                                {% endif %}
+                                <div>
+                                    <div class="fw-semibold">{{ c.name }}</div>
+                                    <div class="text-muted fs-8">
+                                        <i class="fa-solid fa-id-card me-1"></i>{{ c.nik }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            {% if c.customer_code %}
+                                <span class="category-code-badge">{{ c.customer_code }}</span>
+                            {% else %}
+                                <span class="text-muted fs-8">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if c.phone %}
+                                <div class="text-muted fs-7">
+                                    <i class="fa-solid fa-phone me-1"></i>{{ c.phone }}
+                                </div>
+                            {% endif %}
+                            {% if c.email %}
+                                <div class="text-muted fs-8">
+                                    <i class="fa-solid fa-envelope me-1"></i>{{ c.email }}
+                                </div>
+                            {% endif %}
+                            {% if not c.phone and not c.email %}
+                                <span class="text-muted fs-8">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if c.city or c.province %}
+                                <div class="text-muted fs-7">
+                                    <i class="fa-solid fa-location-dot me-1"></i>
+                                    {{ c.city|default:"" }}{% if c.city and c.province %}, {% endif %}{{ c.province|default:"" }}
+                                </div>
+                            {% else %}
+                                <span class="text-muted fs-8">-</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if c.is_active %}
+                                <span class="badge-ios badge-ios-success">
+                                    <i class="fa-solid fa-circle-check"></i> Aktif
+                                </span>
+                            {% else %}
+                                <span class="badge-ios badge-ios-danger">
+                                    <i class="fa-solid fa-circle-xmark"></i> Nonaktif
+                                </span>
+                            {% endif %}
+                        </td>
+                        <td class="text-end">
+                            <a href="{% url 'customer:update' c.pk %}"
+                               class="glass-btn px-2 py-1"
+                               title="Edit Nasabah"
+                               aria-label="Edit">
+                                <i class="fa-solid fa-pen"></i>
+                            </a>
+                            <button type="button"
+                                    class="glass-btn px-2 py-1 text-danger"
+                                    data-delete-trigger
+                                    data-delete-modal="#deleteCustomerModal"
+                                    data-delete-url="{% url 'customer:delete' c.pk %}"
+                                    data-delete-name="{{ c.name }}"
+                                    title="Hapus Nasabah"
+                                    aria-label="Hapus">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="fa-solid fa-inbox fs-3 d-block mb-2"></i>
+                            Belum ada nasabah.
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% if page_obj.paginator.num_pages > 1 %}
+        <div class="p-3 border-top d-flex flex-column flex-sm-row align-items-center justify-content-between gap-2">
+            <span class="text-muted fs-8">
+                <i class="fa-solid fa-list me-1"></i>
+                Menampilkan {{ page_obj.start_index }}–{{ page_obj.end_index }} dari {{ page_obj.paginator.count }} nasabah
+            </span>
+            {% include "core/base/pagination.html" with page_obj=page_obj %}
+        </div>
+    {% endif %}
+</div>
