@@ -39,13 +39,16 @@ class StoragesForm(BaseModelForm):
             "postal_code": forms.TextInput(attrs={"placeholder": "Contoh: 40111"}),
             "phone": forms.TextInput(attrs={"placeholder": "Contoh: 022-1234567"}),
             "penanggung_jawab": forms.TextInput(
-                attrs={"placeholder": "Nama PIC gudang"}
+                attrs={"placeholder": "Nama petugas gudang"}
             ),
             "capacity": forms.NumberInput(
                 attrs={"min": 0, "placeholder": "Contoh: 1000"}
             ),
             "current_occupancy": forms.NumberInput(
-                attrs={"min": 0, "placeholder": "0"}
+                attrs={
+                    "readonly": True,
+                    "min": 0,
+                }
             ),
             "latitude": forms.NumberInput(
                 attrs={"step": "0.000001", "placeholder": "Contoh: -6.2088"}

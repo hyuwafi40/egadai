@@ -1,7 +1,10 @@
 from django import forms
+from django.db.models import Q
 
 from config.shared.forms import BaseModelForm
 from collateral.models import Collateral
+from vault.models import Storages
+from vault.utils.constants import StorageStatusChoices
 
 
 class CollateralForm(BaseModelForm):
@@ -44,12 +47,15 @@ class CollateralForm(BaseModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        from django.db.models import Q
-        from vault.models import Storages
-
-        queryset = Storages.objects.filter(is_active=True)
+        queryset = Storages.objects.filter(
+            is_active=True,
+            status=StorageStatusChoices.TERSEDIA,
+        )
         if self.instance and self.instance.pk:
             current_id = getattr(self.instance, "storages_id", None)
             if current_id:
-                queryset = Storages.objects.filter(Q(is_active=True) | Q(pk=current_id))
+                queryset = Storages.objects.filter(
+                    Q(is_active=True, status=StorageStatusChoices.TERSEDIA)
+                    | Q(pk=current_id)
+                )
         self.fields["storages"].queryset = queryset

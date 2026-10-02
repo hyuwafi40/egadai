@@ -23,6 +23,7 @@ def update_transaction_on_payment(sender, instance, created, **kwargs):
         status_kontrak=ContractStatusChoices.LUNAS
     )
     if transaction.collateral_id:
-        Collateral.objects.filter(pk=transaction.collateral_id).update(
-            status=CollateralStatusChoices.REDEEMED
-        )
+        collateral = Collateral.objects.filter(pk=transaction.collateral_id).first()
+        if collateral:
+            collateral.status = CollateralStatusChoices.REDEEMED
+            collateral.save(update_fields=["status", "updated_at"])

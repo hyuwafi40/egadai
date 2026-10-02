@@ -132,5 +132,20 @@ class Storages(TimestampMixin):
         self.kode_gudang = normalize_code(self.kode_gudang)
         super().save(*args, **kwargs)
 
+    @property
+    def is_full(self):
+        if not self.capacity:
+            return False
+        return self.current_occupancy >= self.capacity
+
+    @property
+    def occupied_ratio(self):
+        if not self.capacity or self.capacity <= 0:
+            return 0
+        ratio = (self.current_occupancy / self.capacity) * 100
+        if ratio > 100:
+            return 100
+        return round(ratio)
+
     def __str__(self):
         return f"{self.name} ({self.kode_gudang})"

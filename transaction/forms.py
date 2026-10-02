@@ -6,6 +6,19 @@ from collateral.models import Collateral
 from customer.models import Customer
 from transaction.models import Transaction
 from vault.models import Scheme, Storages
+from vault.utils.constants import StorageStatusChoices
+
+
+def _active_storages(current_id=None):
+    qs = Storages.objects.filter(
+        is_active=True,
+        status=StorageStatusChoices.TERSEDIA,
+    )
+    if current_id:
+        qs = Storages.objects.filter(
+            Q(is_active=True, status=StorageStatusChoices.TERSEDIA) | Q(pk=current_id)
+        )
+    return qs
 
 
 class TransactionForm(BaseModelForm):
@@ -53,10 +66,11 @@ class TransactionForm(BaseModelForm):
         self.fields["collateral"].queryset = self._active_with_current(
             Collateral, "collateral"
         )
-        self.fields["storages"].queryset = self._active_with_current(
-            Storages, "storages"
-        )
         self.fields["scheme"].queryset = Scheme.objects.all()
+        current_storages = None
+        if self.instance and self.instance.pk:
+            current_storages = getattr(self.instance, "storages_id", None)
+        self.fields["storages"].queryset = _active_storages(current_storages)
 
     def _active_with_current(self, model, field_name):
         queryset = model.objects.filter(is_active=True)
@@ -160,6 +174,10 @@ class CollateralQuickForm(BaseModelForm):
             ),
         }
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["storages"].queryset = _active_storages()
+
 
 class NewTransactionForm(BaseModelForm):
     class Meta:
@@ -199,4 +217,4 @@ class NewTransactionForm(BaseModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields["scheme"].queryset = Scheme.objects.all()
-        self.fields["storages"].queryset = Storages.objects.filter(is_active=True)
+        self.fields["storages"].queryset = _active_storages()

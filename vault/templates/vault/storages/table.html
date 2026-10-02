@@ -1,3 +1,4 @@
+{% load humanize %}
 <div class="glass-card mb-4 overflow-hidden animate-fadeInUp stagger-3">
     <div class="table-responsive">
         <table class="table table-glass align-middle mb-0" id="storagesTable">
@@ -55,21 +56,27 @@
                         </td>
                         <td>
                             {% if s.capacity and s.capacity > 0 %}
-                                {% widthratio s.current_occupancy s.capacity 100 as percent %}
                                 <div class="d-flex flex-column gap-1">
                                     <div class="storages-progress">
-                                        {% if percent <= 70 %}
+                                        {% if s.occupied_ratio <= 70 %}
                                             <div class="storages-progress-bar storages-progress-bar-low"
-                                                 style="width: {{ percent }}%"></div>
-                                        {% elif percent <= 90 %}
+                                                 style="width: {{ s.occupied_ratio }}%"></div>
+                                        {% elif s.occupied_ratio <= 90 %}
                                             <div class="storages-progress-bar storages-progress-bar-mid"
-                                                 style="width: {{ percent }}%"></div>
+                                                 style="width: {{ s.occupied_ratio }}%"></div>
                                         {% else %}
                                             <div class="storages-progress-bar storages-progress-bar-high"
-                                                 style="width: {{ percent }}%"></div>
+                                                 style="width: {{ s.occupied_ratio }}%"></div>
                                         {% endif %}
                                     </div>
-                                    <div class="storages-capacity-text">{{ s.current_occupancy }} / {{ s.capacity }} ({{ percent }}%)</div>
+                                    <div class="d-flex align-items-center gap-2 flex-wrap">
+                                        <span class="storages-capacity-text">{{ s.current_occupancy }} / {{ s.capacity }} ({{ s.occupied_ratio }}%)</span>
+                                        {% if s.is_full %}
+                                            <span class="badge-ios badge-ios-danger" style="font-size: 0.65rem;">
+                                                <i class="fa-solid fa-triangle-exclamation"></i> Full
+                                            </span>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             {% else %}
                                 <span class="text-muted fs-8">-</span>
