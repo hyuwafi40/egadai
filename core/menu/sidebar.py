@@ -71,7 +71,7 @@ SIDEBAR_GROUPS = [
             {
                 "label": "Storages",
                 "icon": "fa-warehouse",
-                "url": PLACEHOLDER_URL,
+                "url": "vault:storages-list",
                 "roles": MANAGER_ROLES,
             },
         ],

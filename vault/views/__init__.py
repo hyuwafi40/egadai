@@ -16,6 +16,12 @@ from vault.views.scheme import (
     SchemeListView,
     SchemeUpdateView,
 )
+from vault.views.storages import (
+    StoragesCreateView,
+    StoragesDeleteView,
+    StoragesListView,
+    StoragesUpdateView,
+)
 
 __all__ = [
     "BaseManagerCreateView",
@@ -30,4 +36,8 @@ __all__ = [
     "SchemeDeleteView",
     "SchemeListView",
     "SchemeUpdateView",
+    "StoragesCreateView",
+    "StoragesDeleteView",
+    "StoragesListView",
+    "StoragesUpdateView",
 ]

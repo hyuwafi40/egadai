@@ -1,0 +1,24 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Gudang{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/vault.css' %}">
+{% endblock %}
+{% block heading %}
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-3 text-white brand-mark">
+                <i class="fa-solid fa-warehouse fs-6"></i>
+            </div>
+            <div>
+                <h1 class="h4 fw-bold mb-0 tracking-tight">Gudang</h1>
+                <p class="text-muted mb-0 fs-7">Kelola gudang penyimpanan barang jaminan</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    {% include "vault/storages/control.html" %}
+    {% include "vault/storages/table.html" %}
+    {% include "core/base/delete.html" with modal_id="deleteStoragesModal" form_id="deleteStoragesForm" title="Hapus Gudang" message="Apakah Anda yakin ingin menghapus gudang berikut?" %}
+{% endblock %}

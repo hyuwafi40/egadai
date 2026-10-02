@@ -30,3 +30,43 @@
     color: #248a3d;
     white-space: nowrap;
 }
+
+.storages-row-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, var(--ios-indigo), var(--ios-blue-dark));
+}
+
+.storages-progress {
+    height: 6px;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 10px;
+    overflow: hidden;
+    min-width: 100px;
+}
+
+.storages-progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+.storages-progress-bar-low {
+    background: var(--ios-green);
+}
+
+.storages-progress-bar-mid {
+    background: var(--ios-orange);
+}
+
+.storages-progress-bar-high {
+    background: var(--ios-red);
+}
+
+.storages-capacity-text {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+}

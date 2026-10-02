@@ -9,6 +9,10 @@ from vault.views import (
     SchemeDeleteView,
     SchemeListView,
     SchemeUpdateView,
+    StoragesCreateView,
+    StoragesDeleteView,
+    StoragesListView,
+    StoragesUpdateView,
 )
 
 app_name = "vault"
@@ -53,5 +57,25 @@ urlpatterns = [
         "scheme/d/<int:pk>/",
         SchemeDeleteView.as_view(),
         name="scheme-delete",
+    ),
+    path(
+        "storages/",
+        StoragesListView.as_view(),
+        name="storages-list",
+    ),
+    path(
+        "storages/c/",
+        StoragesCreateView.as_view(),
+        name="storages-create",
+    ),
+    path(
+        "storages/u/<int:pk>/",
+        StoragesUpdateView.as_view(),
+        name="storages-update",
+    ),
+    path(
+        "storages/d/<int:pk>/",
+        StoragesDeleteView.as_view(),
+        name="storages-delete",
     ),
 ]

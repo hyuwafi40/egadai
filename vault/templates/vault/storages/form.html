@@ -1,0 +1,90 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}{{ form_title }}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/vault.css' %}">
+{% endblock %}
+{% block heading %}
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-3 text-white brand-mark">
+                <i class="fa-solid fa-warehouse fs-6"></i>
+            </div>
+            <div>
+                <h1 class="h4 fw-bold mb-0 tracking-tight">{{ form_title }}</h1>
+                <p class="text-muted mb-0 fs-7">{{ form_subtitle }}</p>
+            </div>
+        </div>
+        <a href="{% url 'vault:storages-list' %}" class="glass-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Kembali</span>
+        </a>
+    </div>
+{% endblock %}
+{% block content %}
+    <form id="storagesForm" method="post" novalidate>
+        {% csrf_token %}
+        <div class="glass-card p-3 mb-4 fs-8 text-muted">
+            Field bertanda <span class="text-danger fw-bold">*</span> wajib diisi. Field bertanda <em>(opsional)</em> boleh dikosongkan.
+        </div>
+        {% if form.non_field_errors %}
+            <div class="glass-card p-3 mb-4">
+                <div class="text-danger fs-7">{{ form.non_field_errors|striptags }}</div>
+            </div>
+        {% endif %}
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-2">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Identitas</h2>
+            <div class="row g-3">
+                {% include "core/base/field.html" with field=form.name wrapper_class="col-12 col-md-6" %}
+                {% include "core/base/field.html" with field=form.kode_gudang wrapper_class="col-12 col-md-6" %}
+                {% include "core/base/field.html" with field=form.status wrapper_class="col-12 col-md-6" %}
+                <div class="col-12 col-md-6 d-flex align-items-end">
+                    <div class="form-check">
+                        {{ form.is_active }}
+                        <label class="form-check-label fs-7"
+                               for="{{ form.is_active.id_for_label }}">{{ form.is_active.label }}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-3">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Alamat & Kontak</h2>
+            <div class="row g-3">
+                {% include "core/base/field.html" with field=form.address wrapper_class="col-12" %}
+                {% include "core/base/field.html" with field=form.city wrapper_class="col-12 col-md-6" %}
+                {% include "core/base/field.html" with field=form.province wrapper_class="col-12 col-md-6" %}
+                {% include "core/base/field.html" with field=form.postal_code wrapper_class="col-12 col-md-6" %}
+                {% include "core/base/field.html" with field=form.phone wrapper_class="col-12 col-md-6" %}
+                {% include "core/base/field.html" with field=form.penanggung_jawab wrapper_class="col-12" %}
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-4">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Operasional</h2>
+            <div class="row g-3">
+                {% include "core/base/field.html" with field=form.capacity wrapper_class="col-12 col-md-6" %}
+                {% include "core/base/field.html" with field=form.current_occupancy wrapper_class="col-12 col-md-6" %}
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Geografis & Catatan</h2>
+            <div class="row g-3">
+                {% include "core/base/field.html" with field=form.latitude wrapper_class="col-12 col-md-6" %}
+                {% include "core/base/field.html" with field=form.longitude wrapper_class="col-12 col-md-6" %}
+                {% include "core/base/field.html" with field=form.description wrapper_class="col-12" %}
+                {% include "core/base/field.html" with field=form.notes wrapper_class="col-12" %}
+            </div>
+        </div>
+        <div class="glass-card p-4 animate-fadeInUp stagger-5">
+            <div class="d-flex flex-column flex-sm-row gap-2 justify-content-end">
+                <a href="{% url 'vault:storages-list' %}" class="glass-btn">
+                    <i class="fa-solid fa-xmark"></i>
+                    <span>Batal</span>
+                </a>
+                <button type="submit" class="glass-btn glass-btn-primary">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span>Simpan</span>
+                </button>
+            </div>
+        </div>
+    </form>
+{% endblock %}
