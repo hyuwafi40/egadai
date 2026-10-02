@@ -30,5 +30,58 @@
     </div>
 {% endblock %}
 {% block content %}
+    {% if auto_print %}
+        <div class="glass-card p-4 mb-4 animate-fadeInUp" id="autoPrintBanner">
+            <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3">
+                <div class="d-flex align-items-center gap-3">
+                    <div class="d-flex align-items-center justify-content-center rounded-circle text-white"
+                         style="width: 48px;
+                                height: 48px;
+                                background: linear-gradient(135deg, #34C759, #1B9E3E)">
+                        <i class="fa-solid fa-circle-check fs-4"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold">Pembayaran Berhasil</div>
+                        <div class="text-muted fs-7">Kwitansi akan terbuka otomatis. Jika tidak, klik tombol di samping.</div>
+                    </div>
+                </div>
+                <a href="{% url 'payment:pdf' payment.pk %}"
+                   target="_blank"
+                   class="glass-btn glass-btn-primary"
+                   id="openPdfBtn">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>Buka Kwitansi</span>
+                </a>
+            </div>
+        </div>
+    {% endif %}
     {% include "payment/payment/detail.html" %}
+{% endblock %}
+{% block extra_js %}
+    {% if auto_print %}
+        <script>
+(function () {
+    var pdfUrl = "{% url 'payment:pdf' payment.pk %}";
+    var opened = false;
+    try {
+        var newWindow = window.open(pdfUrl, '_blank');
+        if (newWindow && !newWindow.closed) {
+            opened = true;
+        }
+    } catch (err) {
+        opened = false;
+    }
+    if (!opened) {
+        var banner = document.getElementById('autoPrintBanner');
+        if (banner) {
+            banner.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        var btn = document.getElementById('openPdfBtn');
+        if (btn) {
+            btn.focus();
+        }
+    }
+})();
+        </script>
+    {% endif %}
 {% endblock %}

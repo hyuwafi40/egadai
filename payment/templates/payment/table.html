@@ -34,6 +34,11 @@
                         </td>
                         <td>
                             <div class="text-muted fs-8">{{ p.transaction.nomor_kontrak }}</div>
+                            {% if p.transaction_id in lunas_trx_ids %}
+                                <span class="badge-ios badge-ios-success mt-1" style="font-size: 0.65rem;">
+                                    <i class="fa-solid fa-flag-checkered"></i> LUNAS
+                                </span>
+                            {% endif %}
                         </td>
                         <td>
                             <div class="fw-semibold fs-7">{{ p.transaction.customer.name }}</div>

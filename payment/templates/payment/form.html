@@ -64,7 +64,7 @@
                                 {{ form.jumlah_bayar.label }} <span class="text-danger">*</span>
                             </label>
                             {{ form.jumlah_bayar }}
-                            <div class="form-text fs-8 text-muted" data-jumlah-hint>
+                            <div class="form-text fs-8 text-muted">
                                 Untuk tipe <strong>Lunas</strong>, jumlah otomatis di-set ke sisa bayar.
                             </div>
                             <div class="d-flex flex-wrap gap-2 mt-2">
@@ -78,6 +78,9 @@
                                 </button>
                                 <button type="button" class="payment-preset-btn" data-payment-preset="100000">
                                     <span>Rp 100.000</span>
+                                </button>
+                                <button type="button" class="payment-preset-btn" data-payment-preset="500000">
+                                    <span>Rp 500.000</span>
                                 </button>
                             </div>
                             {% if form.jumlah_bayar.errors %}
@@ -120,7 +123,9 @@
                             <i class="fa-solid fa-xmark"></i>
                             <span>Batal</span>
                         </a>
-                        <button type="submit" class="glass-btn glass-btn-primary">
+                        <button type="submit"
+                                class="glass-btn glass-btn-primary"
+                                id="paymentSubmitBtn">
                             <i class="fa-solid fa-floppy-disk"></i>
                             <span>Simpan Pembayaran</span>
                         </button>
@@ -165,6 +170,53 @@
                 <div class="payment-summary-row grand">
                     <span class="label">Sisa Bayar</span>
                     <span class="value">Rp {{ summary.sisa_bayar|floatformat:0|intcomma }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade"
+         id="paymentConfirmModal"
+         tabindex="-1"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content glass-card border-0">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">Konfirmasi Pembayaran</h5>
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted fs-7 mb-3">Pastikan data pembayaran sudah benar sebelum disimpan.</p>
+                    <div class="payment-summary-row">
+                        <span class="label">Nasabah</span>
+                        <span class="value">{{ trx.customer.name }}</span>
+                    </div>
+                    <div class="payment-summary-row">
+                        <span class="label">Jumlah Bayar</span>
+                        <span class="value" id="confirmJumlah">Rp 0</span>
+                    </div>
+                    <div class="payment-summary-row">
+                        <span class="label">Tipe</span>
+                        <span class="value" id="confirmTipe">-</span>
+                    </div>
+                    <div class="payment-summary-row">
+                        <span class="label">Metode</span>
+                        <span class="value" id="confirmMetode">-</span>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="glass-btn" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-xmark"></i>
+                        <span>Batal</span>
+                    </button>
+                    <button type="button"
+                            class="glass-btn glass-btn-primary"
+                            id="confirmSubmitBtn">
+                        <i class="fa-solid fa-check"></i>
+                        <span>Ya, Bayar Sekarang</span>
+                    </button>
                 </div>
             </div>
         </div>

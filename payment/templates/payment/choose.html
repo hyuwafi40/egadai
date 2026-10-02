@@ -24,33 +24,22 @@
 {% endblock %}
 {% block content %}
     <div class="glass-card p-3 mb-4 animate-fadeInUp stagger-2">
-        <form method="get" action="{% url 'payment:choose' %}">
-            <div class="d-flex flex-column flex-md-row gap-2 align-items-md-center">
-                <div class="flex-grow-1 position-relative">
-                    <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
-                    <input type="text"
-                           class="form-control glass-input ps-5"
-                           name="q"
-                           value="{{ search }}"
-                           placeholder="Cari nomor kontrak, nama nasabah, atau NIK..."
-                           autofocus>
-                </div>
-                <button type="submit" class="glass-btn glass-btn-primary">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <span>Cari</span>
-                </button>
-                {% if search %}
-                    <a href="{% url 'payment:choose' %}" class="glass-btn">
-                        <i class="fa-solid fa-xmark"></i>
-                        <span>Reset</span>
-                    </a>
-                {% endif %}
-            </div>
-        </form>
+        <div class="position-relative">
+            <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+            <input type="text"
+                   class="form-control glass-input ps-5"
+                   id="chooseSearchInput"
+                   placeholder="Cari nomor kontrak, nama nasabah, atau NIK..."
+                   autofocus>
+        </div>
+        <div class="form-text fs-8 text-muted mt-2">
+            <i class="fa-solid fa-info-circle me-1"></i>
+            Ketik kata kunci untuk menyaring daftar transaksi aktif secara instan.
+        </div>
     </div>
     <div class="glass-card mb-4 overflow-hidden animate-fadeInUp stagger-3">
         <div class="table-responsive">
-            <table class="table table-glass align-middle mb-0">
+            <table class="table table-glass align-middle mb-0" id="chooseTable">
                 <thead>
                     <tr>
                         <th scope="col">Nomor Kontrak</th>
@@ -61,9 +50,9 @@
                         <th scope="col" class="text-end">Aksi</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="chooseTableBody">
                     {% for item in items %}
-                        <tr>
+                        <tr data-search-text="{{ item.trx.nomor_kontrak|lower }} {{ item.trx.customer.name|lower }} {{ item.trx.customer.nik|lower }} {{ item.trx.collateral.name|lower }}">
                             <td>
                                 <span class="transaction-code-badge">{{ item.trx.nomor_kontrak }}</span>
                             </td>
@@ -97,25 +86,31 @@
                             </td>
                         </tr>
                     {% empty %}
-                        <tr>
+                        <tr data-empty-row>
                             <td colspan="6" class="text-center text-muted py-4">
                                 <i class="fa-solid fa-inbox fs-3 d-block mb-2"></i>
-                                {% if search %}
-                                    Tidak ada transaksi aktif yang cocok dengan "{{ search }}".
-                                {% else %}
-                                    Belum ada transaksi aktif yang perlu dibayar.
-                                {% endif %}
+                                Belum ada transaksi aktif yang perlu dibayar.
                             </td>
                         </tr>
                     {% endfor %}
+                    <tr id="chooseEmptyFilteredRow" style="display:none;">
+                        <td colspan="6" class="text-center text-muted py-4">
+                            <i class="fa-solid fa-magnifying-glass fs-3 d-block mb-2"></i>
+                            Tidak ada transaksi yang cocok dengan pencarian.
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
         {% if items %}
-            <div class="p-3 border-top text-muted fs-8 text-center">
+            <div class="p-3 border-top text-muted fs-8 text-center"
+                 id="chooseCountInfo">
                 <i class="fa-solid fa-list me-1"></i>
-                Menampilkan {{ items|length }} transaksi aktif
+                Menampilkan <span id="chooseCountNumber">{{ items|length }}</span> transaksi aktif
             </div>
         {% endif %}
     </div>
+{% endblock %}
+{% block extra_js %}
+    <script src="{% static 'js/payment.js' %}"></script>
 {% endblock %}

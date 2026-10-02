@@ -9,6 +9,7 @@ from django.db.models import ProtectedError, Q
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
+from django.urls import reverse
 from django.utils import timezone
 from django.views import View
 from django.views.generic import TemplateView
@@ -41,8 +42,16 @@ class PaymentListView(LoginRequiredMixin, TemplateView):
         ).order_by("-tanggal_bayar", "-created_at")
         paginator = Paginator(queryset, PAYMENTS_PER_PAGE)
         page_obj = paginator.get_page(self.request.GET.get("page"))
+        trx_ids = [p.transaction_id for p in page_obj.object_list]
+        lunas_trx_ids = set(
+            Transaction.objects.filter(
+                pk__in=trx_ids,
+                status_kontrak=ContractStatusChoices.LUNAS,
+            ).values_list("pk", flat=True)
+        )
         context["page_obj"] = page_obj
         context["total_payments"] = queryset.count()
+        context["lunas_trx_ids"] = lunas_trx_ids
         return context
 
 
@@ -51,7 +60,6 @@ class PaymentChooseView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        search = self.request.GET.get("q", "").strip()
         queryset = (
             Transaction.objects.filter(
                 status_kontrak__in=[
@@ -62,12 +70,6 @@ class PaymentChooseView(LoginRequiredMixin, TemplateView):
             .select_related("customer", "collateral", "scheme")
             .order_by("-tanggal_pinjam", "-created_at")
         )
-        if search:
-            queryset = queryset.filter(
-                Q(nomor_kontrak__icontains=search)
-                | Q(customer__name__icontains=search)
-                | Q(customer__nik__icontains=search)
-            )
         trx_list = list(queryset[:100])
         summaries = get_transactions_summary_batch(trx_list)
         items = []
@@ -76,9 +78,10 @@ class PaymentChooseView(LoginRequiredMixin, TemplateView):
             if summary and not summary["lunas"]:
                 items.append({"trx": trx, "summary": summary})
         context["items"] = items
-        context["search"] = search
         context["form_title"] = "Pilih Transaksi untuk Dibayar"
-        context["form_subtitle"] = "Cari transaksi aktif yang perlu dibayar"
+        context["form_subtitle"] = (
+            "Ketik untuk mencari transaksi aktif yang perlu dibayar"
+        )
         return context
 
 
@@ -167,7 +170,7 @@ class PaymentCreateView(LoginRequiredMixin, View):
             request,
             f"Pembayaran {payment.nomor_pembayaran} berhasil dicatat.",
         )
-        return redirect("payment:detail", pk=payment.pk)
+        return redirect(f"{reverse('payment:detail', args=[payment.pk])}?print=1")
 
 
 class PaymentDetailView(LoginRequiredMixin, TemplateView):
@@ -194,6 +197,7 @@ class PaymentDetailView(LoginRequiredMixin, TemplateView):
             payment.transaction.uang_pinjaman,
             payment.transaction.scheme,
         )
+        context["auto_print"] = self.request.GET.get("print") == "1"
         return context
 
 
