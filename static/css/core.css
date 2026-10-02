@@ -294,6 +294,7 @@ input[type="file"].glass-input::file-selector-button:hover {
     padding: 1.25rem 1rem;
     overflow-y: auto;
     scrollbar-width: none;
+    visibility: hidden;
 }
 
 .sidebar-container::-webkit-scrollbar {
@@ -302,6 +303,26 @@ input[type="file"].glass-input::file-selector-button:hover {
 
 .sidebar-container.active {
     left: 0;
+    visibility: visible;
+}
+
+body.sidebar-open {
+    overflow: hidden;
+}
+
+.sidebar-logout-button {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.nav-item-link:focus-visible,
+#sidebarToggleBtn:focus-visible {
+    outline: 3px solid var(--ios-blue-dark);
+    outline-offset: 3px;
 }
 
 .nav-item-link {
@@ -349,6 +370,7 @@ input[type="file"].glass-input::file-selector-button:hover {
         width: 100%;
         z-index: 1;
         padding: 0;
+        visibility: visible;
     }
 
     .main-content-wrapper {
@@ -582,4 +604,13 @@ input[type="file"].glass-input::file-selector-button:hover {
 
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(0, 0, 0, 0.25);
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    .sidebar-container,
+    .sidebar-overlay,
+    .nav-item-link {
+        transition: none;
+    }
 }

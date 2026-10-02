@@ -1,0 +1,90 @@
+{% load humanize %}
+<section class="dashboard-panel glass-card p-4 mb-4 animate-fadeInUp stagger-2"
+         aria-labelledby="dashboard-operations-heading">
+    <div class="border-bottom pb-3 mb-3">
+        <h2 id="dashboard-operations-heading" class="h5 fw-bold mb-1">Rincian operasional</h2>
+        <p class="text-muted fs-7 mb-0">Ringkasan status per {{ dashboard.today|date:"d F Y" }}.</p>
+    </div>
+    <div class="row g-4">
+        <section class="col-12 col-md-6 {% if dashboard.storages %}col-xl-4{% endif %}"
+                 aria-labelledby="dashboard-contracts-heading">
+            <h3 id="dashboard-contracts-heading" class="h6 fw-bold">Kontrak</h3>
+            <dl class="dashboard-stat-list mb-0">
+                <div class="dashboard-stat-row d-flex justify-content-between gap-3 py-2 border-bottom">
+                    <dt class="fw-normal text-muted">Aktif</dt>
+                    <dd class="fw-semibold mb-0">
+                        {{ dashboard.transactions.active|intcomma }}
+                    </dd>
+                </div>
+                <div class="dashboard-stat-row d-flex justify-content-between gap-3 py-2 border-bottom">
+                    <dt class="fw-normal text-muted">Lewat jatuh tempo</dt>
+                    <dd class="fw-semibold mb-0">
+                        {{ dashboard.transactions.overdue|intcomma }}
+                    </dd>
+                </div>
+                <div class="dashboard-stat-row d-flex justify-content-between gap-3 py-2 border-bottom">
+                    <dt class="fw-normal text-muted">Lunas</dt>
+                    <dd class="fw-semibold mb-0">
+                        {{ dashboard.transactions.paid|intcomma }}
+                    </dd>
+                </div>
+                <div class="dashboard-stat-row d-flex justify-content-between gap-3 py-2">
+                    <dt class="fw-normal text-muted">Lelang</dt>
+                    <dd class="fw-semibold mb-0">
+                        {{ dashboard.transactions.auctioned|intcomma }}
+                    </dd>
+                </div>
+            </dl>
+        </section>
+        <section class="col-12 col-md-6 {% if dashboard.storages %}col-xl-4{% endif %}"
+                 aria-labelledby="dashboard-collateral-heading">
+            <h3 id="dashboard-collateral-heading" class="h6 fw-bold">Barang jaminan</h3>
+            <dl class="dashboard-stat-list mb-0">
+                <div class="dashboard-stat-row d-flex justify-content-between gap-3 py-2 border-bottom">
+                    <dt class="fw-normal text-muted">Tersimpan</dt>
+                    <dd class="fw-semibold mb-0">
+                        {{ dashboard.collaterals.stored|intcomma }}
+                    </dd>
+                </div>
+                <div class="dashboard-stat-row d-flex justify-content-between gap-3 py-2 border-bottom">
+                    <dt class="fw-normal text-muted">Ditebus</dt>
+                    <dd class="fw-semibold mb-0">
+                        {{ dashboard.collaterals.redeemed|intcomma }}
+                    </dd>
+                </div>
+                <div class="dashboard-stat-row d-flex justify-content-between gap-3 py-2 border-bottom">
+                    <dt class="fw-normal text-muted">Dilelang</dt>
+                    <dd class="fw-semibold mb-0">
+                        {{ dashboard.collaterals.auctioned|intcomma }}
+                    </dd>
+                </div>
+                <div class="dashboard-stat-row d-flex justify-content-between gap-3 py-2">
+                    <dt class="fw-normal text-muted">Nilai taksiran tersimpan</dt>
+                    <dd class="fw-semibold mb-0 text-end">
+                        Rp {{ dashboard.collaterals.stored_appraisal|default_if_none:0|floatformat:0|intcomma }}
+                    </dd>
+                </div>
+            </dl>
+        </section>
+        {% if dashboard.storages %}
+            <section class="col-12 col-md-6 col-xl-4"
+                     aria-labelledby="dashboard-storage-heading">
+                <h3 id="dashboard-storage-heading" class="h6 fw-bold">Kapasitas gudang</h3>
+                <dl class="dashboard-stat-list mb-0">
+                    <div class="dashboard-stat-row d-flex justify-content-between gap-3 py-2 border-bottom">
+                        <dt class="fw-normal text-muted">Gudang aktif</dt>
+                        <dd class="fw-semibold mb-0">
+                            {{ dashboard.storages.active|intcomma }}
+                        </dd>
+                    </div>
+                    <div class="dashboard-stat-row d-flex justify-content-between gap-3 py-2">
+                        <dt class="fw-normal text-muted">Kapasitas penuh</dt>
+                        <dd class="fw-semibold mb-0">
+                            {{ dashboard.storages.full|intcomma }}
+                        </dd>
+                    </div>
+                </dl>
+            </section>
+        {% endif %}
+    </div>
+</section>

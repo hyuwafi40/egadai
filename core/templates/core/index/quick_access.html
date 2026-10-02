@@ -1,0 +1,48 @@
+<section class="dashboard-actions-section mb-4 animate-fadeInUp stagger-4"
+         aria-labelledby="dashboard-actions-heading">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+        <div>
+            <h2 id="dashboard-actions-heading" class="h5 fw-bold mb-1">Akses cepat</h2>
+            <p class="text-muted fs-7 mb-0">Buka pekerjaan yang sering digunakan.</p>
+        </div>
+    </div>
+    <nav class="dashboard-actions" aria-label="Akses cepat">
+        <a href="{% url 'transaction:new' %}" class="dashboard-action">
+            <span class="dashboard-action-icon" aria-hidden="true"><i class="fa-solid fa-plus"></i></span>
+            <span class="dashboard-action-copy">
+                <span class="dashboard-action-title">Transaksi baru</span>
+                <span class="dashboard-action-note">Buat kontrak gadai</span>
+            </span>
+            <i class="fa-solid fa-arrow-right dashboard-action-arrow"
+               aria-hidden="true"></i>
+        </a>
+        <a href="{% url 'payment:list' %}" class="dashboard-action">
+            <span class="dashboard-action-icon"
+                  aria-hidden="true"><i class="fa-solid fa-money-bill-transfer"></i></span>
+            <span class="dashboard-action-copy">
+                <span class="dashboard-action-title">Pembayaran</span>
+                <span class="dashboard-action-note">Lihat riwayat pembayaran</span>
+            </span>
+            <i class="fa-solid fa-arrow-right dashboard-action-arrow"
+               aria-hidden="true"></i>
+        </a>
+        <a href="{% url 'customer:list' %}" class="dashboard-action">
+            <span class="dashboard-action-icon" aria-hidden="true"><i class="fa-solid fa-users"></i></span>
+            <span class="dashboard-action-copy">
+                <span class="dashboard-action-title">Nasabah</span>
+                <span class="dashboard-action-note">Cari data nasabah</span>
+            </span>
+            <i class="fa-solid fa-arrow-right dashboard-action-arrow"
+               aria-hidden="true"></i>
+        </a>
+        <a href="{% url 'collateral:list' %}" class="dashboard-action">
+            <span class="dashboard-action-icon" aria-hidden="true"><i class="fa-solid fa-boxes-stacked"></i></span>
+            <span class="dashboard-action-copy">
+                <span class="dashboard-action-title">Barang jaminan</span>
+                <span class="dashboard-action-note">Lihat inventaris jaminan</span>
+            </span>
+            <i class="fa-solid fa-arrow-right dashboard-action-arrow"
+               aria-hidden="true"></i>
+        </a>
+    </nav>
+</section>

@@ -9,132 +9,162 @@ SIDEBAR_CACHE_KEY = "core.sidebar.{job}"
 
 SIDEBAR_GROUPS = [
     {
-        "label": "Main",
+        "label": "Operasional",
         "items": [
             {
                 "label": "Dashboard",
                 "icon": "fa-chart-pie",
                 "url": "core:index",
                 "roles": ALL_ROLES,
+                "active_view_names": ("core:index",),
+            },
+            {
+                "label": "Transaksi Gadai",
+                "icon": "fa-hand-holding-dollar",
+                "url": "transaction:list",
+                "roles": ALL_ROLES,
+                "active_view_names": (
+                    "transaction:list",
+                    "transaction:detail",
+                    "transaction:update",
+                    "transaction:delete",
+                    "transaction:pdf",
+                ),
             },
             {
                 "label": "Transaksi Baru",
                 "icon": "fa-plus-circle",
                 "url": "transaction:new",
                 "roles": ALL_ROLES,
+                "active_view_names": ("transaction:new", "transaction:create"),
             },
             {
-                "label": "Pembayaran Cicilan",
+                "label": "Pembayaran",
                 "icon": "fa-money-bill-transfer",
                 "url": "payment:list",
                 "roles": ALL_ROLES,
+                "active_view_names": (
+                    "payment:list",
+                    "payment:detail",
+                    "payment:choose",
+                    "payment:create",
+                    "payment:pdf",
+                    "payment:delete",
+                ),
             },
-        ],
-    },
-    {
-        "label": "Account",
-        "items": [
-            {
-                "label": "User",
-                "icon": "fa-user-gear",
-                "url": "account:user-list",
-                "roles": MANAGER_ROLES,
-            },
-            {
-                "label": "Profile",
-                "icon": "fa-id-card",
-                "url": "account:profile-detail",
-                "roles": ALL_ROLES,
-            },
-        ],
-    },
-    {
-        "label": "Core",
-        "items": [
-            {
-                "label": "Brand",
-                "icon": "fa-tags",
-                "url": "core:brand-detail",
-                "roles": DEVELOPER_ROLES,
-            },
-            {
-                "label": "Orgs",
-                "icon": "fa-building",
-                "url": "core:orgs-detail",
-                "roles": MANAGER_ROLES,
-            },
-        ],
-    },
-    {
-        "label": "Vault",
-        "items": [
-            {
-                "label": "Category",
-                "icon": "fa-layer-group",
-                "url": "vault:category-list",
-                "roles": MANAGER_ROLES,
-            },
-            {
-                "label": "Scheme",
-                "icon": "fa-file-contract",
-                "url": "vault:scheme-list",
-                "roles": MANAGER_ROLES,
-            },
-            {
-                "label": "Storages",
-                "icon": "fa-warehouse",
-                "url": "vault:storages-list",
-                "roles": MANAGER_ROLES,
-            },
-        ],
-    },
-    {
-        "label": "Customer",
-        "items": [
             {
                 "label": "Nasabah",
                 "icon": "fa-users",
                 "url": "customer:list",
                 "roles": ALL_ROLES,
+                "active_view_names": (
+                    "customer:list",
+                    "customer:create",
+                    "customer:update",
+                    "customer:delete",
+                ),
             },
-        ],
-    },
-    {
-        "label": "Collateral",
-        "items": [
             {
                 "label": "Barang Jaminan",
                 "icon": "fa-boxes-stacked",
                 "url": "collateral:list",
                 "roles": ALL_ROLES,
+                "active_view_names": (
+                    "collateral:list",
+                    "collateral:create",
+                    "collateral:update",
+                    "collateral:delete",
+                ),
             },
         ],
     },
     {
-        "label": "Transaction",
+        "label": "Data & Pengaturan",
         "items": [
             {
-                "label": "Transaksi Gadai",
-                "icon": "fa-hand-holding-dollar",
-                "url": "transaction:list",
-                "roles": ALL_ROLES,
-            },
-        ],
-    },
-    {
-        "label": "Preferensi",
-        "items": [
-            {
-                "label": "Admin Panel",
-                "icon": "fa-shield-halved",
-                "url": PLACEHOLDER_URL,
+                "label": "Pengguna",
+                "icon": "fa-user-gear",
+                "url": "account:user-list",
                 "roles": MANAGER_ROLES,
+                "active_view_names": (
+                    "account:user-list",
+                    "account:user-create",
+                    "account:user-update",
+                    "account:user-delete",
+                    "account:user-password-reset",
+                ),
             },
             {
-                "label": "Logout",
+                "label": "Organisasi",
+                "icon": "fa-building",
+                "url": "core:orgs-detail",
+                "roles": MANAGER_ROLES,
+                "active_view_names": ("core:orgs-detail", "core:orgs-update"),
+            },
+            {
+                "label": "Brand Aplikasi",
+                "icon": "fa-tags",
+                "url": "core:brand-detail",
+                "roles": DEVELOPER_ROLES,
+                "active_view_names": ("core:brand-detail", "core:brand-update"),
+            },
+            {
+                "label": "Kategori Barang",
+                "icon": "fa-layer-group",
+                "url": "vault:category-list",
+                "roles": MANAGER_ROLES,
+                "active_view_names": (
+                    "vault:category-list",
+                    "vault:category-create",
+                    "vault:category-update",
+                    "vault:category-delete",
+                ),
+            },
+            {
+                "label": "Skema Pinjaman",
+                "icon": "fa-file-contract",
+                "url": "vault:scheme-list",
+                "roles": MANAGER_ROLES,
+                "active_view_names": (
+                    "vault:scheme-list",
+                    "vault:scheme-create",
+                    "vault:scheme-update",
+                    "vault:scheme-delete",
+                ),
+            },
+            {
+                "label": "Gudang",
+                "icon": "fa-warehouse",
+                "url": "vault:storages-list",
+                "roles": MANAGER_ROLES,
+                "active_view_names": (
+                    "vault:storages-list",
+                    "vault:storages-create",
+                    "vault:storages-update",
+                    "vault:storages-delete",
+                ),
+            },
+        ],
+    },
+    {
+        "label": "Akun",
+        "items": [
+            {
+                "label": "Profil Saya",
+                "icon": "fa-id-card",
+                "url": "account:profile-detail",
+                "roles": ALL_ROLES,
+                "active_view_names": (
+                    "account:profile-detail",
+                    "account:profile-update",
+                ),
+            },
+            {
+                "label": "Keluar",
                 "icon": "fa-arrow-right-from-bracket",
                 "url": "logout",
                 "roles": ALL_ROLES,
+                "method": "post",
             },
         ],
     },
@@ -164,6 +194,8 @@ def _build_item(item, user_job):
         "icon": item["icon"],
         "url": url,
         "url_name": url_name,
+        "active_view_names": item.get("active_view_names", (url_name,)),
+        "method": item.get("method", "get"),
     }
 
 

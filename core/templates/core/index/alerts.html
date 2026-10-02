@@ -1,0 +1,64 @@
+{% load humanize %}
+<section class="dashboard-panel glass-card p-4 mb-4 animate-fadeInUp stagger-3"
+         aria-labelledby="dashboard-alerts-heading">
+    <div class="border-bottom pb-3 mb-3">
+        <h2 id="dashboard-alerts-heading" class="h5 fw-bold mb-1">Perlu perhatian</h2>
+        <p class="text-muted fs-7 mb-0">Kontrak yang terlambat dan yang jatuh tempo dalam tujuh hari berikutnya.</p>
+    </div>
+    <div class="row g-4">
+        <section class="col-12 col-xl-6" aria-labelledby="dashboard-overdue-heading">
+            <h3 id="dashboard-overdue-heading"
+                class="dashboard-alert-heading h6 fw-bold">
+                <span class="badge-ios badge-ios-danger">{{ dashboard.transactions.overdue|intcomma }}</span>
+                Terlewat jatuh tempo
+            </h3>
+            {% if dashboard.overdue_transactions %}
+                <ul class="dashboard-alert-list list-unstyled mb-0" role="list">
+                    {% for transaction in dashboard.overdue_transactions %}
+                        <li class="dashboard-alert-item py-2 border-bottom">
+                            <a class="dashboard-alert-link text-decoration-none fw-semibold"
+                               href="{% url 'transaction:detail' transaction.pk %}">{{ transaction.nomor_kontrak }}</a>
+                            <span class="dashboard-alert-customer fs-8 text-muted">{{ transaction.customer.name }}</span>
+                            <time class="dashboard-alert-date fs-8 text-muted"
+                                  datetime="{{ transaction.tanggal_jatuh_tempo|date:'Y-m-d' }}">Jatuh tempo {{ transaction.tanggal_jatuh_tempo|date:"d M Y" }}</time>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="dashboard-empty-state text-muted fs-7 mb-0">Tidak ada kontrak yang terlambat.</p>
+            {% endif %}
+            {% if dashboard.transactions.overdue > 5 %}
+                <p class="text-muted fs-8 mt-2 mb-0">Menampilkan 5 dari {{ dashboard.transactions.overdue|intcomma }} kontrak terlambat.</p>
+            {% endif %}
+            <a class="dashboard-list-link d-inline-flex mt-3"
+               href="{% url 'transaction:list' %}">Buka daftar transaksi</a>
+        </section>
+        <section class="col-12 col-xl-6" aria-labelledby="dashboard-due-soon-heading">
+            <h3 id="dashboard-due-soon-heading"
+                class="dashboard-alert-heading h6 fw-bold">
+                <span class="badge-ios badge-ios-pending">{{ dashboard.transactions.due_soon|intcomma }}</span>
+                Jatuh tempo dalam tujuh hari
+            </h3>
+            {% if dashboard.due_soon_transactions %}
+                <ul class="dashboard-alert-list list-unstyled mb-0" role="list">
+                    {% for transaction in dashboard.due_soon_transactions %}
+                        <li class="dashboard-alert-item py-2 border-bottom">
+                            <a class="dashboard-alert-link text-decoration-none fw-semibold"
+                               href="{% url 'transaction:detail' transaction.pk %}">{{ transaction.nomor_kontrak }}</a>
+                            <span class="dashboard-alert-customer fs-8 text-muted">{{ transaction.customer.name }}</span>
+                            <time class="dashboard-alert-date fs-8 text-muted"
+                                  datetime="{{ transaction.tanggal_jatuh_tempo|date:'Y-m-d' }}">Jatuh tempo {{ transaction.tanggal_jatuh_tempo|date:"d M Y" }}</time>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="dashboard-empty-state text-muted fs-7 mb-0">Tidak ada kontrak yang segera jatuh tempo.</p>
+            {% endif %}
+            {% if dashboard.transactions.due_soon > 5 %}
+                <p class="text-muted fs-8 mt-2 mb-0">Menampilkan 5 dari {{ dashboard.transactions.due_soon|intcomma }} kontrak.</p>
+            {% endif %}
+            <a class="dashboard-list-link d-inline-flex mt-3"
+               href="{% url 'transaction:list' %}">Buka daftar transaksi</a>
+        </section>
+    </div>
+</section>

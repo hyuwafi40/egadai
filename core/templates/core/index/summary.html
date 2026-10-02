@@ -1,0 +1,52 @@
+{% load humanize %}
+<section class="dashboard-summary mb-4"
+         aria-labelledby="dashboard-summary-heading">
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-2 mb-3">
+        <div>
+            <h2 id="dashboard-summary-heading" class="h5 fw-bold mb-1">Ikhtisar operasional</h2>
+            <p class="text-muted fs-7 mb-0">Posisi data per {{ dashboard.today|date:"d F Y" }}.</p>
+        </div>
+    </div>
+    <div class="row g-3">
+        <div class="col-12 col-sm-6 col-xl-3 animate-fadeInUp stagger-1">
+            <article class="dashboard-kpi glass-card glass-card-hover p-3 h-100">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+                    <h3 class="dashboard-kpi-label text-muted fw-medium fs-7 mb-0">Nasabah aktif</h3>
+                    <i class="fa-solid fa-users text-primary" aria-hidden="true"></i>
+                </div>
+                <p class="dashboard-kpi-value fw-bold mb-1">{{ dashboard.customers.active|intcomma }}</p>
+                <p class="dashboard-kpi-note text-muted fs-8 mb-0">dari {{ dashboard.customers.total|intcomma }} nasabah</p>
+            </article>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3 animate-fadeInUp stagger-2">
+            <article class="dashboard-kpi glass-card glass-card-hover p-3 h-100">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+                    <h3 class="dashboard-kpi-label text-muted fw-medium fs-7 mb-0">Jaminan tersimpan</h3>
+                    <i class="fa-solid fa-boxes-stacked text-primary" aria-hidden="true"></i>
+                </div>
+                <p class="dashboard-kpi-value fw-bold mb-1">{{ dashboard.collaterals.stored|intcomma }}</p>
+                <p class="dashboard-kpi-note text-muted fs-8 mb-0">Nilai taksiran Rp {{ dashboard.collaterals.stored_appraisal|default_if_none:0|floatformat:0|intcomma }}</p>
+            </article>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3 animate-fadeInUp stagger-3">
+            <article class="dashboard-kpi glass-card glass-card-hover p-3 h-100">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+                    <h3 class="dashboard-kpi-label text-muted fw-medium fs-7 mb-0">Kontrak aktif</h3>
+                    <i class="fa-solid fa-file-contract text-primary" aria-hidden="true"></i>
+                </div>
+                <p class="dashboard-kpi-value fw-bold mb-1">{{ dashboard.transactions.active|intcomma }}</p>
+                <p class="dashboard-kpi-note text-muted fs-8 mb-0">{{ dashboard.transactions.overdue|intcomma }} melewati jatuh tempo</p>
+            </article>
+        </div>
+        <div class="col-12 col-sm-6 col-xl-3 animate-fadeInUp stagger-4">
+            <article class="dashboard-kpi glass-card glass-card-hover p-3 h-100">
+                <div class="d-flex align-items-center justify-content-between gap-2 mb-3">
+                    <h3 class="dashboard-kpi-label text-muted fw-medium fs-7 mb-0">Pembayaran bulan ini</h3>
+                    <i class="fa-solid fa-money-bill-wave text-primary" aria-hidden="true"></i>
+                </div>
+                <p class="dashboard-kpi-value dashboard-kpi-value-money fw-bold mb-1">Rp {{ dashboard.payments.total|floatformat:0|intcomma }}</p>
+                <p class="dashboard-kpi-note text-muted fs-8 mb-0">{{ dashboard.payments.count|intcomma }} pembayaran</p>
+            </article>
+        </div>
+    </div>
+</section>

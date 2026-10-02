@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect, render
 from django.views import View
+from django.views.decorators.http import require_POST
 
 
 class IndexViews(View):
@@ -30,6 +31,7 @@ class IndexViews(View):
         return render(request, self.template_name)
 
 
+@require_POST
 def logout_view(request):
     logout(request)
     messages.info(request, "Anda telah keluar.")

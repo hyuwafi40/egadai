@@ -1,0 +1,93 @@
+<section class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-xl-3 animate-fadeInUp stagger-2">
+        <div class="glass-card glass-card-hover p-3 h-100 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-muted fw-medium fs-7">Pengguna</span>
+                <div class="rounded-3 p-2 d-flex align-items-center justify-content-center brand-mark">
+                    <i class="fa-solid fa-user-gear fs-6 text-white" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div>
+                <h2 class="fw-bold fs-3 mb-1">{{ navbar_data.display_name }}</h2>
+                <div class="d-flex align-items-center gap-2 fs-8">
+                    <span class="badge-ios badge-ios-info">{{ navbar_data.role_label }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3 animate-fadeInUp stagger-3">
+        <div class="glass-card glass-card-hover p-3 h-100 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-muted fw-medium fs-7">Organisasi</span>
+                <div class="rounded-3 p-2 d-flex align-items-center justify-content-center brand-mark">
+                    <i class="fa-solid fa-building fs-6 text-white" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div>
+                <h2 class="fw-bold fs-5 mb-1 text-truncate">
+                    {% firstof orgs.name orgs.legal_name orgs.brand_name fallback_app_name %}
+                </h2>
+                <div class="d-flex align-items-center gap-2 fs-8">
+                    {% if orgs and orgs.company_type %}
+                        <span class="badge-ios badge-ios-info">{{ orgs.get_company_type_display }}</span>
+                    {% endif %}
+                    {% if orgs and orgs.business_scope %}
+                        <span class="text-muted">{{ orgs.get_business_scope_display }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3 animate-fadeInUp stagger-4">
+        <div class="glass-card glass-card-hover p-3 h-100 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-muted fw-medium fs-7">Aplikasi</span>
+                <div class="rounded-3 p-2 d-flex align-items-center justify-content-center brand-mark">
+                    <i class="fa-solid fa-layer-group fs-6 text-white" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div>
+                <h2 class="fw-bold fs-3 mb-1 text-truncate">
+                    {% if brand %}{{ brand.name }}{% else %}{{ fallback_app_name }}{% endif %}
+                </h2>
+                <div class="d-flex align-items-center gap-2 fs-8">
+                    <span class="badge-ios badge-ios-success">v{% if brand %}{{ brand.version }}{% else %}1.0.0{% endif %}</span>
+                    <span class="text-muted">{% if brand %}{{ brand.creator }}{% endif %}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3 animate-fadeInUp stagger-5">
+        <div class="glass-card glass-card-hover p-3 h-100 d-flex flex-column justify-content-between">
+            <div class="d-flex align-items-center justify-content-between mb-2">
+                <span class="text-muted fw-medium fs-7">Email</span>
+                <div class="rounded-3 p-2 d-flex align-items-center justify-content-center brand-mark">
+                    <i class="fa-solid fa-envelope fs-6 text-white" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div>
+                <h2 class="fw-bold fs-5 mb-1 text-truncate">{{ navbar_data.email }}</h2>
+                <div class="d-flex align-items-center gap-2 fs-8">
+                    <span class="text-muted">Akun aktif</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="glass-card p-4 mb-4 animate-fadeInUp stagger-3">
+    <div class="border-bottom pb-3 mb-3">
+        <h2 class="h5 fw-bold mb-1">Selamat Datang</h2>
+        <p class="text-muted fs-7 mb-0">
+            Anda masuk sebagai <strong>{{ navbar_data.display_name }}</strong>
+            dengan peran <strong>{{ navbar_data.role_label }}</strong>.
+        </p>
+    </div>
+    <p class="text-muted mb-0">
+        Anda berada di lingkungan
+        <strong>{% firstof orgs.name orgs.legal_name orgs.brand_name fallback_app_name %}</strong>.
+        Aplikasi ini dikembangkan oleh
+        <strong>{% if brand %}{{ brand.creator }}{% else %}-{% endif %}</strong>
+        melalui <strong>{% if brand %}{{ brand.name }}{% else %}{{ fallback_app_name }}{% endif %}</strong>
+        versi <strong>v{% if brand %}{{ brand.version }}{% else %}1.0.0{% endif %}</strong>.
+    </p>
+</section>

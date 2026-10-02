@@ -1,22 +1,44 @@
-<div class="sidebar-container glass-card" id="sidebarNav">
+<div class="sidebar-container glass-card"
+     id="sidebarNav"
+     aria-label="Navigasi utama">
     <div class="d-flex flex-column h-100 p-3">
-        {% for group in sidebar_items %}
-            <div class="sidebar-group-label fw-bold text-muted text-uppercase tracking-wider {% if not forloop.first %}mt-4{% endif %} mb-2 px-2">
-                {{ group.label }}
-            </div>
-            <nav class="nav flex-column gap-1">
-                {% for item in group.items %}
-                    <a href="{{ item.url }}"
-                       class="nav-item-link {% if item.url_name and request.resolver_match.view_name == item.url_name %}active{% endif %}">
-                        <i class="fa-solid {{ item.icon }}"></i>
-                        <span>{{ item.label }}</span>
-                    </a>
-                {% endfor %}
-            </nav>
-        {% endfor %}
+        <nav class="sidebar-navigation" aria-label="Navigasi utama">
+            {% for group in sidebar_items %}
+                <section class="sidebar-menu-group {% if not forloop.first %}mt-4{% endif %}"
+                         aria-labelledby="sidebar-group-{{ forloop.counter }}">
+                    <h2 id="sidebar-group-{{ forloop.counter }}"
+                        class="sidebar-group-label fw-bold text-muted text-uppercase tracking-wider mb-2 px-2">
+                        {{ group.label }}
+                    </h2>
+                    <ul class="nav flex-column gap-1 list-unstyled mb-0">
+                        {% for item in group.items %}
+                            <li>
+                                {% if item.method == "post" %}
+                                    <form method="post" action="{{ item.url }}" class="sidebar-logout-form">
+                                        {% csrf_token %}
+                                        <button type="submit" class="nav-item-link sidebar-logout-button">
+                                            <i class="fa-solid {{ item.icon }}" aria-hidden="true"></i>
+                                            <span>{{ item.label }}</span>
+                                        </button>
+                                    </form>
+                                {% else %}
+                                    <a href="{{ item.url }}"
+                                       class="nav-item-link {% if request.resolver_match.view_name in item.active_view_names %}active{% endif %}"
+                                       {% if request.resolver_match.view_name in item.active_view_names %}aria-current="page"{% endif %}>
+                                        <i class="fa-solid {{ item.icon }}" aria-hidden="true"></i>
+                                        <span>{{ item.label }}</span>
+                                    </a>
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            {% endfor %}
+        </nav>
         <div class="mt-auto pt-3">
             <div class="sidebar-version-card glass-card p-3 text-center border-0">
-                <i class="fa-solid fa-building text-primary fs-4 mb-2"></i>
+                <i class="fa-solid fa-building text-primary fs-4 mb-2"
+                   aria-hidden="true"></i>
                 <div class="fw-bold fs-7 mb-1 text-truncate">
                     {% firstof orgs.name orgs.legal_name orgs.brand_name fallback_app_name %}
                 </div>

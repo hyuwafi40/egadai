@@ -74,19 +74,99 @@ document.addEventListener('DOMContentLoaded', function () {
     const sidebarNav = document.getElementById('sidebarNav');
     const sidebarOverlay = document.getElementById('sidebarOverlay');
 
-    function toggleSidebar() {
+    const desktopSidebar = window.matchMedia('(min-width: 992px)');
+    const backgroundElements = [
+        document.querySelector('.glass-nav'),
+        document.querySelector('.main-content-wrapper'),
+        document.querySelector('.app-shell > footer')
+    ].filter(Boolean);
+
+    function setSidebarExpanded(expanded, returnFocus) {
         if (!sidebarNav || !sidebarOverlay) return;
-        sidebarNav.classList.toggle('active');
-        sidebarOverlay.classList.toggle('active');
+        const isOpen = !desktopSidebar.matches && expanded;
+        sidebarNav.classList.toggle('active', isOpen);
+        sidebarOverlay.classList.toggle('active', isOpen);
+        sidebarNav.inert = !desktopSidebar.matches && !isOpen;
+        document.body.classList.toggle('sidebar-open', isOpen);
+        backgroundElements.forEach(function (element) {
+            element.inert = isOpen;
+        });
+
+        if (isOpen) {
+            sidebarNav.setAttribute('role', 'dialog');
+            sidebarNav.setAttribute('aria-modal', 'true');
+        } else {
+            sidebarNav.removeAttribute('role');
+            sidebarNav.removeAttribute('aria-modal');
+        }
+
+        if (sidebarToggleBtn) {
+            sidebarToggleBtn.setAttribute('aria-expanded', String(isOpen));
+            sidebarToggleBtn.setAttribute(
+                'aria-label',
+                isOpen ? 'Tutup navigasi' : 'Buka navigasi'
+            );
+        }
+
+        if (isOpen) {
+            const firstItem = sidebarNav.querySelector('a.nav-item-link, button.nav-item-link');
+            if (firstItem) firstItem.focus();
+        } else if (returnFocus && sidebarToggleBtn) {
+            sidebarToggleBtn.focus();
+        }
     }
 
+    setSidebarExpanded(false, false);
+
     if (sidebarToggleBtn) {
-        sidebarToggleBtn.addEventListener('click', toggleSidebar);
+        sidebarToggleBtn.addEventListener('click', function () {
+            setSidebarExpanded(!sidebarNav.classList.contains('active'), false);
+        });
     }
 
     if (sidebarOverlay) {
-        sidebarOverlay.addEventListener('click', toggleSidebar);
+        sidebarOverlay.addEventListener('click', function () {
+            setSidebarExpanded(false, true);
+        });
     }
+
+    if (sidebarNav) {
+        sidebarNav.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape' && sidebarNav.classList.contains('active')) {
+                setSidebarExpanded(false, true);
+                return;
+            }
+
+            if (event.key === 'Tab' && sidebarNav.classList.contains('active')) {
+                const focusableItems = Array.from(
+                    sidebarNav.querySelectorAll('a[href], button:not([disabled])')
+                );
+                if (!focusableItems.length) {
+                    event.preventDefault();
+                    return;
+                }
+
+                const firstItem = focusableItems[0];
+                const lastItem = focusableItems[focusableItems.length - 1];
+                if (event.shiftKey && document.activeElement === firstItem) {
+                    event.preventDefault();
+                    lastItem.focus();
+                } else if (!event.shiftKey && document.activeElement === lastItem) {
+                    event.preventDefault();
+                    firstItem.focus();
+                }
+            }
+        });
+        sidebarNav.querySelectorAll('a.nav-item-link').forEach(function (link) {
+            link.addEventListener('click', function () {
+                if (!desktopSidebar.matches) setSidebarExpanded(false, false);
+            });
+        });
+    }
+
+    desktopSidebar.addEventListener('change', function () {
+        setSidebarExpanded(false, false);
+    });
 
     document.querySelectorAll('[data-django-message]').forEach(function (el) {
         const tags = el.getAttribute('data-tags') || 'info';

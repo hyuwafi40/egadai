@@ -1,28 +1,156 @@
 {% load static %}
+{% firstof orgs.name orgs.legal_name orgs.brand_name fallback_app_name as display_app_name %}
 <!DOCTYPE html>
 <html lang="id">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Login</title>
-        <link rel="stylesheet" href="{% static 'css/login.css' %}">
+        <meta name="theme-color" content="#007AFF">
+        <title>Masuk | {{ display_app_name }}</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap"
+              rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/login.css' %}?v=5">
     </head>
     <body>
-        {% if messages %}
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-        <form method="post" action="{% url 'login' %}">
-            {% csrf_token %}
-            <label for="username">Username</label>
-            <input type="text" id="username" name="username" required autofocus>
-            <label for="password">Password</label>
-            <input type="password" id="password" name="password" required>
-            <button type="submit">Masuk</button>
-        </form>
-        <script src="{% static 'js/login.js' %}"></script>
+        <a class="login-skip-link" href="#login-heading">Lewati ke formulir masuk</a>
+        <main class="login-shell">
+            <section class="login-brand" aria-labelledby="login-brand-name">
+                <div class="login-brand-inner">
+                    <a class="login-brand-lockup"
+                       href="{% url 'login' %}"
+                       aria-label="{{ display_app_name }}">
+                        {% if orgs and orgs.logo %}
+                            <img class="login-brand-logo" src="{{ orgs.logo.url }}" alt="">
+                        {% else %}
+                            <span class="login-brand-mark"
+                                  aria-hidden="true">{{ display_app_name|slice:":1"|upper }}</span>
+                        {% endif %}
+                        <span class="login-brand-wordmark">{{ display_app_name }}</span>
+                    </a>
+                    <div class="login-brand-copy">
+                        <p class="login-eyebrow">RUANG KERJA GADAI</p>
+                        <h1 id="login-brand-name">{{ display_app_name }}</h1>
+                        <p class="login-brand-description">
+                            {% if orgs and orgs.tagline %}
+                                {{ orgs.tagline }}
+                            {% else %}
+                                Kelola layanan gadai dengan alur kerja yang tertata dan informasi yang mudah dijangkau.
+                            {% endif %}
+                        </p>
+                    </div>
+                    {% if brand %}
+                        <div class="login-developer-watermark"
+                             role="group"
+                             aria-label="Informasi project dan developer">
+                            {% if brand.logo %}<img class="login-developer-logo" src="{{ brand.logo.url }}" alt="">{% endif %}
+                            <div class="login-developer-copy">
+                                <p class="login-developer-label">PROJECT &amp; DEVELOPER</p>
+                                <p class="login-developer-name">
+                                    <strong>{{ brand.name }}</strong>
+                                    {% if brand.version %}<span>v{{ brand.version }}</span>{% endif %}
+                                </p>
+                                {% if brand.creator %}<p class="login-developer-creator">Dikembangkan oleh {{ brand.creator }}</p>{% endif %}
+                                {% if brand.description %}<p class="login-developer-description">{{ brand.description }}</p>{% endif %}
+                                {% if brand.facebook or brand.instagram or brand.tiktok or brand.youtube %}
+                                    <nav class="login-developer-social" aria-label="Tautan sosial developer">
+                                        {% if brand.facebook %}
+                                            <a href="{{ brand.facebook }}"
+                                               target="_blank"
+                                               rel="noopener noreferrer">Facebook</a>
+                                        {% endif %}
+                                        {% if brand.instagram %}
+                                            <a href="{{ brand.instagram }}"
+                                               target="_blank"
+                                               rel="noopener noreferrer">Instagram</a>
+                                        {% endif %}
+                                        {% if brand.tiktok %}
+                                            <a href="{{ brand.tiktok }}"
+                                               target="_blank"
+                                               rel="noopener noreferrer">TikTok</a>
+                                        {% endif %}
+                                        {% if brand.youtube %}
+                                            <a href="{{ brand.youtube }}"
+                                               target="_blank"
+                                               rel="noopener noreferrer">YouTube</a>
+                                        {% endif %}
+                                    </nav>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endif %}
+                    <div class="login-brand-footnote">
+                        <span class="login-brand-rule" aria-hidden="true"></span>
+                        <p>Masuk menggunakan akun yang telah terdaftar.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="login-panel" aria-labelledby="login-heading">
+                <div class="login-panel-content">
+                    <header class="login-panel-header">
+                        <p class="login-eyebrow login-eyebrow-dark">AKSES AKUN</p>
+                        <h2 id="login-heading">Selamat datang</h2>
+                        <p>Masukkan username dan password untuk melanjutkan.</p>
+                    </header>
+                    {% if messages %}
+                        <div class="login-messages" aria-label="Pesan">
+                            {% for message in messages %}
+                                <div class="login-message {% if 'error' in message.tags %}login-message-error{% elif 'success' in message.tags %}login-message-success{% else %}login-message-info{% endif %}"
+                                     role="{% if 'error' in message.tags %}alert{% else %}status{% endif %}"
+                                     aria-live="{% if 'error' in message.tags %}assertive{% else %}polite{% endif %}">
+                                    <span class="login-message-dot" aria-hidden="true"></span>
+                                    <span>{{ message }}</span>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    <form class="login-form" method="post" action="{% url 'login' %}">
+                        {% csrf_token %}
+                        <div class="login-field">
+                            <label for="username">Username</label>
+                            <input class="login-input"
+                                   type="text"
+                                   id="username"
+                                   name="username"
+                                   autocomplete="username"
+                                   autocapitalize="none"
+                                   spellcheck="false"
+                                   required>
+                        </div>
+                        <div class="login-field">
+                            <label for="password">Password</label>
+                            <div class="login-password-control">
+                                <input class="login-input"
+                                       type="password"
+                                       id="password"
+                                       name="password"
+                                       autocomplete="current-password"
+                                       required>
+                                <button class="login-password-toggle"
+                                        type="button"
+                                        aria-controls="password"
+                                        aria-pressed="false"
+                                        aria-label="Tampilkan password"
+                                        data-password-toggle>Tampilkan</button>
+                            </div>
+                        </div>
+                        <button class="login-submit" type="submit">
+                            <span>Masuk</span>
+                            <span class="login-submit-arrow" aria-hidden="true">→</span>
+                        </button>
+                    </form>
+                    <p class="login-security-note">
+                        <span class="login-security-mark" aria-hidden="true"></span>
+                        Akses hanya untuk pengguna yang memiliki akun.
+                    </p>
+                </div>
+                <footer class="login-panel-footer">
+                    <span>{{ display_app_name }}</span>
+                    {% if orgs and orgs.company_type %}<span>{{ orgs.get_company_type_display }}</span>{% endif %}
+                </footer>
+            </section>
+        </main>
+        <script src="{% static 'js/login.js' %}?v=4" defer></script>
     </body>
 </html>

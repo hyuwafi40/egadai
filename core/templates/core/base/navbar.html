@@ -4,8 +4,10 @@
             <button type="button"
                     class="glass-btn d-lg-none px-2 py-1"
                     id="sidebarToggleBtn"
-                    aria-label="Toggle Navigation">
-                <i class="fa-solid fa-bars-staggered fs-5"></i>
+                    aria-label="Buka navigasi"
+                    aria-controls="sidebarNav"
+                    aria-expanded="false">
+                <i class="fa-solid fa-bars-staggered fs-5" aria-hidden="true"></i>
             </button>
             <a href="{% url 'core:index' %}"
                class="d-flex align-items-center gap-2 text-decoration-none">
@@ -53,10 +55,12 @@
                         <hr class="dropdown-divider">
                     </li>
                     <li>
-                        <a class="dropdown-item rounded-2 py-2 text-danger"
-                           href="{% url 'logout' %}">
-                            <i class="fa-solid fa-arrow-right-from-bracket me-2"></i> Logout
-                        </a>
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" class="dropdown-item rounded-2 py-2 text-danger">
+                                <i class="fa-solid fa-arrow-right-from-bracket me-2" aria-hidden="true"></i> Keluar
+                            </button>
+                        </form>
                     </li>
                 </ul>
             </div>
