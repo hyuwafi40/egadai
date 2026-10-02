@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import ProtectedError
 from django.http import JsonResponse
@@ -8,6 +9,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView, TemplateView, UpdateView
 
+from config.shared.access import user_is_manager
 from customer.forms import CustomerForm
 from customer.models import Customer
 from customer.utils.constants import CUSTOMERS_PER_PAGE
@@ -90,6 +92,8 @@ class CustomerDeleteView(LoginRequiredMixin, View):
     http_method_names = ["post"]
 
     def post(self, request, pk, *args, **kwargs):
+        if not user_is_manager(request.user):
+            raise PermissionDenied
         target = get_object_or_404(Customer, pk=pk)
         name = target.name
         try:

@@ -1,3 +1,4 @@
+{% load access_tags %}
 {% load humanize %}
 <div class="glass-card mb-4 overflow-hidden animate-fadeInUp stagger-3">
     <div class="table-responsive">
@@ -79,7 +80,7 @@
                                aria-label="Lihat">
                                 <i class="fa-regular fa-eye"></i>
                             </a>
-                            {% if request.user.job == "developer" or request.user.job == "administrator" %}
+                            {% if request.user|is_manager %}
                                 <a href="{% url 'transaction:update' t.pk %}"
                                    class="glass-btn px-2 py-1"
                                    title="Edit Transaksi"

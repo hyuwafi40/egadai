@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import ProtectedError
 from django.http import JsonResponse
@@ -11,6 +12,7 @@ from django.views.generic import CreateView, TemplateView, UpdateView
 from collateral.forms import CollateralForm
 from collateral.models import Collateral
 from collateral.utils.constants import COLLATERALS_PER_PAGE
+from config.shared.access import user_is_manager
 
 
 class CollateralListView(LoginRequiredMixin, TemplateView):
@@ -92,6 +94,8 @@ class CollateralDeleteView(LoginRequiredMixin, View):
     http_method_names = ["post"]
 
     def post(self, request, pk, *args, **kwargs):
+        if not user_is_manager(request.user):
+            raise PermissionDenied
         target = get_object_or_404(Collateral, pk=pk)
         name = target.name
         try:

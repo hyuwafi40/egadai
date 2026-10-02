@@ -2,10 +2,10 @@ from io import BytesIO
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.paginator import Paginator
 from django.db import IntegrityError
-from django.db.models import ProtectedError, Q
+from django.db.models import ProtectedError
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.template.loader import render_to_string
@@ -15,6 +15,7 @@ from django.views import View
 from django.views.generic import TemplateView
 from xhtml2pdf import pisa
 
+from config.shared.access import user_is_manager
 from payment.forms import PaymentForm
 from payment.models import Payment
 from payment.utils.constants import PAYMENTS_PER_PAGE
@@ -244,6 +245,8 @@ class PaymentDeleteView(LoginRequiredMixin, View):
     http_method_names = ["post"]
 
     def post(self, request, pk, *args, **kwargs):
+        if not user_is_manager(request.user):
+            raise PermissionDenied
         target = get_object_or_404(Payment, pk=pk)
         number = target.nomor_pembayaran
         try:

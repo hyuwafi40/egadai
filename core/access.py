@@ -1,16 +1,12 @@
 from django.core.exceptions import PermissionDenied
 
 from account.utils.constants import JobChoices
+from config.shared.access import MANAGER_ROLES
 
 ALL_ROLES = (
     JobChoices.DEVELOPER,
     JobChoices.ADMINISTRATOR,
     JobChoices.REGULER,
-)
-
-MANAGER_ROLES = (
-    JobChoices.DEVELOPER,
-    JobChoices.ADMINISTRATOR,
 )
 
 DEVELOPER_ROLES = (JobChoices.DEVELOPER,)

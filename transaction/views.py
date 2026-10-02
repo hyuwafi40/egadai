@@ -2,7 +2,7 @@ from io import BytesIO
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.exceptions import ValidationError
+from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.paginator import Paginator
 from django.db import IntegrityError
 from django.db import transaction as db_transaction
@@ -17,6 +17,8 @@ from django.views.generic import TemplateView, UpdateView
 from xhtml2pdf import pisa
 
 from collateral.models import Collateral
+from collateral.utils.constants import CollateralStatusChoices
+from config.shared.access import user_is_manager
 from customer.models import Customer
 from payment.models import Payment
 from payment.utils.services import get_transaction_summary
@@ -161,7 +163,7 @@ class TransactionNewView(LoginRequiredMixin, View):
                     collateral = existing_collateral
                 else:
                     collateral = collateral_form.save(commit=False)
-                    collateral.status = "stored"
+                    collateral.status = CollateralStatusChoices.STORED
                     collateral.is_active = True
                     collateral.save()
 
@@ -273,6 +275,11 @@ class TransactionUpdateView(LoginRequiredMixin, UpdateView):
     form_class = TransactionForm
     template_name = "transaction/form.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and not user_is_manager(request.user):
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["form_title"] = "Edit Transaksi Gadai"
@@ -300,6 +307,8 @@ class TransactionDeleteView(LoginRequiredMixin, View):
     http_method_names = ["post"]
 
     def post(self, request, pk, *args, **kwargs):
+        if not user_is_manager(request.user):
+            raise PermissionDenied
         target = get_object_or_404(Transaction, pk=pk)
         number = target.nomor_kontrak
         try:

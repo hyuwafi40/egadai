@@ -1,5 +1,7 @@
 from django.db import models
 
+from config.shared.access import MANAGER_ROLES
+
 
 class JobChoices(models.TextChoices):
     DEVELOPER = "developer", "Developer"
@@ -25,11 +27,6 @@ class EmploymentTypeChoices(models.TextChoices):
     PROBATION = "probation", "Percobaan"
     INTERN = "intern", "Magang"
 
-
-MANAGER_ROLES = (
-    JobChoices.DEVELOPER,
-    JobChoices.ADMINISTRATOR,
-)
 
 VISIBLE_JOB_CHOICES = [
     (value, label)

@@ -1,6 +1,6 @@
 from django.db import models
 
-from account.utils.constants import MANAGER_ROLES
+from config.shared.access import MANAGER_ROLES
 
 
 class PeriodeBungaChoices(models.IntegerChoices):

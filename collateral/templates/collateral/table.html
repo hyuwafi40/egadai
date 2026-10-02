@@ -1,3 +1,4 @@
+{% load access_tags %}
 {% load humanize %}
 <div class="glass-card mb-4 overflow-hidden animate-fadeInUp stagger-3">
     <div class="table-responsive">
@@ -67,16 +68,18 @@
                                aria-label="Edit">
                                 <i class="fa-solid fa-pen"></i>
                             </a>
-                            <button type="button"
-                                    class="glass-btn px-2 py-1 text-danger"
-                                    data-delete-trigger
-                                    data-delete-modal="#deleteCollateralModal"
-                                    data-delete-url="{% url 'collateral:delete' c.pk %}"
-                                    data-delete-name="{{ c.name }}"
-                                    title="Hapus Barang Jaminan"
-                                    aria-label="Hapus">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+                            {% if request.user|is_manager %}
+                                <button type="button"
+                                        class="glass-btn px-2 py-1 text-danger"
+                                        data-delete-trigger
+                                        data-delete-modal="#deleteCollateralModal"
+                                        data-delete-url="{% url 'collateral:delete' c.pk %}"
+                                        data-delete-name="{{ c.name }}"
+                                        title="Hapus Barang Jaminan"
+                                        aria-label="Hapus">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            {% endif %}
                         </td>
                     </tr>
                 {% empty %}
