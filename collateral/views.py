@@ -8,43 +8,45 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView, TemplateView, UpdateView
 
-from customer.forms import CustomerForm
-from customer.models import Customer
-from customer.utils.constants import CUSTOMERS_PER_PAGE
+from collateral.forms import CollateralForm
+from collateral.models import Collateral
+from collateral.utils.constants import COLLATERALS_PER_PAGE
 
 
-class CustomerListView(LoginRequiredMixin, TemplateView):
-    template_name = "customer/index.html"
+class CollateralListView(LoginRequiredMixin, TemplateView):
+    template_name = "collateral/index.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        queryset = Customer.objects.all().order_by("name")
-        paginator = Paginator(queryset, CUSTOMERS_PER_PAGE)
+        queryset = Collateral.objects.select_related(
+            "owner", "category", "storages"
+        ).order_by("name")
+        paginator = Paginator(queryset, COLLATERALS_PER_PAGE)
         page_obj = paginator.get_page(self.request.GET.get("page"))
         context["page_obj"] = page_obj
-        context["total_customers"] = queryset.count()
+        context["total_collaterals"] = queryset.count()
         return context
 
 
-class CustomerCreateView(LoginRequiredMixin, CreateView):
-    model = Customer
-    form_class = CustomerForm
-    template_name = "customer/form.html"
+class CollateralCreateView(LoginRequiredMixin, CreateView):
+    model = Collateral
+    form_class = CollateralForm
+    template_name = "collateral/form.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form_title"] = "Tambah Nasabah"
-        context["form_subtitle"] = "Buat data nasabah baru"
+        context["form_title"] = "Tambah Barang Jaminan"
+        context["form_subtitle"] = "Buat data barang jaminan baru"
         return context
 
     def get_success_url(self):
-        return reverse("customer:list")
+        return reverse("collateral:list")
 
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(
             self.request,
-            f"Nasabah {form.instance.name} berhasil dibuat.",
+            f"Barang jaminan {form.instance.name} berhasil dibuat.",
         )
         return response
 
@@ -56,25 +58,25 @@ class CustomerCreateView(LoginRequiredMixin, CreateView):
         return super().form_invalid(form)
 
 
-class CustomerUpdateView(LoginRequiredMixin, UpdateView):
-    model = Customer
-    form_class = CustomerForm
-    template_name = "customer/form.html"
+class CollateralUpdateView(LoginRequiredMixin, UpdateView):
+    model = Collateral
+    form_class = CollateralForm
+    template_name = "collateral/form.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["form_title"] = "Edit Nasabah"
-        context["form_subtitle"] = "Perbarui data nasabah"
+        context["form_title"] = "Edit Barang Jaminan"
+        context["form_subtitle"] = "Perbarui data barang jaminan"
         return context
 
     def get_success_url(self):
-        return reverse("customer:list")
+        return reverse("collateral:list")
 
     def form_valid(self, form):
         response = super().form_valid(form)
         messages.success(
             self.request,
-            f"Nasabah {form.instance.name} berhasil diperbarui.",
+            f"Barang jaminan {form.instance.name} berhasil diperbarui.",
         )
         return response
 
@@ -86,11 +88,11 @@ class CustomerUpdateView(LoginRequiredMixin, UpdateView):
         return super().form_invalid(form)
 
 
-class CustomerDeleteView(LoginRequiredMixin, View):
+class CollateralDeleteView(LoginRequiredMixin, View):
     http_method_names = ["post"]
 
     def post(self, request, pk, *args, **kwargs):
-        target = get_object_or_404(Customer, pk=pk)
+        target = get_object_or_404(Collateral, pk=pk)
         name = target.name
         try:
             target.delete()
@@ -99,12 +101,11 @@ class CustomerDeleteView(LoginRequiredMixin, View):
                 {
                     "success": False,
                     "message": (
-                        "Nasabah tidak dapat dihapus karena masih "
-                        "memiliki barang jaminan."
+                        "Barang jaminan tidak dapat dihapus karena masih " "digunakan."
                     ),
                 },
                 status=400,
             )
         return JsonResponse(
-            {"success": True, "message": f"Nasabah {name} berhasil dihapus."}
+            {"success": True, "message": f"Barang jaminan {name} berhasil dihapus."}
         )

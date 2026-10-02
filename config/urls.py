@@ -13,6 +13,10 @@ urlpatterns = [
     path("account/", include(("account.urls", "account"), namespace="account")),
     path("vault/", include(("vault.urls", "vault"), namespace="vault")),
     path("customer/", include(("customer.urls", "customer"), namespace="customer")),
+    path(
+        "collateral/",
+        include(("collateral.urls", "collateral"), namespace="collateral"),
+    ),
     path("logout/", views.logout_view, name="logout"),
 ]
 

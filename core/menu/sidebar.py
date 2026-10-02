@@ -88,6 +88,17 @@ SIDEBAR_GROUPS = [
         ],
     },
     {
+        "label": "Collateral",
+        "items": [
+            {
+                "label": "Barang Jaminan",
+                "icon": "fa-boxes-stacked",
+                "url": "collateral:list",
+                "roles": ALL_ROLES,
+            },
+        ],
+    },
+    {
         "label": "Preferensi",
         "items": [
             {

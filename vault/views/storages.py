@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.paginator import Paginator
+from django.db.models import ProtectedError
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -96,7 +97,19 @@ class StoragesDeleteView(LoginRequiredMixin, ManagerRequiredMixin, View):
     def post(self, request, pk, *args, **kwargs):
         target = get_object_or_404(Storages, pk=pk)
         name = target.name
-        target.delete()
+        try:
+            target.delete()
+        except ProtectedError:
+            return JsonResponse(
+                {
+                    "success": False,
+                    "message": (
+                        "Gudang tidak dapat dihapus karena masih "
+                        "digunakan oleh barang jaminan."
+                    ),
+                },
+                status=400,
+            )
         return JsonResponse(
             {"success": True, "message": f"Gudang {name} berhasil dihapus."}
         )
