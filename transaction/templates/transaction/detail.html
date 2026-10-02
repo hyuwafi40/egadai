@@ -1,0 +1,41 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Detail Transaksi{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/transaction.css' %}">
+    <link rel="stylesheet" href="{% static 'css/collateral.css' %}">
+{% endblock %}
+{% block heading %}
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-3 text-white brand-mark">
+                <i class="fa-solid fa-receipt fs-6"></i>
+            </div>
+            <div>
+                <h1 class="h4 fw-bold mb-0 tracking-tight">Detail Transaksi</h1>
+                <p class="text-muted mb-0 fs-7">{{ trx.nomor_kontrak }}</p>
+            </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'transaction:pdf' trx.pk %}"
+               target="_blank"
+               class="glass-btn">
+                <i class="fa-solid fa-file-pdf"></i>
+                <span>Print PDF</span>
+            </a>
+            {% if request.user.job == "developer" or request.user.job == "administrator" %}
+                <a href="{% url 'transaction:update' trx.pk %}" class="glass-btn">
+                    <i class="fa-solid fa-pen"></i>
+                    <span>Edit</span>
+                </a>
+            {% endif %}
+            <a href="{% url 'transaction:list' %}" class="glass-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Kembali</span>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    {% include "transaction/trx/detail.html" %}
+{% endblock %}

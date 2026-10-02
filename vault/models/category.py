@@ -13,19 +13,24 @@ class Category(TimestampMixin):
         max_length=MAX_LENGTH_NAME,
         unique=True,
         db_index=True,
+        verbose_name="Nama Kategori",
     )
     code = models.CharField(
         max_length=MAX_LENGTH_CODE,
         unique=True,
         db_index=True,
+        verbose_name="Kode",
     )
-    description = models.TextField(blank=True)
+    description = models.TextField(
+        blank=True,
+        verbose_name="Keterangan",
+    )
 
     objects = models.Manager()
 
     class Meta:
-        verbose_name = "Category"
-        verbose_name_plural = "Categories"
+        verbose_name = "Kategori"
+        verbose_name_plural = "Kategori"
         ordering = ["name"]
 
     def save(self, *args, **kwargs):

@@ -73,22 +73,30 @@
                             {% endif %}
                         </td>
                         <td class="text-end">
-                            <a href="{% url 'transaction:update' t.pk %}"
+                            <a href="{% url 'transaction:detail' t.pk %}"
                                class="glass-btn px-2 py-1"
-                               title="Edit Transaksi"
-                               aria-label="Edit">
-                                <i class="fa-solid fa-pen"></i>
+                               title="Lihat Detail"
+                               aria-label="Lihat">
+                                <i class="fa-regular fa-eye"></i>
                             </a>
-                            <button type="button"
-                                    class="glass-btn px-2 py-1 text-danger"
-                                    data-delete-trigger
-                                    data-delete-modal="#deleteTransactionModal"
-                                    data-delete-url="{% url 'transaction:delete' t.pk %}"
-                                    data-delete-name="{{ t.nomor_kontrak }}"
-                                    title="Hapus Transaksi"
-                                    aria-label="Hapus">
-                                <i class="fa-solid fa-trash"></i>
-                            </button>
+                            {% if request.user.job == "developer" or request.user.job == "administrator" %}
+                                <a href="{% url 'transaction:update' t.pk %}"
+                                   class="glass-btn px-2 py-1"
+                                   title="Edit Transaksi"
+                                   aria-label="Edit">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+                                <button type="button"
+                                        class="glass-btn px-2 py-1 text-danger"
+                                        data-delete-trigger
+                                        data-delete-modal="#deleteTransactionModal"
+                                        data-delete-url="{% url 'transaction:delete' t.pk %}"
+                                        data-delete-name="{{ t.nomor_kontrak }}"
+                                        title="Hapus Transaksi"
+                                        aria-label="Hapus">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
+                            {% endif %}
                         </td>
                     </tr>
                 {% empty %}

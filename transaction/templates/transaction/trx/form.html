@@ -1,0 +1,327 @@
+<form id="trxForm" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    <div class="glass-card p-3 mb-4 fs-8 text-muted">
+        <i class="fa-solid fa-circle-info me-1"></i>
+        Isi ketiga tab berikut. Nasabah dan barang jaminan bisa dipilih dari data yang sudah ada, atau diisi baru.
+    </div>
+    {% if customer_form.non_field_errors or collateral_form.non_field_errors or trx_form.non_field_errors %}
+        <div class="glass-card p-3 mb-4">
+            <div class="text-danger fs-7">
+                {{ customer_form.non_field_errors|striptags }}
+                {{ collateral_form.non_field_errors|striptags }}
+                {{ trx_form.non_field_errors|striptags }}
+            </div>
+        </div>
+    {% endif %}
+    <div class="glass-card p-3 mb-4 animate-fadeInUp stagger-2">
+        {% include "core/base/tabs.html" with tabs=form_tabs %}
+    </div>
+    <div class="tab-content mb-4">
+        <div class="tab-pane fade show active" id="pane-nasabah">
+            <div class="glass-card p-4">
+                <div class="d-flex flex-wrap gap-3 mb-4 pb-3 border-bottom">
+                    <div class="form-check">
+                        <input type="radio"
+                               name="customer_mode"
+                               value="new"
+                               id="customerModeNew"
+                               class="form-check-input"
+                               {% if customer_mode != "existing" %}checked{% endif %}>
+                        <label for="customerModeNew" class="form-check-label fs-7 fw-semibold">Nasabah Baru</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio"
+                               name="customer_mode"
+                               value="existing"
+                               id="customerModeExisting"
+                               class="form-check-input"
+                               {% if customer_mode == "existing" %}checked{% endif %}>
+                        <label for="customerModeExisting"
+                               class="form-check-label fs-7 fw-semibold">Pilih Nasabah Lama</label>
+                    </div>
+                </div>
+                <div id="customerExistingSection"
+                     class="{% if customer_mode != 'existing' %}d-none{% endif %}">
+                    <div class="trx-subsection">
+                        <div class="trx-subsection-label">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>Cari Nasabah</span>
+                        </div>
+                        <label for="existingCustomerSearch" class="form-label fw-semibold fs-7">Kata Kunci</label>
+                        <div class="position-relative mb-2">
+                            <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input type="text"
+                                   class="form-control glass-input ps-5"
+                                   id="existingCustomerSearch"
+                                   data-live-select
+                                   data-select-target="existingCustomerId"
+                                   placeholder="Ketik nama atau NIK...">
+                        </div>
+                        <label for="existingCustomerId" class="form-label fw-semibold fs-7">Pilih Nasabah</label>
+                        <select name="existing_customer_id"
+                                id="existingCustomerId"
+                                class="form-select glass-input">
+                            <option value="">-- Pilih Nasabah --</option>
+                            {% for c in customers %}
+                                <option value="{{ c.pk }}">{{ c.name }} [{{ c.nik }}]</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div id="customerNewSection"
+                     class="{% if customer_mode == 'existing' %}d-none{% endif %}">
+                    <div class="trx-subsection">
+                        <div class="trx-subsection-label trx-required">
+                            <i class="fa-solid fa-id-card"></i>
+                            <span>Data Utama</span>
+                        </div>
+                        <div class="row g-3">
+                            {% include "core/base/field.html" with field=customer_form.name wrapper_class="col-12 col-md-6" %}
+                            {% include "core/base/field.html" with field=customer_form.nik wrapper_class="col-12 col-md-6" %}
+                        </div>
+                    </div>
+                    <div class="trx-subsection">
+                        <div class="trx-subsection-label">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Data Pribadi</span>
+                        </div>
+                        <div class="row g-3">
+                            {% include "core/base/field.html" with field=customer_form.customer_code wrapper_class="col-12 col-md-6 col-lg-4" %}
+                            {% include "core/base/field.html" with field=customer_form.gender wrapper_class="col-12 col-md-6 col-lg-4" %}
+                            {% include "core/base/field.html" with field=customer_form.date_of_birth wrapper_class="col-12 col-md-6 col-lg-4" %}
+                            {% include "core/base/field.html" with field=customer_form.occupation wrapper_class="col-12 col-md-6 col-lg-4" %}
+                            {% include "core/base/field.html" with field=customer_form.marital_status wrapper_class="col-12 col-md-6 col-lg-4" %}
+                        </div>
+                    </div>
+                    <div class="trx-subsection">
+                        <div class="trx-subsection-label">
+                            <i class="fa-solid fa-address-book"></i>
+                            <span>Alamat & Kontak</span>
+                        </div>
+                        <div class="row g-3">
+                            {% include "core/base/field.html" with field=customer_form.phone wrapper_class="col-12 col-md-6 col-lg-4" %}
+                            {% include "core/base/field.html" with field=customer_form.email wrapper_class="col-12 col-md-6 col-lg-4" %}
+                            {% include "core/base/field.html" with field=customer_form.address wrapper_class="col-12" %}
+                            {% include "core/base/field.html" with field=customer_form.city wrapper_class="col-12 col-md-6 col-lg-4" %}
+                            {% include "core/base/field.html" with field=customer_form.province wrapper_class="col-12 col-md-6 col-lg-4" %}
+                        </div>
+                    </div>
+                    <div class="trx-subsection">
+                        <div class="trx-subsection-label">
+                            <i class="fa-solid fa-phone-volume"></i>
+                            <span>Kontak Darurat</span>
+                        </div>
+                        <div class="row g-3">
+                            {% include "core/base/field.html" with field=customer_form.emergency_contact_name wrapper_class="col-12 col-md-6 col-lg-4" %}
+                            {% include "core/base/field.html" with field=customer_form.emergency_contact_phone wrapper_class="col-12 col-md-6 col-lg-4" %}
+                            {% include "core/base/field.html" with field=customer_form.emergency_contact_relationship wrapper_class="col-12 col-md-6 col-lg-4" %}
+                        </div>
+                    </div>
+                    <div class="trx-subsection">
+                        <div class="trx-subsection-label">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>Foto & Catatan</span>
+                        </div>
+                        <div class="row g-3">
+                            {% include "core/base/field.html" with field=customer_form.photo wrapper_class="col-12 col-md-6" %}
+                            {% include "core/base/field.html" with field=customer_form.selfie wrapper_class="col-12 col-md-6" %}
+                            {% include "core/base/field.html" with field=customer_form.notes wrapper_class="col-12" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pane-collateral">
+            <div class="glass-card p-4">
+                <div class="d-flex flex-wrap gap-3 mb-4 pb-3 border-bottom">
+                    <div class="form-check">
+                        <input type="radio"
+                               name="collateral_mode"
+                               value="new"
+                               id="collateralModeNew"
+                               class="form-check-input"
+                               {% if collateral_mode != "existing" %}checked{% endif %}>
+                        <label for="collateralModeNew" class="form-check-label fs-7 fw-semibold">Barang Baru</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio"
+                               name="collateral_mode"
+                               value="existing"
+                               id="collateralModeExisting"
+                               class="form-check-input"
+                               {% if collateral_mode == "existing" %}checked{% endif %}>
+                        <label for="collateralModeExisting"
+                               class="form-check-label fs-7 fw-semibold">Pilih Barang Lama</label>
+                    </div>
+                </div>
+                <div id="collateralExistingSection"
+                     class="{% if collateral_mode != 'existing' %}d-none{% endif %}">
+                    <div class="trx-subsection">
+                        <div class="trx-subsection-label">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <span>Cari Barang</span>
+                        </div>
+                        <label for="existingCollateralSearch" class="form-label fw-semibold fs-7">Kata Kunci</label>
+                        <div class="position-relative mb-2">
+                            <i class="fa-solid fa-magnifying-glass position-absolute top-50 start-0 translate-middle-y ms-3 text-muted"></i>
+                            <input type="text"
+                                   class="form-control glass-input ps-5"
+                                   id="existingCollateralSearch"
+                                   data-live-select
+                                   data-select-target="existingCollateralId"
+                                   placeholder="Ketik nama, kode, atau kategori...">
+                        </div>
+                        <label for="existingCollateralId"
+                               class="form-label fw-semibold fs-7">Pilih Barang Jaminan</label>
+                        <select name="existing_collateral_id"
+                                id="existingCollateralId"
+                                class="form-select glass-input">
+                            <option value="">-- Pilih Barang --</option>
+                            {% for col in collaterals %}
+                                <option value="{{ col.pk }}">{{ col.name }}{% if col.code %} [{{ col.code }}]{% endif %} — {{ col.category.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div id="collateralNewSection"
+                     class="{% if collateral_mode == 'existing' %}d-none{% endif %}">
+                    <div class="trx-subsection">
+                        <div class="trx-subsection-label trx-required">
+                            <i class="fa-solid fa-boxes-stacked"></i>
+                            <span>Data Barang</span>
+                        </div>
+                        <div class="row g-3">
+                            {% include "core/base/field.html" with field=collateral_form.name wrapper_class="col-12 col-md-6" %}
+                            {% include "core/base/field.html" with field=collateral_form.code wrapper_class="col-12 col-md-6" %}
+                        </div>
+                    </div>
+                    <div class="trx-subsection">
+                        <div class="trx-subsection-label">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <span>Kategori & Gudang</span>
+                        </div>
+                        <div class="row g-3">
+                            {% include "core/base/field.html" with field=collateral_form.category wrapper_class="col-12 col-md-6 col-lg-4" %}
+                            {% include "core/base/field.html" with field=collateral_form.storages wrapper_class="col-12 col-md-6 col-lg-4" %}
+                            {% include "core/base/field.html" with field=collateral_form.intake_date wrapper_class="col-12 col-md-6 col-lg-4" %}
+                        </div>
+                    </div>
+                    <div class="trx-subsection">
+                        <div class="trx-subsection-label">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                            <span>Nilai Taksiran & Keterangan</span>
+                        </div>
+                        <div class="row g-3">
+                            {% include "core/base/field.html" with field=collateral_form.appraisal_value wrapper_class="col-12 col-md-6" %}
+                            {% include "core/base/field.html" with field=collateral_form.description wrapper_class="col-12" %}
+                        </div>
+                    </div>
+                    <div class="trx-subsection">
+                        <div class="trx-subsection-label">
+                            <i class="fa-solid fa-camera"></i>
+                            <span>Foto & Catatan</span>
+                        </div>
+                        <div class="row g-3">
+                            {% include "core/base/field.html" with field=collateral_form.photo wrapper_class="col-12 col-md-6" %}
+                            {% include "core/base/field.html" with field=collateral_form.notes wrapper_class="col-12" %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="pane-transaksi">
+            <div class="row g-4">
+                <div class="col-12 col-lg-8">
+                    <div class="glass-card p-4 h-100">
+                        <div class="trx-subsection">
+                            <div class="trx-subsection-label trx-required">
+                                <i class="fa-solid fa-file-contract"></i>
+                                <span>Data Kontrak</span>
+                            </div>
+                            <div class="row g-3">
+                                {% include "core/base/field.html" with field=trx_form.nomor_kontrak wrapper_class="col-12 col-md-6" %}
+                                {% include "core/base/field.html" with field=trx_form.status_kontrak wrapper_class="col-12 col-md-6" %}
+                            </div>
+                        </div>
+                        <div class="trx-subsection">
+                            <div class="trx-subsection-label">
+                                <i class="fa-solid fa-percent"></i>
+                                <span>Skema & Gudang</span>
+                            </div>
+                            <div class="row g-3">
+                                {% include "core/base/field.html" with field=trx_form.scheme wrapper_class="col-12 col-md-6" %}
+                                {% include "core/base/field.html" with field=trx_form.storages wrapper_class="col-12 col-md-6" %}
+                            </div>
+                        </div>
+                        <div class="trx-subsection">
+                            <div class="trx-subsection-label trx-required">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>Tanggal Pinjam</span>
+                            </div>
+                            <div class="row g-3">
+                                {% include "core/base/field.html" with field=trx_form.tanggal_pinjam wrapper_class="col-12 col-md-6" %}
+                                {% include "core/base/field.html" with field=trx_form.tanggal_jatuh_tempo wrapper_class="col-12 col-md-6" %}
+                            </div>
+                        </div>
+                        <div class="trx-subsection">
+                            <div class="trx-subsection-label trx-required">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <span>Jumlah Pinjaman</span>
+                            </div>
+                            <div class="row g-3">
+                                {% include "core/base/field.html" with field=trx_form.uang_pinjaman wrapper_class="col-12 col-md-6" %}
+                                {% include "core/base/field.html" with field=trx_form.tujuan_pinjaman wrapper_class="col-12" %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-lg-4">
+                    <div class="trx-preview-card">
+                        <div class="glass-card p-4">
+                            <div class="d-flex align-items-center gap-2 mb-3">
+                                <i class="fa-solid fa-calculator text-primary"></i>
+                                <h2 class="h6 fw-bold mb-0 text-muted text-uppercase">Rincian Biaya</h2>
+                            </div>
+                            <div class="trx-preview-row">
+                                <span class="label">Uang Pinjaman</span>
+                                <span class="value" id="previewPinjaman">Rp 0</span>
+                            </div>
+                            <div class="trx-preview-row">
+                                <span class="label">Bunga</span>
+                                <span class="value" id="previewBunga">Rp 0</span>
+                            </div>
+                            <div class="trx-preview-row">
+                                <span class="label">Biaya Admin</span>
+                                <span class="value" id="previewAdmin">Rp 0</span>
+                            </div>
+                            <div class="trx-preview-row">
+                                <span class="label">Total Biaya</span>
+                                <span class="value" id="previewTotal">Rp 0</span>
+                            </div>
+                            <div class="trx-preview-total">
+                                <span class="label">Total Tebus</span>
+                                <span class="value" id="previewTebus">Rp 0</span>
+                            </div>
+                            <div class="text-muted fs-8 mt-3 text-center">
+                                <i class="fa-solid fa-info-circle me-1"></i>
+                                Biaya dihitung otomatis dari skema yang dipilih.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="glass-card p-4 animate-fadeInUp stagger-5">
+        <div class="d-flex flex-column flex-sm-row gap-2 justify-content-end">
+            <a href="{% url 'transaction:list' %}" class="glass-btn">
+                <i class="fa-solid fa-xmark"></i>
+                <span>Batal</span>
+            </a>
+            <button type="submit" class="glass-btn glass-btn-primary">
+                <i class="fa-solid fa-floppy-disk"></i>
+                <span>Simpan</span>
+            </button>
+        </div>
+    </div>
+</form>

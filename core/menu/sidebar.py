@@ -17,6 +17,12 @@ SIDEBAR_GROUPS = [
                 "url": "core:index",
                 "roles": ALL_ROLES,
             },
+            {
+                "label": "Transaksi Baru",
+                "icon": "fa-plus-circle",
+                "url": "transaction:new",
+                "roles": ALL_ROLES,
+            },
         ],
     },
     {
@@ -164,12 +170,7 @@ def _build_groups(user_job):
             if built is not None:
                 items.append(built)
         if items:
-            groups.append(
-                {
-                    "label": group["label"],
-                    "items": items,
-                }
-            )
+            groups.append({"label": group["label"], "items": items})
     return groups
 
 

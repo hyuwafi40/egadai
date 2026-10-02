@@ -1,0 +1,31 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}{{ form_title }}{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/transaction.css' %}">
+{% endblock %}
+{% block heading %}
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-3 text-white brand-mark">
+                <i class="fa-solid fa-plus-circle fs-6"></i>
+            </div>
+            <div>
+                <h1 class="h4 fw-bold mb-0 tracking-tight">{{ form_title }}</h1>
+                <p class="text-muted mb-0 fs-7">{{ form_subtitle }}</p>
+            </div>
+        </div>
+        <a href="{% url 'transaction:list' %}" class="glass-btn">
+            <i class="fa-solid fa-arrow-left"></i>
+            <span>Kembali</span>
+        </a>
+    </div>
+{% endblock %}
+{% block content %}
+    {% include "transaction/trx/form.html" %}
+{% endblock %}
+{% block extra_js %}
+    {{ schemes_data|json_script:"schemes-data" }}
+    <script>window.transactionSchemesData = JSON.parse(document.getElementById('schemes-data').textContent);</script>
+    <script src="{% static 'js/transaction.js' %}"></script>
+{% endblock %}

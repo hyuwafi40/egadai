@@ -23,6 +23,7 @@
     font-weight: 700;
     color: var(--ios-blue);
     white-space: nowrap;
+    font-size: 1.1rem;
 }
 
 .transaction-period {
@@ -30,4 +31,102 @@
     line-height: 1.4;
     color: var(--text-muted);
     white-space: nowrap;
+}
+
+.trx-subsection {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.trx-subsection:first-of-type {
+    padding-top: 0;
+}
+
+.trx-subsection:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.trx-subsection-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+}
+
+.trx-subsection-label i {
+    color: var(--ios-blue);
+    font-size: 0.85rem;
+}
+
+.trx-subsection-label.trx-required i {
+    color: var(--ios-red);
+}
+
+.trx-preview-card {
+    position: sticky;
+    top: 90px;
+}
+
+.trx-preview-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 0;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.06);
+    font-size: 0.9rem;
+}
+
+.trx-preview-row:last-of-type {
+    border-bottom: none;
+}
+
+.trx-preview-row .label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.trx-preview-row .value {
+    font-weight: 600;
+    color: var(--text-dark);
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.trx-preview-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    margin-top: 0.5rem;
+    border-radius: var(--radius-md);
+    background: linear-gradient(135deg, rgba(0, 122, 255, 0.08), rgba(88, 86, 214, 0.08));
+}
+
+.trx-preview-total .label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.trx-preview-total .value {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--ios-blue);
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+@media (max-width: 991.98px) {
+    .trx-preview-card {
+        position: relative;
+        top: auto;
+    }
 }

@@ -25,6 +25,7 @@ class Collateral(TimestampMixin):
     name = models.CharField(
         max_length=MAX_LENGTH_NAME,
         db_index=True,
+        verbose_name="Nama Barang",
     )
     code = models.CharField(
         max_length=MAX_LENGTH_CODE,
@@ -32,28 +33,31 @@ class Collateral(TimestampMixin):
         blank=True,
         null=True,
         db_index=True,
-    )
-    owner = models.ForeignKey(
-        "customer.Customer",
-        on_delete=models.PROTECT,
-        related_name="collaterals",
+        verbose_name="Kode Barang",
+        help_text="Kosongkan agar dibuat otomatis.",
     )
     category = models.ForeignKey(
         "vault.Category",
         on_delete=models.PROTECT,
         related_name="collaterals",
+        verbose_name="Kategori",
     )
     storages = models.ForeignKey(
         "vault.Storages",
         on_delete=models.PROTECT,
         related_name="collaterals",
+        verbose_name="Gudang",
     )
-    description = models.TextField(blank=True)
+    description = models.TextField(
+        blank=True,
+        verbose_name="Keterangan",
+    )
     photo = models.ImageField(
         upload_to=COLLATERAL_PHOTO_UPLOAD_TO,
         blank=True,
         null=True,
         validators=[validate_image_extension, validate_image_size],
+        verbose_name="Foto Barang",
     )
     appraisal_value = models.DecimalField(
         max_digits=APPRAISAL_MAX_DIGITS,
@@ -64,26 +68,37 @@ class Collateral(TimestampMixin):
             MinValueValidator(0),
             MaxValueValidator(APPRAISAL_MAX_VALUE),
         ],
+        verbose_name="Nilai Taksiran",
+        help_text="Nilai taksiran barang dalam Rupiah.",
     )
     status = models.CharField(
         max_length=20,
         choices=CollateralStatusChoices.choices,
         default=DEFAULT_STATUS,
         db_index=True,
+        verbose_name="Status",
     )
-    intake_date = models.DateField(null=True, blank=True)
-    notes = models.TextField(blank=True)
+    intake_date = models.DateField(
+        null=True,
+        blank=True,
+        verbose_name="Tanggal Masuk",
+    )
+    notes = models.TextField(
+        blank=True,
+        verbose_name="Catatan",
+    )
     is_active = models.BooleanField(
         default=DEFAULT_IS_ACTIVE,
         db_index=True,
+        verbose_name="Aktif",
     )
 
     objects = models.Manager()
     active = ActiveManager()
 
     class Meta:
-        verbose_name = "Collateral"
-        verbose_name_plural = "Collaterals"
+        verbose_name = "Barang Jaminan"
+        verbose_name_plural = "Barang Jaminan"
         ordering = ["name"]
 
     def save(self, *args, **kwargs):
@@ -92,4 +107,6 @@ class Collateral(TimestampMixin):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.name} - {self.owner.name}"
+        if self.code:
+            return f"{self.name} [{self.code}]"
+        return self.name

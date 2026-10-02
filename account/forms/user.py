@@ -11,10 +11,15 @@ class UserCreateForm(BaseModelForm):
     class Meta:
         model = User
         fields = ["username", "email", "job"]
+        labels = {
+            "username": "Username",
+            "email": "Email",
+            "job": "Peran",
+        }
         widgets = {
             "username": forms.TextInput(attrs={"placeholder": "Contoh: johndoe"}),
             "email": forms.EmailInput(
-                attrs={"placeholder": "Contoh: john@example.com"}
+                attrs={"placeholder": "Contoh: johndoe@email.com"}
             ),
         }
 
@@ -31,9 +36,14 @@ class UserUpdateForm(BaseModelForm):
     class Meta:
         model = User
         fields = ["username", "email", "job"]
+        labels = {
+            "username": "Username",
+            "email": "Email",
+            "job": "Peran",
+        }
         widgets = {
             "username": forms.TextInput(attrs={"placeholder": "Contoh: johndoe"}),
             "email": forms.EmailInput(
-                attrs={"placeholder": "Contoh: john@example.com"}
+                attrs={"placeholder": "Contoh: johndoe@email.com"}
             ),
         }

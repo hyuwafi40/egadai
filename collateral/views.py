@@ -18,9 +18,9 @@ class CollateralListView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        queryset = Collateral.objects.select_related(
-            "owner", "category", "storages"
-        ).order_by("name")
+        queryset = Collateral.objects.select_related("category", "storages").order_by(
+            "name"
+        )
         paginator = Paginator(queryset, COLLATERALS_PER_PAGE)
         page_obj = paginator.get_page(self.request.GET.get("page"))
         context["page_obj"] = page_obj

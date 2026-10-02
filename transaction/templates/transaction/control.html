@@ -8,13 +8,12 @@
                        id="transactionSearchInput"
                        data-live-search
                        data-target="#transactionTable"
-                       placeholder="Cari nomor kontrak, nasabah, barang...">
+                       placeholder="Ketik nomor kontrak, nasabah, atau barang...">
             </div>
         </div>
-        <a href="{% url 'transaction:create' %}"
-           class="glass-btn glass-btn-primary">
-            <i class="fa-solid fa-plus"></i>
-            <span>Tambah Transaksi</span>
-        </a>
+        <span class="text-muted fs-8">
+            <i class="fa-solid fa-info-circle me-1"></i>
+            Klik menu <strong>Transaksi Baru</strong> di sidebar untuk membuat transaksi.
+        </span>
     </div>
 </div>

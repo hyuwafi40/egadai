@@ -38,15 +38,15 @@
                                id="userFormEmail"
                                name="email"
                                required
-                               placeholder="Contoh: john@example.com">
+                               placeholder="Contoh: johndoe@email.com">
                         <div class="text-danger fs-8 mt-1" data-error-for="email"></div>
                     </div>
                     <div class="mb-3">
                         <label for="userFormJob" class="form-label fw-semibold fs-7">
-                            Job <span class="text-danger">*</span>
+                            Peran <span class="text-danger">*</span>
                         </label>
                         <select class="form-select glass-input" id="userFormJob" name="job" required>
-                            <option value="">-- Pilih Job --</option>
+                            <option value="">-- Pilih Peran --</option>
                             {% for value, label in job_choices %}
                                 <option value="{{ value }}">{{ label }}</option>
                             {% endfor %}
@@ -54,7 +54,7 @@
                         <div class="text-danger fs-8 mt-1" data-error-for="job"></div>
                     </div>
                     <div class="form-text fs-8 text-muted" data-user-form-hint>
-                        Password default: <strong>{{ default_password }}</strong>
+                        Kata sandi awal: <strong>{{ default_password }}</strong>
                     </div>
                 </form>
             </div>

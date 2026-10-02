@@ -1,0 +1,170 @@
+{% load humanize %}
+<div class="row g-4">
+    <div class="col-12 col-lg-4">
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-2">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Kontrak</h2>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Nomor Kontrak</div>
+                <div class="detail-value"><span class="transaction-code-badge">{{ trx.nomor_kontrak }}</span></div>
+            </div>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Status</div>
+                <div class="detail-value">
+                    {% if trx.status_kontrak == "aktif" %}
+                        <span class="badge-ios badge-ios-success"><i class="fa-solid fa-circle-check"></i> {{ trx.get_status_kontrak_display }}</span>
+                    {% elif trx.status_kontrak == "lunas" %}
+                        <span class="badge-ios badge-ios-info"><i class="fa-solid fa-flag-checkered"></i> {{ trx.get_status_kontrak_display }}</span>
+                    {% elif trx.status_kontrak == "jatuh_tempo" %}
+                        <span class="badge-ios badge-ios-pending"><i class="fa-solid fa-clock"></i> {{ trx.get_status_kontrak_display }}</span>
+                    {% elif trx.status_kontrak == "lelang" %}
+                        <span class="badge-ios badge-ios-danger"><i class="fa-solid fa-gavel"></i> {{ trx.get_status_kontrak_display }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Tanggal Pinjam</div>
+                <div class="detail-value">{% if trx.tanggal_pinjam %}{{ trx.tanggal_pinjam|date:"d M Y" }}{% else %}-{% endif %}</div>
+            </div>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Tanggal Jatuh Tempo</div>
+                <div class="detail-value">
+                    {% if trx.tanggal_jatuh_tempo %}{{ trx.tanggal_jatuh_tempo|date:"d M Y" }}{% else %}-{% endif %}
+                    {% if trx.is_overdue %}
+                        <span class="badge-ios badge-ios-danger ms-1"><i class="fa-solid fa-triangle-exclamation"></i> Overdue</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Skema</div>
+                <div class="detail-value">{{ trx.scheme.name }}</div>
+            </div>
+            <div>
+                <div class="detail-label mb-1">Dibuat Oleh</div>
+                <div class="detail-value">{{ trx.created_by.get_full_name|default:trx.created_by.username }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-8">
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-3">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Nasabah</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nama</div>
+                    <div class="detail-value">{{ trx.customer.name }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">NIK</div>
+                    <div class="detail-value">{{ trx.customer.nik }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Telepon</div>
+                    <div class="detail-value">{{ trx.customer.phone|default:"-" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Email</div>
+                    <div class="detail-value">{{ trx.customer.email|default:"-" }}</div>
+                </div>
+                <div class="col-12">
+                    <div class="detail-label mb-1">Alamat</div>
+                    <div class="detail-value">{{ trx.customer.address|default:"-"|linebreaksbr }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-4">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Barang Jaminan</h2>
+            <div class="row g-3">
+                <div class="col-12 col-md-5">
+                    <div class="detail-label mb-2">Foto Barang</div>
+                    {% if trx.collateral.photo %}
+                        <img src="{{ trx.collateral.photo.url }}"
+                             alt="{{ trx.collateral.name }}"
+                             class="collateral-photo-preview border border-2 border-white shadow-sm">
+                    {% else %}
+                        <div class="collateral-photo-placeholder rounded-3 d-flex flex-column align-items-center justify-content-center text-muted border border-2 border-white shadow-sm">
+                            <i class="fa-solid fa-image fs-2 mb-2"></i>
+                            <span class="fs-8">Foto belum tersedia</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="col-12 col-md-7">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <div class="detail-label mb-1">Nama Barang</div>
+                            <div class="detail-value">{{ trx.collateral.name }}</div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="detail-label mb-1">Kode</div>
+                            <div class="detail-value">{{ trx.collateral.code|default:"-" }}</div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="detail-label mb-1">Kategori</div>
+                            <div class="detail-value">{{ trx.collateral.category.name }}</div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="detail-label mb-1">Gudang</div>
+                            <div class="detail-value">{{ trx.storages.name }}</div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="detail-label mb-1">Nilai Taksiran</div>
+                            <div class="detail-value">
+                                {% if trx.collateral.appraisal_value %}Rp {{ trx.collateral.appraisal_value|floatformat:0|intcomma }}{% else %}-{% endif %}
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-6">
+                            <div class="detail-label mb-1">Tanggal Masuk</div>
+                            <div class="detail-value">{{ trx.collateral.intake_date|date:"d M Y"|default:"-" }}</div>
+                        </div>
+                        {% if trx.collateral.description %}
+                            <div class="col-12">
+                                <div class="detail-label mb-1">Deskripsi</div>
+                                <div class="detail-value">{{ trx.collateral.description|linebreaksbr }}</div>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Detail Pinjaman</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Tanggal Pinjam</div>
+                    <div class="detail-value">{% if trx.tanggal_pinjam %}{{ trx.tanggal_pinjam|date:"d M Y" }}{% else %}-{% endif %}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Tanggal Jatuh Tempo</div>
+                    <div class="detail-value">
+                        {% if trx.tanggal_jatuh_tempo %}{{ trx.tanggal_jatuh_tempo|date:"d M Y" }}{% else %}-{% endif %}
+                        {% if trx.is_overdue %}
+                            <span class="badge-ios badge-ios-danger ms-1"><i class="fa-solid fa-triangle-exclamation"></i> Overdue</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Uang Pinjaman</div>
+                    <div class="detail-value">Rp {{ trx.uang_pinjaman|floatformat:0|intcomma }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Bunga ({{ trx.scheme.bunga }}%)</div>
+                    <div class="detail-value">Rp {{ cost.bunga|floatformat:0|intcomma }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Biaya Admin</div>
+                    <div class="detail-value">Rp {{ cost.biaya_admin|floatformat:0|intcomma }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Total Biaya</div>
+                    <div class="detail-value">Rp {{ cost.total_biaya|floatformat:0|intcomma }}</div>
+                </div>
+                <div class="col-12">
+                    <div class="detail-label mb-1">Total Tebus</div>
+                    <div class="detail-value transaction-amount">Rp {{ cost.total_tebus|floatformat:0|intcomma }}</div>
+                </div>
+                <div class="col-12">
+                    <div class="detail-label mb-1">Tujuan Pinjaman</div>
+                    <div class="detail-value">{{ trx.tujuan_pinjaman|linebreaksbr }}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

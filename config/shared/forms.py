@@ -16,6 +16,17 @@ GLASS_WIDGETS = (
 )
 
 
+class DateInput(forms.DateInput):
+    input_type = "date"
+    format = "%Y-%m-%d"
+
+    def __init__(self, attrs=None, format=None):
+        default_attrs = {"type": "date"}
+        if attrs:
+            default_attrs.update(attrs)
+        super().__init__(attrs=default_attrs, format=format or self.format)
+
+
 class BaseModelForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

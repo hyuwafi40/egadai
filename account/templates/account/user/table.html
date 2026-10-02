@@ -5,7 +5,7 @@
                 <tr>
                     <th scope="col">Username</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Job</th>
+                    <th scope="col">Peran</th>
                     <th scope="col" class="text-end">Aksi</th>
                 </tr>
             </thead>
@@ -64,8 +64,8 @@
                                     data-user-reset-password
                                     data-url="{% url 'account:user-password-reset' u.pk %}"
                                     data-username="{{ u.username }}"
-                                    title="Reset Password"
-                                    aria-label="Reset Password">
+                                    title="Reset Kata Sandi"
+                                    aria-label="Reset Kata Sandi">
                                 <i class="fa-solid fa-key"></i>
                             </button>
                             <button type="button"

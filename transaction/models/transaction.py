@@ -28,30 +28,44 @@ class Transaction(TimestampMixin):
         "collateral.Collateral",
         on_delete=models.PROTECT,
         related_name="transactions",
+        verbose_name="Barang Jaminan",
     )
     storages = models.ForeignKey(
         "vault.Storages",
         on_delete=models.PROTECT,
         related_name="transactions",
+        verbose_name="Gudang",
     )
     customer = models.ForeignKey(
         "customer.Customer",
         on_delete=models.PROTECT,
         related_name="transactions",
+        verbose_name="Nasabah",
     )
     scheme = models.ForeignKey(
         "vault.Scheme",
         on_delete=models.PROTECT,
         related_name="transactions",
+        verbose_name="Skema",
     )
-    tanggal_pinjam = models.DateField(db_index=True)
-    tanggal_jatuh_tempo = models.DateField(db_index=True)
+    tanggal_pinjam = models.DateField(
+        db_index=True,
+        verbose_name="Tanggal Pinjam",
+    )
+    tanggal_jatuh_tempo = models.DateField(
+        db_index=True,
+        verbose_name="Jatuh Tempo",
+        help_text="Otomatis dihitung dari skema, bisa diubah manual.",
+    )
     uang_pinjaman = models.DecimalField(
         max_digits=UANG_PINJAMAN_MAX_DIGITS,
         decimal_places=UANG_PINJAMAN_DECIMAL_PLACES,
         validators=[MinValueValidator(UANG_PINJAMAN_MIN_VALUE)],
+        verbose_name="Uang Pinjaman",
     )
-    tujuan_pinjaman = models.TextField()
+    tujuan_pinjaman = models.TextField(
+        verbose_name="Tujuan Pinjam",
+    )
     nomor_kontrak = models.CharField(
         max_length=MAX_LENGTH_CONTRACT_NUMBER,
         unique=True,
@@ -59,24 +73,28 @@ class Transaction(TimestampMixin):
         null=True,
         db_index=True,
         validators=[validate_contract_number],
+        verbose_name="Nomor Kontrak",
+        help_text="Kosongkan agar dibuat otomatis.",
     )
     status_kontrak = models.CharField(
         max_length=MAX_LENGTH_STATUS,
         choices=ContractStatusChoices.choices,
         default=DEFAULT_STATUS,
         db_index=True,
+        verbose_name="Status Kontrak",
     )
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.PROTECT,
         related_name="created_transactions",
+        verbose_name="Dibuat Oleh",
     )
 
     objects = TransactionManager()
 
     class Meta:
-        verbose_name = "Transaction"
-        verbose_name_plural = "Transactions"
+        verbose_name = "Transaksi"
+        verbose_name_plural = "Transaksi"
         ordering = ["-tanggal_pinjam", "-created_at"]
 
     def clean(self):
@@ -89,17 +107,9 @@ class Transaction(TimestampMixin):
             raise ValidationError(
                 {
                     "tanggal_jatuh_tempo": (
-                        "Tanggal jatuh tempo harus lebih besar dari " "tanggal pinjam."
+                        "Jatuh tempo harus lebih besar dari tanggal pinjam."
                     )
                 }
-            )
-        if (
-            self.customer_id
-            and self.collateral_id
-            and self.collateral.owner_id != self.customer_id
-        ):
-            raise ValidationError(
-                {"collateral": ("Barang jaminan bukan milik nasabah yang dipilih.")}
             )
 
     def save(self, *args, **kwargs):
@@ -119,7 +129,7 @@ class Transaction(TimestampMixin):
             if not qs.exists():
                 return candidate
         raise ValidationError(
-            {"nomor_kontrak": "Gagal generate nomor kontrak unik. Coba lagi."}
+            {"nomor_kontrak": "Gagal membuat nomor kontrak. Coba lagi."}
         )
 
     @property

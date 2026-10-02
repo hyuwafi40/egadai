@@ -1,10 +1,7 @@
 from django import forms
-from django.db.models import Q
 
 from config.shared.forms import BaseModelForm
 from collateral.models import Collateral
-from customer.models import Customer
-from vault.models import Storages
 
 
 class CollateralForm(BaseModelForm):
@@ -15,7 +12,6 @@ class CollateralForm(BaseModelForm):
             "code",
             "status",
             "is_active",
-            "owner",
             "category",
             "storages",
             "appraisal_value",
@@ -48,15 +44,12 @@ class CollateralForm(BaseModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields["owner"].queryset = self._active_with_current(Customer, "owner")
-        self.fields["storages"].queryset = self._active_with_current(
-            Storages, "storages"
-        )
+        from django.db.models import Q
+        from vault.models import Storages
 
-    def _active_with_current(self, model, field_name):
-        queryset = model.objects.filter(is_active=True)
+        queryset = Storages.objects.filter(is_active=True)
         if self.instance and self.instance.pk:
-            current_id = getattr(self.instance, f"{field_name}_id", None)
+            current_id = getattr(self.instance, "storages_id", None)
             if current_id:
-                queryset = model.objects.filter(Q(is_active=True) | Q(pk=current_id))
-        return queryset
+                queryset = Storages.objects.filter(Q(is_active=True) | Q(pk=current_id))
+        self.fields["storages"].queryset = queryset

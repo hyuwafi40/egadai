@@ -1,7 +1,7 @@
 from django import forms
 from django.db.models import Q
 
-from config.shared.forms import BaseModelForm
+from config.shared.forms import BaseModelForm, DateInput
 from collateral.models import Collateral
 from customer.models import Customer
 from transaction.models import Transaction
@@ -26,12 +26,12 @@ class TransactionForm(BaseModelForm):
         widgets = {
             "nomor_kontrak": forms.TextInput(
                 attrs={
-                    "placeholder": "Kosongkan untuk auto-generate",
+                    "placeholder": "Kosongkan agar dibuat otomatis",
                     "autocomplete": "off",
                 }
             ),
-            "tanggal_pinjam": forms.DateInput(attrs={"type": "date"}),
-            "tanggal_jatuh_tempo": forms.DateInput(attrs={"type": "date"}),
+            "tanggal_pinjam": DateInput(),
+            "tanggal_jatuh_tempo": DateInput(),
             "uang_pinjaman": forms.TextInput(
                 attrs={
                     "inputmode": "numeric",
@@ -41,10 +41,7 @@ class TransactionForm(BaseModelForm):
                 }
             ),
             "tujuan_pinjaman": forms.Textarea(
-                attrs={
-                    "rows": 3,
-                    "placeholder": "Contoh: Modal usaha dagang",
-                }
+                attrs={"rows": 3, "placeholder": "Contoh: Modal usaha dagang"}
             ),
         }
 
@@ -68,3 +65,138 @@ class TransactionForm(BaseModelForm):
             if current_id:
                 queryset = model.objects.filter(Q(is_active=True) | Q(pk=current_id))
         return queryset
+
+
+class CustomerQuickForm(BaseModelForm):
+    class Meta:
+        model = Customer
+        fields = [
+            "name",
+            "nik",
+            "customer_code",
+            "photo",
+            "selfie",
+            "gender",
+            "date_of_birth",
+            "occupation",
+            "marital_status",
+            "phone",
+            "email",
+            "address",
+            "city",
+            "province",
+            "emergency_contact_name",
+            "emergency_contact_phone",
+            "emergency_contact_relationship",
+            "notes",
+        ]
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "Contoh: Budi Santoso"}),
+            "nik": forms.TextInput(
+                attrs={
+                    "placeholder": "16 angka sesuai KTP",
+                    "inputmode": "numeric",
+                    "maxlength": "16",
+                }
+            ),
+            "customer_code": forms.TextInput(
+                attrs={"placeholder": "Kosongkan agar dibuat otomatis"}
+            ),
+            "date_of_birth": DateInput(),
+            "occupation": forms.TextInput(attrs={"placeholder": "Contoh: Pedagang"}),
+            "phone": forms.TextInput(attrs={"placeholder": "Contoh: 081234567890"}),
+            "email": forms.EmailInput(attrs={"placeholder": "Contoh: budi@email.com"}),
+            "address": forms.Textarea(
+                attrs={"rows": 3, "placeholder": "Tulis alamat lengkap"}
+            ),
+            "city": forms.TextInput(attrs={"placeholder": "Contoh: Bandung"}),
+            "province": forms.TextInput(attrs={"placeholder": "Contoh: Jawa Barat"}),
+            "emergency_contact_name": forms.TextInput(
+                attrs={"placeholder": "Nama orang yang bisa dihubungi"}
+            ),
+            "emergency_contact_phone": forms.TextInput(
+                attrs={"placeholder": "Contoh: 081234567890"}
+            ),
+            "emergency_contact_relationship": forms.TextInput(
+                attrs={"placeholder": "Contoh: Istri, Suami, Ayah"}
+            ),
+            "photo": forms.FileInput(attrs={"accept": "image/*"}),
+            "selfie": forms.FileInput(attrs={"accept": "image/*"}),
+            "notes": forms.Textarea(
+                attrs={"rows": 3, "placeholder": "Catatan tambahan (opsional)"}
+            ),
+        }
+
+
+class CollateralQuickForm(BaseModelForm):
+    class Meta:
+        model = Collateral
+        fields = [
+            "name",
+            "code",
+            "category",
+            "storages",
+            "appraisal_value",
+            "description",
+            "photo",
+            "intake_date",
+            "notes",
+        ]
+        widgets = {
+            "name": forms.TextInput(attrs={"placeholder": "Contoh: Cincin Emas 24K"}),
+            "code": forms.TextInput(
+                attrs={"placeholder": "Kosongkan agar dibuat otomatis"}
+            ),
+            "appraisal_value": forms.NumberInput(
+                attrs={"step": "0.01", "placeholder": "Contoh: 5000000"}
+            ),
+            "description": forms.Textarea(
+                attrs={"rows": 3, "placeholder": "Tulis keterangan barang"}
+            ),
+            "photo": forms.FileInput(attrs={"accept": "image/*"}),
+            "intake_date": DateInput(),
+            "notes": forms.Textarea(
+                attrs={"rows": 3, "placeholder": "Catatan tambahan (opsional)"}
+            ),
+        }
+
+
+class NewTransactionForm(BaseModelForm):
+    class Meta:
+        model = Transaction
+        fields = [
+            "nomor_kontrak",
+            "status_kontrak",
+            "scheme",
+            "storages",
+            "tanggal_pinjam",
+            "tanggal_jatuh_tempo",
+            "uang_pinjaman",
+            "tujuan_pinjaman",
+        ]
+        widgets = {
+            "nomor_kontrak": forms.TextInput(
+                attrs={
+                    "placeholder": "Kosongkan agar dibuat otomatis",
+                    "autocomplete": "off",
+                }
+            ),
+            "tanggal_pinjam": DateInput(),
+            "tanggal_jatuh_tempo": DateInput(),
+            "uang_pinjaman": forms.TextInput(
+                attrs={
+                    "inputmode": "numeric",
+                    "autocomplete": "off",
+                    "placeholder": "Contoh: 1000000",
+                    "data-currency": "true",
+                }
+            ),
+            "tujuan_pinjaman": forms.Textarea(
+                attrs={"rows": 3, "placeholder": "Contoh: Modal usaha dagang"}
+            ),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["scheme"].queryset = Scheme.objects.all()
+        self.fields["storages"].queryset = Storages.objects.filter(is_active=True)

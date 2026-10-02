@@ -25,7 +25,7 @@
                     <div class="detail-value">{{ profile_obj.user.email }}</div>
                 </div>
                 <div class="col-12 col-sm-6">
-                    <div class="detail-label mb-1">Employee ID</div>
+                    <div class="detail-label mb-1">ID Pegawai</div>
                     <div class="detail-value">{{ profile_obj.employee_id|default:"-" }}</div>
                 </div>
                 <div class="col-12 col-sm-6">
@@ -52,7 +52,7 @@
                     <div class="detail-value">{% if profile_obj.gender %}{{ profile_obj.get_gender_display }}{% else %}-{% endif %}</div>
                 </div>
                 <div class="col-12 col-sm-6">
-                    <div class="detail-label mb-1">Status Perkawinan</div>
+                    <div class="detail-label mb-1">Status Pernikahan</div>
                     <div class="detail-value">
                         {% if profile_obj.marital_status %}{{ profile_obj.get_marital_status_display }}{% else %}-{% endif %}
                     </div>
@@ -70,7 +70,7 @@
                     <div class="detail-value">{{ profile_obj.religion|default:"-" }}</div>
                 </div>
                 <div class="col-12 col-sm-6">
-                    <div class="detail-label mb-1">Telepon</div>
+                    <div class="detail-label mb-1">Nomor HP</div>
                     <div class="detail-value">{{ profile_obj.phone|default:"-" }}</div>
                 </div>
             </div>
@@ -116,7 +116,7 @@
                     <div class="detail-value">{{ profile_obj.position|default:"-" }}</div>
                 </div>
                 <div class="col-12 col-sm-6">
-                    <div class="detail-label mb-1">Jenis Kepegawaian</div>
+                    <div class="detail-label mb-1">Status Kerja</div>
                     <div class="detail-value">
                         {% if profile_obj.employment_type %}{{ profile_obj.get_employment_type_display }}{% else %}-{% endif %}
                     </div>
@@ -133,11 +133,11 @@
             <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Kontak Darurat</h2>
             <div class="row g-3">
                 <div class="col-12 col-sm-6">
-                    <div class="detail-label mb-1">Nama</div>
+                    <div class="detail-label mb-1">Nama Kontak Darurat</div>
                     <div class="detail-value">{{ profile_obj.emergency_contact_name|default:"-" }}</div>
                 </div>
                 <div class="col-12 col-sm-6">
-                    <div class="detail-label mb-1">Telepon</div>
+                    <div class="detail-label mb-1">HP Kontak Darurat</div>
                     <div class="detail-value">{{ profile_obj.emergency_contact_phone|default:"-" }}</div>
                 </div>
             </div>
@@ -151,7 +151,7 @@
     </div>
     <div class="col-12">
         <div class="glass-card p-4 animate-fadeInUp stagger-5">
-            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Timestamp</h2>
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Waktu</h2>
             <div class="row g-3">
                 <div class="col-12 col-sm-6">
                     <div class="detail-label mb-1">Dibuat</div>

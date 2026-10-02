@@ -8,7 +8,6 @@ class CollateralAdmin(admin.ModelAdmin):
     list_display = (
         "name",
         "code",
-        "owner",
         "category",
         "storages",
         "status",
@@ -24,11 +23,8 @@ class CollateralAdmin(admin.ModelAdmin):
     search_fields = (
         "name",
         "code",
-        "owner__name",
-        "owner__nik",
     )
     autocomplete_fields = (
-        "owner",
         "category",
         "storages",
     )
