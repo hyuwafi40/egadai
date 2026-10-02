@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     "customer",
     "collateral",
     "transaction",
+    "payment",
     "django_cleanup",
 ]
 

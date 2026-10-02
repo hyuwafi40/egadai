@@ -43,6 +43,15 @@
                 <div class="detail-value">{{ trx.created_by.get_full_name|default:trx.created_by.username }}</div>
             </div>
         </div>
+        {% if not payment_summary.lunas %}
+            <div class="glass-card p-4 animate-fadeInUp stagger-2">
+                <a href="{% url 'payment:create' trx.pk %}"
+                   class="glass-btn glass-btn-primary w-100">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    <span>Bayar Sekarang</span>
+                </a>
+            </div>
+        {% endif %}
     </div>
     <div class="col-12 col-lg-8">
         <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-3">
@@ -165,6 +174,79 @@
                     <div class="detail-value">{{ trx.tujuan_pinjaman|linebreaksbr }}</div>
                 </div>
             </div>
+        </div>
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-5">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Status Pembayaran</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Total Tebus</div>
+                    <div class="detail-value">Rp {{ payment_summary.total_tebus|floatformat:0|intcomma }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Sudah Dibayar</div>
+                    <div class="detail-value">Rp {{ payment_summary.total_dibayar|floatformat:0|intcomma }}</div>
+                </div>
+                <div class="col-12">
+                    <div class="detail-label mb-1">Sisa Bayar</div>
+                    <div class="detail-value transaction-amount">Rp {{ payment_summary.sisa_bayar|floatformat:0|intcomma }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 animate-fadeInUp stagger-5">
+            <div class="d-flex align-items-center justify-content-between mb-3">
+                <h2 class="h6 fw-bold mb-0 text-muted text-uppercase">Riwayat Pembayaran</h2>
+                {% if not payment_summary.lunas %}
+                    <a href="{% url 'payment:create' trx.pk %}"
+                       class="glass-btn glass-btn-primary px-3 py-1">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Bayar</span>
+                    </a>
+                {% endif %}
+            </div>
+            {% if payments %}
+                <div class="table-responsive">
+                    <table class="table table-glass align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nomor</th>
+                                <th scope="col">Tanggal</th>
+                                <th scope="col">Jumlah</th>
+                                <th scope="col">Tipe</th>
+                                <th scope="col" class="text-end">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for p in payments %}
+                                <tr>
+                                    <td><span class="payment-code-badge">{{ p.nomor_pembayaran }}</span></td>
+                                    <td>{{ p.tanggal_bayar|date:"d M Y" }}</td>
+                                    <td><span class="payment-amount">Rp {{ p.jumlah_bayar|floatformat:0|intcomma }}</span></td>
+                                    <td>
+                                        {% if p.tipe_pembayaran == "lunas" %}
+                                            <span class="badge-ios badge-ios-success">{{ p.get_tipe_pembayaran_display }}</span>
+                                        {% else %}
+                                            <span class="badge-ios badge-ios-info">{{ p.get_tipe_pembayaran_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="{% url 'payment:detail' p.pk %}"
+                                           class="glass-btn px-2 py-1"
+                                           title="Lihat Detail"
+                                           aria-label="Lihat">
+                                            <i class="fa-regular fa-eye"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="text-center text-muted py-3">
+                    <i class="fa-solid fa-inbox fs-3 d-block mb-2"></i>
+                    Belum ada pembayaran.
+                </div>
+            {% endif %}
         </div>
     </div>
 </div>

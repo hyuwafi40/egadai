@@ -18,6 +18,8 @@ from xhtml2pdf import pisa
 
 from collateral.models import Collateral
 from customer.models import Customer
+from payment.models import Payment
+from payment.utils.services import get_transaction_summary
 from transaction.forms import (
     CollateralQuickForm,
     CustomerQuickForm,
@@ -221,6 +223,12 @@ class TransactionDetailView(LoginRequiredMixin, TemplateView):
         )
         context["trx"] = trx
         context["cost"] = calculate_transaction_cost(trx.uang_pinjaman, trx.scheme)
+        context["payment_summary"] = get_transaction_summary(trx)
+        context["payments"] = (
+            Payment.objects.filter(transaction=trx)
+            .select_related("created_by")
+            .order_by("-tanggal_bayar", "-created_at")
+        )
         return context
 
 

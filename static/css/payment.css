@@ -1,0 +1,98 @@
+.payment-row-icon {
+    width: 36px;
+    height: 36px;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    background: linear-gradient(135deg, #5856D6, #0056B3);
+}
+
+.payment-code-badge {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--radius-sm);
+    background: rgba(88, 86, 214, 0.12);
+    color: #3A38A8;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.payment-amount {
+    font-weight: 700;
+    color: #248a3d;
+    white-space: nowrap;
+    font-size: 1.1rem;
+}
+
+.payment-summary-card {
+    background: linear-gradient(135deg, rgba(88, 86, 214, 0.08), rgba(0, 122, 255, 0.08));
+    border-radius: var(--radius-md);
+    padding: 1rem;
+}
+
+.payment-summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px dashed rgba(0, 0, 0, 0.06);
+    font-size: 0.9rem;
+}
+
+.payment-summary-row:last-of-type {
+    border-bottom: none;
+}
+
+.payment-summary-row .label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.payment-summary-row .value {
+    font-weight: 600;
+    color: var(--text-dark);
+    white-space: nowrap;
+    text-align: right;
+    margin-left: 0.5rem;
+}
+
+.payment-summary-row.grand {
+    padding-top: 0.75rem;
+    margin-top: 0.5rem;
+    border-top: 2px solid rgba(0, 122, 255, 0.15);
+}
+
+.payment-summary-row.grand .label {
+    font-weight: 700;
+    color: var(--text-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.payment-summary-row.grand .value {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: var(--ios-blue);
+}
+
+.payment-preset-btn {
+    background: rgba(255, 255, 255, 0.5);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-md);
+    color: var(--text-dark);
+    font-weight: 600;
+    font-size: 0.8rem;
+    padding: 0.35rem 0.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.payment-preset-btn:hover {
+    background: rgba(255, 255, 255, 0.85);
+    transform: translateY(-1px);
+}

@@ -23,6 +23,12 @@ SIDEBAR_GROUPS = [
                 "url": "transaction:new",
                 "roles": ALL_ROLES,
             },
+            {
+                "label": "Pembayaran Cicilan",
+                "icon": "fa-money-bill-transfer",
+                "url": "payment:list",
+                "roles": ALL_ROLES,
+            },
         ],
     },
     {

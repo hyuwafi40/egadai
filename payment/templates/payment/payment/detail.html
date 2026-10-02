@@ -1,0 +1,114 @@
+{% load humanize %}
+<div class="row g-4">
+    <div class="col-12 col-lg-4">
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-2">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Pembayaran</h2>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Nomor Pembayaran</div>
+                <div class="detail-value"><span class="payment-code-badge">{{ payment.nomor_pembayaran }}</span></div>
+            </div>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Tanggal Bayar</div>
+                <div class="detail-value">{{ payment.tanggal_bayar|date:"d M Y" }}</div>
+            </div>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Jumlah Bayar</div>
+                <div class="detail-value payment-amount">Rp {{ payment.jumlah_bayar|floatformat:0|intcomma }}</div>
+            </div>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Tipe</div>
+                <div class="detail-value">
+                    {% if payment.tipe_pembayaran == "lunas" %}
+                        <span class="badge-ios badge-ios-success">
+                            <i class="fa-solid fa-flag-checkered"></i> {{ payment.get_tipe_pembayaran_display }}
+                        </span>
+                    {% else %}
+                        <span class="badge-ios badge-ios-info">
+                            <i class="fa-solid fa-coins"></i> {{ payment.get_tipe_pembayaran_display }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Metode</div>
+                <div class="detail-value">
+                    {% if payment.metode_pembayaran == "cash" %}
+                        <span class="badge-ios badge-ios-pending">
+                            <i class="fa-solid fa-money-bill-wave"></i> {{ payment.get_metode_pembayaran_display }}
+                        </span>
+                    {% else %}
+                        <span class="badge-ios badge-ios-info">
+                            <i class="fa-solid fa-building-columns"></i> {{ payment.get_metode_pembayaran_display }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="mb-3">
+                <div class="detail-label mb-1">Diterima Oleh</div>
+                <div class="detail-value">{{ payment.created_by.get_full_name|default:payment.created_by.username }}</div>
+            </div>
+            {% if payment.catatan %}
+                <div>
+                    <div class="detail-label mb-1">Catatan</div>
+                    <div class="detail-value">{{ payment.catatan|linebreaksbr }}</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    <div class="col-12 col-lg-8">
+        <div class="glass-card p-4 mb-4 animate-fadeInUp stagger-3">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Data Transaksi</h2>
+            <div class="row g-3">
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nomor Kontrak</div>
+                    <div class="detail-value">
+                        <a href="{% url 'transaction:detail' trx.pk %}"
+                           class="text-decoration-none">{{ trx.nomor_kontrak }}</a>
+                    </div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Nasabah</div>
+                    <div class="detail-value">{{ trx.customer.name }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Barang Jaminan</div>
+                    <div class="detail-value">{{ trx.collateral.name }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Skema</div>
+                    <div class="detail-value">{{ trx.scheme.name }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Tanggal Pinjam</div>
+                    <div class="detail-value">{{ trx.tanggal_pinjam|date:"d M Y" }}</div>
+                </div>
+                <div class="col-12 col-sm-6">
+                    <div class="detail-label mb-1">Jatuh Tempo</div>
+                    <div class="detail-value">{{ trx.tanggal_jatuh_tempo|date:"d M Y" }}</div>
+                </div>
+            </div>
+        </div>
+        <div class="glass-card p-4 animate-fadeInUp stagger-4">
+            <h2 class="h6 fw-bold mb-3 text-muted text-uppercase">Status Pembayaran</h2>
+            <div class="payment-summary-row">
+                <span class="label">Total Tebus</span>
+                <span class="value">Rp {{ summary.total_tebus|floatformat:0|intcomma }}</span>
+            </div>
+            <div class="payment-summary-row">
+                <span class="label">Sudah Dibayar</span>
+                <span class="value">Rp {{ summary.total_dibayar|floatformat:0|intcomma }}</span>
+            </div>
+            <div class="payment-summary-row grand">
+                <span class="label">Sisa Bayar</span>
+                <span class="value">Rp {{ summary.sisa_bayar|floatformat:0|intcomma }}</span>
+            </div>
+            {% if summary.lunas %}
+                <div class="mt-3">
+                    <span class="badge-ios badge-ios-success">
+                        <i class="fa-solid fa-circle-check"></i> Transaksi Lunas
+                    </span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>

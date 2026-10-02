@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+    <head>
+        <meta charset="UTF-8">
+        <title>Kwitansi {{ payment.nomor_pembayaran }}</title>
+        <style>
+        @page {
+            size: A4 portrait;
+            margin: 2cm;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            font-size: 10pt;
+            color: #1C1C1E;
+        }
+        h1 { font-size: 16pt; margin: 0 0 4pt 0; text-align: center; }
+        h2 { font-size: 12pt; margin: 12pt 0 6pt 0; color: #0056B3; }
+        p { margin: 2pt 0; }
+        .header-table { width: 100%; margin-bottom: 12pt; border-bottom: 2px solid #0056B3; padding-bottom: 8pt; }
+        .header-table td { vertical-align: top; }
+        .brand-name { font-size: 14pt; font-weight: bold; color: #1C1C1E; }
+        .brand-sub { font-size: 9pt; color: #6C6C70; }
+        .receipt-number {
+            font-size: 18pt;
+            font-weight: bold;
+            color: #0056B3;
+            text-align: center;
+            padding: 8pt;
+            background-color: #E8F0FE;
+            border: 1px solid #0056B3;
+            margin-bottom: 12pt;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10pt;
+        }
+        .data-table td {
+            padding: 4pt 6pt;
+            border: 1px solid #CCCCCC;
+            vertical-align: top;
+        }
+        .data-table td.label {
+            background-color: #F2F2F7;
+            font-weight: bold;
+            width: 35%;
+            color: #6C6C70;
+        }
+        .total-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8pt;
+        }
+        .total-table td {
+            padding: 4pt 6pt;
+            border: 1px solid #CCCCCC;
+        }
+        .total-table td.label {
+            background-color: #F2F2F7;
+            font-weight: bold;
+            color: #6C6C70;
+            width: 60%;
+        }
+        .total-table td.value {
+            text-align: right;
+        }
+        .total-table tr.grand td {
+            background-color: #E8F0FE;
+            font-weight: bold;
+            color: #0056B3;
+            font-size: 11pt;
+        }
+        .paid-stamp {
+            text-align: center;
+            margin: 16pt 0;
+            font-size: 14pt;
+            font-weight: bold;
+            color: #248a3d;
+            border: 2px solid #248a3d;
+            padding: 8pt;
+        }
+        .signature-table {
+            width: 100%;
+            margin-top: 40pt;
+            border-collapse: collapse;
+        }
+        .signature-table td {
+            text-align: center;
+            vertical-align: top;
+            padding-top: 60pt;
+            border: none;
+        }
+        .signature-line {
+            border-top: 1px solid #1C1C1E;
+            padding-top: 4pt;
+            font-size: 9pt;
+        }
+        .footer {
+            text-align: center;
+            font-size: 8pt;
+            color: #6C6C70;
+            margin-top: 20pt;
+            border-top: 1px solid #CCCCCC;
+            padding-top: 6pt;
+        }
+        </style>
+    </head>
+    <body>
+        <table class="header-table">
+            <tr>
+                <td>
+                    <div class="brand-name">{% if orgs and orgs.name %}{{ orgs.name }}{% else %}{% if brand %}{{ brand.name }}{% else %}Egadai{% endif %}{% endif %}</div>
+                    <div class="brand-sub">
+                        {% if orgs and orgs.address %}{{ orgs.address }}{% endif %}
+                        {% if orgs and orgs.city %}, {{ orgs.city }}{% endif %}
+                        {% if orgs and orgs.phone %}| Telp: {{ orgs.phone }}{% endif %}
+                    </div>
+                </td>
+                <td style="text-align: right;">
+                    <div class="brand-sub">Dicetak pada</div>
+                    <div style="font-size: 10pt;">{{ generated_at|date:"d M Y H:i" }}</div>
+                </td>
+            </tr>
+        </table>
+        <h1>KWITANSI PEMBAYARAN</h1>
+        <div class="receipt-number">{{ payment.nomor_pembayaran }}</div>
+        <h2>A. Data Pembayaran</h2>
+        <table class="data-table">
+            <tr>
+                <td class="label">Tanggal Bayar</td>
+                <td>{{ payment.tanggal_bayar|date:"d M Y" }}</td>
+            </tr>
+            <tr>
+                <td class="label">Jumlah Bayar</td>
+                <td><strong>Rp {% if payment.jumlah_bayar %}{{ payment.jumlah_bayar|floatformat:0 }}{% else %}0{% endif %}</strong></td>
+            </tr>
+            <tr>
+                <td class="label">Tipe Pembayaran</td>
+                <td>{{ payment.get_tipe_pembayaran_display }}</td>
+            </tr>
+            <tr>
+                <td class="label">Metode Pembayaran</td>
+                <td>{{ payment.get_metode_pembayaran_display }}</td>
+            </tr>
+            {% if payment.catatan %}
+                <tr>
+                    <td class="label">Catatan</td>
+                    <td>{{ payment.catatan }}</td>
+                </tr>
+            {% endif %}
+        </table>
+        <h2>B. Data Nasabah</h2>
+        <table class="data-table">
+            <tr>
+                <td class="label">Nama Lengkap</td>
+                <td>{{ trx.customer.name }}</td>
+            </tr>
+            <tr>
+                <td class="label">NIK</td>
+                <td>{{ trx.customer.nik }}</td>
+            </tr>
+            <tr>
+                <td class="label">Telepon</td>
+                <td>{{ trx.customer.phone|default:"-" }}</td>
+            </tr>
+        </table>
+        <h2>C. Data Kontrak</h2>
+        <table class="data-table">
+            <tr>
+                <td class="label">Nomor Kontrak</td>
+                <td>{{ trx.nomor_kontrak }}</td>
+            </tr>
+            <tr>
+                <td class="label">Barang Jaminan</td>
+                <td>{{ trx.collateral.name }}</td>
+            </tr>
+            <tr>
+                <td class="label">Skema</td>
+                <td>{{ trx.scheme.name }}</td>
+            </tr>
+            <tr>
+                <td class="label">Tanggal Pinjam</td>
+                <td>{{ trx.tanggal_pinjam|date:"d M Y" }}</td>
+            </tr>
+            <tr>
+                <td class="label">Jatuh Tempo</td>
+                <td>{{ trx.tanggal_jatuh_tempo|date:"d M Y" }}</td>
+            </tr>
+        </table>
+        <h2>D. Ringkasan Pembayaran</h2>
+        <table class="total-table">
+            <tr>
+                <td class="label">Total Tebus</td>
+                <td class="value">Rp {{ summary.total_tebus|floatformat:0 }}</td>
+            </tr>
+            <tr>
+                <td class="label">Sudah Dibayar</td>
+                <td class="value">Rp {{ summary.total_dibayar|floatformat:0 }}</td>
+            </tr>
+            <tr class="grand">
+                <td class="label">Sisa Bayar</td>
+                <td class="value">Rp {{ summary.sisa_bayar|floatformat:0 }}</td>
+            </tr>
+        </table>
+        {% if summary.lunas %}
+            <div class="paid-stamp">LUNAS</div>
+        {% endif %}
+        <table class="signature-table">
+            <tr>
+                <td style="width: 50%;">
+                    <div class="signature-line">
+                        Nasabah
+                        <br>
+                        <br>
+                        {{ trx.customer.name }}
+                    </div>
+                </td>
+                <td style="width: 50%;">
+                    <div class="signature-line">
+                        Petugas
+                        <br>
+                        <br>
+                        {{ payment.created_by.get_full_name|default:payment.created_by.username }}
+                    </div>
+                </td>
+            </tr>
+        </table>
+        <div class="footer">
+            Dokumen ini dicetak otomatis oleh sistem
+            {% if brand %}— {{ brand.name }} v{{ brand.version }}{% endif %}.
+            Sah tanpa tanda tangan basah.
+        </div>
+    </body>
+</html>

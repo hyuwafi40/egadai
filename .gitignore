@@ -160,3 +160,5 @@ htmlcov/
 *.pid.lock
 *.seed
 *.pub
+
+seeds.py

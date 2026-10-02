@@ -4,6 +4,7 @@
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/transaction.css' %}">
     <link rel="stylesheet" href="{% static 'css/collateral.css' %}">
+    <link rel="stylesheet" href="{% static 'css/payment.css' %}">
 {% endblock %}
 {% block heading %}
     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
@@ -17,6 +18,13 @@
             </div>
         </div>
         <div class="d-flex flex-wrap gap-2">
+            {% if not payment_summary.lunas %}
+                <a href="{% url 'payment:create' trx.pk %}"
+                   class="glass-btn glass-btn-primary">
+                    <i class="fa-solid fa-money-bill-transfer"></i>
+                    <span>Bayar</span>
+                </a>
+            {% endif %}
             <a href="{% url 'transaction:pdf' trx.pk %}"
                target="_blank"
                class="glass-btn">

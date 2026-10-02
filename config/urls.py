@@ -21,6 +21,7 @@ urlpatterns = [
         "transaction/",
         include(("transaction.urls", "transaction"), namespace="transaction"),
     ),
+    path("payment/", include(("payment.urls", "payment"), namespace="payment")),
     path("logout/", views.logout_view, name="logout"),
 ]
 

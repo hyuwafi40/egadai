@@ -1,0 +1,34 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Detail Pembayaran{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/payment.css' %}">
+{% endblock %}
+{% block heading %}
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-3 text-white brand-mark">
+                <i class="fa-solid fa-receipt fs-6"></i>
+            </div>
+            <div>
+                <h1 class="h4 fw-bold mb-0 tracking-tight">Detail Pembayaran</h1>
+                <p class="text-muted mb-0 fs-7">{{ payment.nomor_pembayaran }}</p>
+            </div>
+        </div>
+        <div class="d-flex flex-wrap gap-2">
+            <a href="{% url 'payment:pdf' payment.pk %}"
+               target="_blank"
+               class="glass-btn">
+                <i class="fa-solid fa-file-pdf"></i>
+                <span>Cetak Kwitansi</span>
+            </a>
+            <a href="{% url 'payment:list' %}" class="glass-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Kembali</span>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    {% include "payment/payment/detail.html" %}
+{% endblock %}

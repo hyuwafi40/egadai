@@ -1,0 +1,24 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block title %}Pembayaran{% endblock %}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/payment.css' %}">
+{% endblock %}
+{% block heading %}
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-3 text-white brand-mark">
+                <i class="fa-solid fa-money-bill-transfer fs-6"></i>
+            </div>
+            <div>
+                <h1 class="h4 fw-bold mb-0 tracking-tight">Pembayaran</h1>
+                <p class="text-muted mb-0 fs-7">Riwayat pembayaran cicilan dan lunas</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block content %}
+    {% include "payment/control.html" %}
+    {% include "payment/table.html" %}
+    {% include "core/base/delete.html" with modal_id="deletePaymentModal" form_id="deletePaymentForm" title="Hapus Pembayaran" message="Apakah Anda yakin ingin menghapus pembayaran berikut?" %}
+{% endblock %}
