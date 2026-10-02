@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     "account",
     "core",
     "vault",
+    "customer",
     "django_cleanup",
 ]
 

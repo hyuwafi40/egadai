@@ -77,6 +77,17 @@ SIDEBAR_GROUPS = [
         ],
     },
     {
+        "label": "Customer",
+        "items": [
+            {
+                "label": "Nasabah",
+                "icon": "fa-users",
+                "url": PLACEHOLDER_URL,
+                "roles": ALL_ROLES,
+            },
+        ],
+    },
+    {
         "label": "Preferensi",
         "items": [
             {
